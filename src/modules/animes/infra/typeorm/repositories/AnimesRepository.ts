@@ -11,7 +11,7 @@ export default class AnimesRepository implements IAnimeRepository {
   }
 
   public async find(): Promise<Anime[]> {
-    return this.ormRepository.find();
+    return this.ormRepository.find({ relations: ['created_by'] });
   }
 
   public async findByTitle(title: string): Promise<Anime | undefined> {
@@ -24,11 +24,13 @@ export default class AnimesRepository implements IAnimeRepository {
     title,
     description,
     episodesAmount,
+    created_by_id,
   }: ICreateAnimeDTO): Promise<Anime> {
     const anime = this.ormRepository.create({
       title,
       description,
       episodesAmount,
+      created_by_id,
     });
 
     await this.ormRepository.save(anime);

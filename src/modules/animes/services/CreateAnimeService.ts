@@ -5,6 +5,7 @@ interface IRequest {
   title: string;
   description: string;
   episodesAmount: number;
+  created_by_id: string;
 }
 
 @injectable()
@@ -18,6 +19,7 @@ export default class CreateAnimeService {
     title,
     description,
     episodesAmount,
+    created_by_id,
   }: IRequest): Promise<IRequest> {
     if (!Number.isInteger(episodesAmount) || Number(episodesAmount) < 0) {
       throw new Error('Episodes cannot be negative');
@@ -35,6 +37,7 @@ export default class CreateAnimeService {
       title,
       description,
       episodesAmount,
+      created_by_id,
     });
 
     return anime;

@@ -14,12 +14,14 @@ export default class AnimesController {
 
   public async create(request: Request, response: Response): Promise<Response> {
     const { title, description, episodesAmount } = request.body;
+    const { id } = request.user;
     const createAnimeService = container.resolve(CreateAnimeService);
 
     const anime = await createAnimeService.execute({
       title,
       description,
       episodesAmount,
+      created_by_id: id,
     });
 
     return response.json(anime);
