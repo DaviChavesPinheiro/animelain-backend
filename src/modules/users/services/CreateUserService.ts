@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import { hash } from 'bcryptjs';
 import { inject, injectable } from 'tsyringe';
 import User from '../infra/typeorm/entities/User';
@@ -20,7 +21,7 @@ export default class CreateUserService {
     const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {
-      throw new Error('Email address already taken');
+      throw new AppError('Email address already taken');
     }
 
     const hashedPassword = await hash(password, 8);

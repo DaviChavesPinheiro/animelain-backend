@@ -16,6 +16,7 @@ describe('CreateAnimeService', () => {
       title: 'One Piece',
       description: 'Blah',
       episodesAmount: 10,
+      created_by_id: 'some-uuid-id',
     });
 
     expect(anime).toHaveProperty('id');
@@ -27,6 +28,7 @@ describe('CreateAnimeService', () => {
         title: 'Naruto',
         description: 'Blah blah',
         episodesAmount: -500,
+        created_by_id: 'some-uuid-id',
       }),
     ).rejects.toBeInstanceOf(Error);
   });
@@ -36,6 +38,7 @@ describe('CreateAnimeService', () => {
       title: 'Naruto',
       description: 'Blah blah',
       episodesAmount: 500,
+      created_by_id: 'some-uuid-id',
     });
 
     await expect(
@@ -43,6 +46,7 @@ describe('CreateAnimeService', () => {
         title: 'Naruto',
         description: 'Blah blah',
         episodesAmount: 500,
+        created_by_id: 'some-uuid-id',
       }),
     ).rejects.toBeInstanceOf(Error);
   });

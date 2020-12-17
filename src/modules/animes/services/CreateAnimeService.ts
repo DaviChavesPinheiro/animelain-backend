@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import IAnimeRepository from '../repositories/IAnimesRepository';
 
@@ -22,7 +23,7 @@ export default class CreateAnimeService {
     created_by_id,
   }: IRequest): Promise<IRequest> {
     if (!Number.isInteger(episodesAmount) || Number(episodesAmount) < 0) {
-      throw new Error('Episodes cannot be negative');
+      throw new AppError('Episodes cannot be negative');
     }
 
     const findAnimeWithSameTitle = await this.animesRepository.findByTitle(
@@ -30,7 +31,7 @@ export default class CreateAnimeService {
     );
 
     if (findAnimeWithSameTitle) {
-      throw new Error('This anime already exists');
+      throw new AppError('This anime already exists');
     }
 
     const anime = await this.animesRepository.create({

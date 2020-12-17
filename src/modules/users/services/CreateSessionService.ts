@@ -1,5 +1,5 @@
 import { sign } from 'jsonwebtoken';
-// import AppError from '@shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 
 import { inject, injectable } from 'tsyringe';
 import { compare } from 'bcryptjs';
@@ -27,13 +27,13 @@ class CreateSessionService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('Incorrect email/password combination.');
+      throw new AppError('Incorrect email/password combination.');
     }
 
     const passwordMatched = await compare(password, user.password);
 
     if (!passwordMatched) {
-      throw new Error('Incorrect email/password combination.');
+      throw new AppError('Incorrect email/password combination.');
     }
 
     const token = sign(
