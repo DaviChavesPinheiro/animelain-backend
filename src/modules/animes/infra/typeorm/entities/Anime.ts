@@ -1,3 +1,4 @@
+import User from '@modules/users/infra/typeorm/entities/User';
 import {
   Entity,
   Column,
@@ -21,6 +22,13 @@ class Anime {
 
   @Column('integer')
   episodesAmount: number;
+
+  @Column()
+  created_by_id: string;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'created_by_id' })
+  created_by: User;
 
   @CreateDateColumn()
   created_at: Date;
