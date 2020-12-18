@@ -1,15 +1,22 @@
 import AppError from '@shared/errors/AppError';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 import CreateUserService from './CreateUserService';
 
 let fakeUsersRepository: IUsersRepository;
+let fakeHashProvider: IHashProvider;
 let createUserService: CreateUserService;
 
 describe('CreateUser', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUserService = new CreateUserService(fakeUsersRepository);
+    fakeHashProvider = new FakeHashProvider();
+    createUserService = new CreateUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
   });
 
   it('should be able to create a new user', async () => {

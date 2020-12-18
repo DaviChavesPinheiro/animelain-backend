@@ -1,18 +1,28 @@
 import AppError from '@shared/errors/AppError';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 import CreateSessionService from './CreateSessionService';
 import CreateUserService from './CreateUserService';
 
 let fakeUsersRepository: IUsersRepository;
+let fakeHashProvider: IHashProvider;
 let createSessionService: CreateSessionService;
 let createUserService: CreateUserService;
 
 describe('CreateSession', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
-    createSessionService = new CreateSessionService(fakeUsersRepository);
-    createUserService = new CreateUserService(fakeUsersRepository);
+    fakeHashProvider = new FakeHashProvider();
+    createSessionService = new CreateSessionService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
+    createUserService = new CreateUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
   });
 
   it('should not be able to create a session of a user that do not exist', async () => {

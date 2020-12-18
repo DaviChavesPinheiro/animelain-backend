@@ -1,18 +1,25 @@
 import AppError from '@shared/errors/AppError';
-import fs from 'fs';
+// import fs from 'fs';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 import CreateUserService from './CreateUserService';
 import UpdateUserAvatarService from './UpdateUserAvatarService';
 
 let fakeUsersRepository: IUsersRepository;
+let fakeHashProvider: IHashProvider;
 let createUserService: CreateUserService;
 let updateUserAvatarService: UpdateUserAvatarService;
 
 describe('UpdateUserAvatar', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUserService = new CreateUserService(fakeUsersRepository);
+    fakeHashProvider = new FakeHashProvider();
+    createUserService = new CreateUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
     updateUserAvatarService = new UpdateUserAvatarService(fakeUsersRepository);
   });
 
