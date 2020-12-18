@@ -3,6 +3,7 @@ import AppError from '@shared/errors/AppError';
 
 import { inject, injectable } from 'tsyringe';
 import { compare } from 'bcryptjs';
+import authConfig from '@config/auth';
 import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
 
@@ -40,10 +41,10 @@ class CreateSessionService {
       {
         isAdmin: false,
       },
-      'rsetdrygujiokodasdsadasdsadasdsad',
+      authConfig.jwt.secret,
       {
         subject: user.id,
-        expiresIn: '7d',
+        expiresIn: authConfig.jwt.expiresIn,
       },
     );
 

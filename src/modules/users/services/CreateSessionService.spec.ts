@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 import CreateSessionService from './CreateSessionService';
@@ -20,7 +21,7 @@ describe('CreateSession', () => {
         email: 'johndoe@example.com',
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(AppError);
   });
 
   it('should not be able to create a session with wrong password', async () => {
@@ -35,7 +36,7 @@ describe('CreateSession', () => {
         email: 'johndoe@example.com',
         password: 'wrong-password',
       }),
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(AppError);
   });
 
   it('should be able to create a session', async () => {

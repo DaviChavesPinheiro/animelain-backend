@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 import CreateAnimeService from './CreateAnimeService';
@@ -30,7 +31,7 @@ describe('CreateAnimeService', () => {
         episodesAmount: -500,
         created_by_id: 'some-uuid-id',
       }),
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(AppError);
   });
 
   it('should not be able to create two or more animes with same title', async () => {
@@ -48,6 +49,6 @@ describe('CreateAnimeService', () => {
         episodesAmount: 500,
         created_by_id: 'some-uuid-id',
       }),
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(AppError);
   });
 });

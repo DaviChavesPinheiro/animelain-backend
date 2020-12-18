@@ -30,6 +30,12 @@ class Anime {
   @JoinColumn({ name: 'created_by_id' })
   created_by: User;
 
+  @Column()
+  profile: string;
+
+  @Column()
+  banner: string;
+
   @CreateDateColumn()
   created_at: Date;
 
