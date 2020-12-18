@@ -1,6 +1,7 @@
 import { container } from 'tsyringe';
 
 import '@modules/users/providers';
+import '@shared/container/providers';
 
 import AnimesRepository from '@modules/animes/infra/typeorm/repositories/AnimesRepository';
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
