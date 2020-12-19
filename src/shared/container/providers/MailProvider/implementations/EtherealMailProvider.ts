@@ -1,6 +1,6 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import { inject, injectable } from 'tsyringe';
-// import IMailTemplateProvider from '../../MailTemplateProvider/models/IMailTemplateProvider';
+import IMailTemplateProvider from '../../MailTemplateProvider/models/IMailTemplateProvider';
 import ISendMailDTO from '../dtos/ISendMailDTO';
 import IMailProvider from '../models/IMailProvider';
 
@@ -8,8 +8,10 @@ import IMailProvider from '../models/IMailProvider';
 export default class EtherealMailProvider implements IMailProvider {
   private client: Transporter;
 
-  constructor() {
-    // private mailTemplateProvider: IMailTemplateProvider, // @inject('MailTemplateProvider')
+  constructor(
+    @inject('MailTemplateProvider')
+    private mailTemplateProvider: IMailTemplateProvider,
+  ) {
     nodemailer.createTestAccount().then(account => {
       const transporter = nodemailer.createTransport({
         host: account.smtp.host,
@@ -29,19 +31,20 @@ export default class EtherealMailProvider implements IMailProvider {
     to,
     from,
     subject,
-  }: // templateData,
-  ISendMailDTO): Promise<void> {
+    templateData,
+  }: ISendMailDTO): Promise<void> {
+    console.log(this.client);
     const message = await this.client.sendMail({
       from: {
-        name: from?.name || 'Equipe AnimeLand',
-        address: from?.email || 'adm@animeland.com.br',
+        name: from?.name || 'Equipe AnimeLain',
+        address: from?.email || 'adm@animelain.com.br',
       },
       to: {
         name: to.name,
         address: to.email,
       },
       subject,
-      // html: await this.mailTemplateProvider.parse(templateData),
+      html: await this.mailTemplateProvider.parse(templateData),
     });
 
     console.log('Message sent: %s', message.messageId);

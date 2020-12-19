@@ -1,10 +1,9 @@
-// import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import path from 'path';
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
-// import IUserTokensRepository from '../repositories/IUserTokensRepository';
+import IUserTokensRepository from '../repositories/IUserTokensRepository';
 
 interface IRequest {
   email: string;
@@ -17,7 +16,10 @@ class SendForgotPasswordEmailService {
     private usersRepository: IUsersRepository,
 
     @inject('MailProvider')
-    private mailProvider: IMailProvider, // @inject('UserTokensRepository') // private userTokensRepository: IUserTokensRepository,
+    private mailProvider: IMailProvider,
+
+    @inject('UserTokensRepository')
+    private userTokensRepository: IUserTokensRepository,
   ) {}
 
   public async execute({ email }: IRequest): Promise<void> {
@@ -27,14 +29,16 @@ class SendForgotPasswordEmailService {
       throw new AppError('User does not exists.');
     }
 
-    // const { token } = await this.userTokensRepository.generate(user.id);
+    const { token } = await this.userTokensRepository.generate(user.id);
 
-    // const forgotPasswordTemplate = path.resolve(
-    //   __dirname,
-    //   '..',
-    //   'views',
-    //   'forgot_password.hbs',
-    // );
+    const forgotPasswordTemplate = path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'forgot_password.hbs',
+    );
+
+    console.log(forgotPasswordTemplate);
 
     await this.mailProvider.sendMail({
       to: {
@@ -42,21 +46,15 @@ class SendForgotPasswordEmailService {
         email: user.email,
       },
       subject: '[AnimeLand] Recuperação de senha',
+      templateData: {
+        file: forgotPasswordTemplate,
+        variables: {
+          name: user.name,
+          link: `http://localhost:3000/reset-password?token=${token}`,
+          // link: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
+        },
+      },
     });
-    // await this.mailProvider.sendMail({
-    //   to: {
-    //     name: user.name,
-    //     email: user.email,
-    //   },
-    //   subject: '[AnimeLand] Recuperação de senha',
-    //   templateData: {
-    //     file: forgotPasswordTemplate,
-    //     variables: {
-    //       name: user.name,
-    //       link: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
-    //     },
-    //   },
-    // });
   }
 }
 
