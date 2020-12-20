@@ -12,6 +12,9 @@ import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 
+import CategoriesRepository from '@modules/categories/infra/typeorm/repositories/CategoriesRepository';
+import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
+
 container.registerSingleton<IAnimeRepository>(
   'AnimesRepository',
   AnimesRepository,
@@ -25,4 +28,9 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IUserTokensRepository>(
   'UserTokensRepository',
   UserTokensRepository,
+);
+
+container.registerSingleton<ICategoriesRepository>(
+  'CategoriesRepository',
+  CategoriesRepository,
 );
