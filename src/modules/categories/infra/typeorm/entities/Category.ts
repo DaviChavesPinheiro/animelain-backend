@@ -6,22 +6,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('users')
-class User {
+@Entity('categories')
+class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   name: string;
-
-  @Column('varchar', { unique: true })
-  email: string;
-
-  @Column()
-  password: string;
-
-  @Column('varchar', { nullable: true })
-  avatar: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -30,4 +21,4 @@ class User {
   updated_at: Date;
 }
 
-export default User;
+export default Category;

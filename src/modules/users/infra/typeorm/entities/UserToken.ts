@@ -5,19 +5,26 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Generated,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import User from './User';
 
 @Entity('user_tokens')
 class UserToken {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('uuid')
   @Generated('uuid')
   token: string;
 
-  @Column()
+  @Column('uuid', { nullable: true })
   user_id: string;
+
+  @ManyToOne(() => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @CreateDateColumn()
   created_at: Date;

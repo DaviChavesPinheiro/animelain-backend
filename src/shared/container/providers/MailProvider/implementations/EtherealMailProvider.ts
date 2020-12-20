@@ -21,6 +21,7 @@ export default class EtherealMailProvider implements IMailProvider {
           user: account.user,
           pass: account.pass,
         },
+        tls: { rejectUnauthorized: false },
       });
 
       this.client = transporter;
@@ -33,7 +34,6 @@ export default class EtherealMailProvider implements IMailProvider {
     subject,
     templateData,
   }: ISendMailDTO): Promise<void> {
-    console.log(this.client);
     const message = await this.client.sendMail({
       from: {
         name: from?.name || 'Equipe AnimeLain',

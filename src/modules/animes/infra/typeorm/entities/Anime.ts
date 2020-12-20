@@ -17,23 +17,23 @@ class Anime {
   @Column()
   title: string;
 
-  @Column()
+  @Column('text', { nullable: true })
   description: string;
 
-  @Column('integer')
+  @Column('int2', { nullable: false })
   episodesAmount: number;
 
-  @Column()
+  @Column('uuid', { nullable: true })
   created_by_id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'created_by_id' })
   created_by: User;
 
-  @Column()
+  @Column('varchar', { nullable: true })
   profile: string;
 
-  @Column()
+  @Column('varchar', { nullable: true })
   banner: string;
 
   @CreateDateColumn()
