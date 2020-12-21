@@ -1,4 +1,4 @@
-import AnimesCategories from '@modules/animes/infra/typeorm/entities/AnimesCategories';
+import Genre from '@modules/animes/infra/typeorm/entities/Genre';
 import {
   Entity,
   Column,
@@ -16,14 +16,10 @@ class Category {
   @Column({ type: 'varchar' })
   name: string;
 
-  @OneToMany(
-    () => AnimesCategories,
-    animes_categories => animes_categories.category,
-    {
-      cascade: true,
-    },
-  )
-  animes_categories: AnimesCategories[];
+  @OneToMany(() => Genre, genre => genre.category, {
+    cascade: true,
+  })
+  genres: Genre[];
 
   @CreateDateColumn()
   created_at: Date;

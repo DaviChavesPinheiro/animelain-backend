@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateAnimesCategories1608552113997
-  implements MigrationInterface {
+export default class CreateGenre1608559901354 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'animes_categories',
+        name: 'genres',
         columns: [
           {
             name: 'id',
@@ -13,6 +12,10 @@ export default class CreateAnimesCategories1608552113997
             isPrimary: true,
             generationStrategy: 'uuid',
             default: 'uuid_generate_v4()',
+          },
+          {
+            name: 'score',
+            type: 'smallint',
           },
           {
             name: 'created_at',
@@ -30,6 +33,6 @@ export default class CreateAnimesCategories1608552113997
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('animes_categories');
+    await queryRunner.dropTable('genres');
   }
 }

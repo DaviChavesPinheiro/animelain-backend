@@ -5,4 +5,5 @@ export default interface ICategoriesRepository {
   findByName(title: string): Promise<Category | undefined>;
   find(): Promise<Category[]>;
   create(data: ICreateCategoryDTO): Promise<Category>;
+  findAllById(ids: string[]): Promise<Category[]>;
 }

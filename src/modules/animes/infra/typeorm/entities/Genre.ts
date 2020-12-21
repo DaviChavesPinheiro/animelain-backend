@@ -10,16 +10,16 @@ import {
 } from 'typeorm';
 import Anime from './Anime';
 
-@Entity('animes_categories')
-class AnimesCategories {
+@Entity('genres')
+class Genre {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Category, category => category.animes_categories)
+  @ManyToOne(() => Category, category => category.genres)
   @JoinColumn({ name: 'category_id' })
   category: Category;
 
-  @ManyToOne(() => Anime, anime => anime.animes_categories)
+  @ManyToOne(() => Anime, anime => anime.genres)
   @JoinColumn({ name: 'anime_id' })
   anime: Anime;
 
@@ -29,6 +29,9 @@ class AnimesCategories {
   @Column()
   category_id: string;
 
+  @Column('integer')
+  score: number;
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -36,4 +39,4 @@ class AnimesCategories {
   updated_at: Date;
 }
 
-export default AnimesCategories;
+export default Genre;

@@ -30,4 +30,12 @@ export default class FakeCategoriesRepository implements ICategoriesRepository {
 
     return category;
   }
+
+  public async findAllById(ids: string[]): Promise<Category[]> {
+    const existentCategories = this.categories.filter(category =>
+      ids.includes(category.id),
+    );
+
+    return existentCategories;
+  }
 }

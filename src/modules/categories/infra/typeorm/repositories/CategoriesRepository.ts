@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, In, Repository } from 'typeorm';
 import ICreateCategoryDTO from '@modules/categories/dtos/ICreateCategoryDTO';
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
 import Category from '../entities/Category';
@@ -30,5 +30,15 @@ export default class CategoriesRepository implements ICategoriesRepository {
     await this.ormRepository.save(category);
 
     return category;
+  }
+
+  public async findAllById(ids: string[]): Promise<Category[]> {
+    const existentCategories = await this.ormRepository.find({
+      where: {
+        id: In(ids),
+      },
+    });
+
+    return existentCategories;
   }
 }

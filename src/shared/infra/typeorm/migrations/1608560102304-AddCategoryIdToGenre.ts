@@ -5,36 +5,33 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export default class AddAnimeIdToAnimesCategories1608552256816
+export default class AddCategoryIdToGenre1608560102304
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
-      'animes_categories',
+      'genres',
       new TableColumn({
-        name: 'anime_id',
+        name: 'category_id',
         type: 'uuid',
         isNullable: true,
       }),
     );
 
     await queryRunner.createForeignKey(
-      'animes_categories',
+      'genres',
       new TableForeignKey({
-        name: 'AnimesCategoriesAnimes',
-        columnNames: ['anime_id'],
+        name: 'GenresCategories',
+        columnNames: ['category_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'animes',
+        referencedTableName: 'categories',
         onDelete: 'SET NULL',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey(
-      'animes_categories',
-      'AnimesCategoriesAnimes',
-    );
+    await queryRunner.dropForeignKey('genres', 'GenresCategories');
 
-    await queryRunner.dropColumn('animes_categories', 'anime_id');
+    await queryRunner.dropColumn('genres', 'category_id');
   }
 }

@@ -1,15 +1,20 @@
+import FakeCategoriesRepository from '@modules/categories/repositories/fakes/FakeCategoriesRepository';
 import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 import CreateAnimeService from './CreateAnimeService';
 
 let fakeAnimesRepository: FakeAnimesRepository;
+let fakeCategoriesRepository: FakeCategoriesRepository;
 let createAnimeService: CreateAnimeService;
 
 describe('CreateAnimeService', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
-    createAnimeService = new CreateAnimeService(fakeAnimesRepository);
+    createAnimeService = new CreateAnimeService(
+      fakeAnimesRepository,
+      fakeCategoriesRepository,
+    );
   });
 
   it('should be able to create an anime', async () => {
@@ -18,6 +23,7 @@ describe('CreateAnimeService', () => {
       description: 'Blah',
       episodesAmount: 10,
       created_by_id: 'some-uuid-id',
+      genres: [],
     });
 
     expect(anime).toHaveProperty('id');
@@ -30,6 +36,7 @@ describe('CreateAnimeService', () => {
         description: 'Blah blah',
         episodesAmount: -500,
         created_by_id: 'some-uuid-id',
+        genres: [],
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -40,6 +47,7 @@ describe('CreateAnimeService', () => {
       description: 'Blah blah',
       episodesAmount: 500,
       created_by_id: 'some-uuid-id',
+      genres: [],
     });
 
     await expect(
@@ -48,6 +56,24 @@ describe('CreateAnimeService', () => {
         description: 'Blah blah',
         episodesAmount: 500,
         created_by_id: 'some-uuid-id',
+        genres: [],
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to create an anime with a non existing category', async () => {
+    await expect(
+      createAnimeService.execute({
+        title: 'Naruto',
+        description: 'Blah blah',
+        episodesAmount: 500,
+        created_by_id: 'some-uuid-id',
+        genres: [
+          {
+            score: 10,
+            category_id: 'some-uuid-id',
+          },
+        ],
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
