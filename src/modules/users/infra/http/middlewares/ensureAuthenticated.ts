@@ -28,7 +28,6 @@ export default function ensureAuthenticated(
     const { isAdmin, sub } = decoded as ITokenPayload;
 
     request.user = { id: sub, isAdmin };
-    console.log(decoded);
 
     return next();
   } catch (error) {

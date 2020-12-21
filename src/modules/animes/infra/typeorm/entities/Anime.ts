@@ -7,7 +7,9 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
+import AnimesCategories from './AnimesCategories';
 
 @Entity('animes')
 class Anime {
@@ -35,6 +37,15 @@ class Anime {
 
   @Column('varchar', { nullable: true })
   banner: string;
+
+  @OneToMany(
+    () => AnimesCategories,
+    animes_categories => animes_categories.anime,
+    {
+      cascade: true,
+    },
+  )
+  animes_categories: AnimesCategories[];
 
   @CreateDateColumn()
   created_at: Date;

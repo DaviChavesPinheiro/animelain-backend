@@ -11,7 +11,9 @@ export default class AnimesRepository implements IAnimeRepository {
   }
 
   public async find(): Promise<Anime[]> {
-    return this.ormRepository.find({ relations: ['created_by'] });
+    return this.ormRepository.find({
+      relations: ['created_by', 'animes_categories'],
+    });
   }
 
   public async findByTitle(title: string): Promise<Anime | undefined> {
