@@ -11,6 +11,7 @@ let createAnimeService: CreateAnimeService;
 describe('CreateAnimeService', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
+    fakeCategoriesRepository = new FakeCategoriesRepository();
     createAnimeService = new CreateAnimeService(
       fakeAnimesRepository,
       fakeCategoriesRepository,
@@ -76,5 +77,26 @@ describe('CreateAnimeService', () => {
         ],
       }),
     ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to create an anime with a existing category', async () => {
+    const category = await fakeCategoriesRepository.create({
+      name: 'some-category',
+    });
+
+    await expect(
+      createAnimeService.execute({
+        title: 'Naruto',
+        description: 'Blah blah',
+        episodesAmount: 500,
+        created_by_id: 'some-uuid-id',
+        genres: [
+          {
+            score: 10,
+            category_id: category.id,
+          },
+        ],
+      }),
+    ).resolves;
   });
 });

@@ -20,6 +20,7 @@ export default class FakeAnimesRepository implements IAnimeRepository {
     title,
     description,
     episodesAmount,
+    genres,
   }: ICreateAnimeDTO): Promise<Anime> {
     const anime = new Anime();
 
@@ -28,6 +29,7 @@ export default class FakeAnimesRepository implements IAnimeRepository {
       title,
       description,
       episodesAmount,
+      genres,
     });
 
     this.animes.push(anime);
