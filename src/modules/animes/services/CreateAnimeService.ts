@@ -1,4 +1,5 @@
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
+import Character from '@modules/characters/infra/typeorm/entities/Character';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import Anime from '../infra/typeorm/entities/Anime';
@@ -16,6 +17,7 @@ interface IRequest {
   episodesAmount: number;
   created_by_id: string;
   genres: IGenre[];
+  charactersIds?: string[];
 }
 
 @injectable()
@@ -34,6 +36,7 @@ export default class CreateAnimeService {
     episodesAmount,
     created_by_id,
     genres,
+    charactersIds,
   }: IRequest): Promise<Anime> {
     if (!Number.isInteger(episodesAmount) || Number(episodesAmount) < 0) {
       throw new AppError('Episodes cannot be negative');
@@ -77,12 +80,21 @@ export default class CreateAnimeService {
       return genreObject;
     });
 
+    const characters = charactersIds?.map(id => {
+      const character = new Character();
+      Object.assign(character, {
+        id,
+      });
+      return character;
+    });
+
     const anime = await this.animesRepository.create({
       title,
       description,
       episodesAmount,
       created_by_id,
       genres: genresObjects,
+      characters,
     });
 
     return anime;

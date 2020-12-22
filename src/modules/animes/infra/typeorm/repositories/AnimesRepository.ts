@@ -12,7 +12,7 @@ export default class AnimesRepository implements IAnimeRepository {
 
   public async find(): Promise<Anime[]> {
     return this.ormRepository.find({
-      relations: ['genres', 'genres.category'],
+      relations: ['genres', 'genres.category', 'characters'],
     });
   }
 
@@ -28,6 +28,7 @@ export default class AnimesRepository implements IAnimeRepository {
     episodesAmount,
     created_by_id,
     genres,
+    characters,
   }: ICreateAnimeDTO): Promise<Anime> {
     const anime = this.ormRepository.create({
       title,
@@ -35,6 +36,7 @@ export default class AnimesRepository implements IAnimeRepository {
       episodesAmount,
       created_by_id,
       genres,
+      characters,
     });
 
     await this.ormRepository.save(anime);

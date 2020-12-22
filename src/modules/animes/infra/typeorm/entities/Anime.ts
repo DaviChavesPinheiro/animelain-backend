@@ -1,3 +1,4 @@
+import Character from '@modules/characters/infra/typeorm/entities/Character';
 import User from '@modules/users/infra/typeorm/entities/User';
 import {
   Entity,
@@ -8,6 +9,8 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import Genre from './Genre';
 
@@ -42,6 +45,10 @@ class Anime {
     cascade: true,
   })
   genres: Genre[];
+
+  @ManyToMany(() => Character, character => character.animes, { cascade: true })
+  @JoinTable()
+  characters: Character[];
 
   @CreateDateColumn()
   created_at: Date;

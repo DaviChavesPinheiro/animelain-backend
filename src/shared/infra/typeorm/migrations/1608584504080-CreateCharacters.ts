@@ -26,14 +26,17 @@ export default class CreateCharacters1608584504080
           {
             name: 'age',
             type: 'smallint',
+            isNullable: true,
           },
           {
             name: 'profile',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'banner',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'created_at',

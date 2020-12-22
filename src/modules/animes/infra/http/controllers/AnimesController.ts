@@ -13,7 +13,13 @@ export default class AnimesController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { title, description, episodesAmount, genres } = request.body;
+    const {
+      title,
+      description,
+      episodesAmount,
+      genres,
+      charactersIds,
+    } = request.body;
     const { id } = request.user;
     const createAnimeService = container.resolve(CreateAnimeService);
 
@@ -23,6 +29,7 @@ export default class AnimesController {
       episodesAmount,
       created_by_id: id,
       genres,
+      charactersIds,
     });
 
     return response.json(anime);

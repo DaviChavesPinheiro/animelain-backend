@@ -1,13 +1,15 @@
+import Anime from '@modules/animes/infra/typeorm/entities/Anime';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
 } from 'typeorm';
 
 @Entity('characters')
-class Anime {
+class Character {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,6 +28,9 @@ class Anime {
   @Column('varchar', { nullable: true })
   banner: string;
 
+  @ManyToMany(() => Anime, anime => anime.characters)
+  animes: Anime[];
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -33,4 +38,4 @@ class Anime {
   updated_at: Date;
 }
 
-export default Anime;
+export default Character;

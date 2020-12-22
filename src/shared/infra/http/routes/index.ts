@@ -6,6 +6,7 @@ import passwordRouter from '@modules/users/infra/http/routes/password.routes';
 import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 import animesRouter from '../../../../modules/animes/infra/http/routes/animes.routes';
 import categoriesRouter from '../../../../modules/categories/infra/http/routes/categories.routes';
+import charactersRouter from '../../../../modules/characters/infra/http/routes/characters.routes';
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use('/password', passwordRouter);
 router.use('/sessions', sessionsRouter);
 router.use('/profile', profileRouter);
 router.use('/categories', categoriesRouter);
+router.use('/characters', charactersRouter);
 
 export default router;
