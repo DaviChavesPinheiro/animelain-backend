@@ -50,6 +50,9 @@ class Anime {
   @JoinTable()
   characters: Character[];
 
+  @ManyToMany(() => User, user => user.favorite_animes)
+  favorite_users: User[];
+
   @CreateDateColumn()
   created_at: Date;
 

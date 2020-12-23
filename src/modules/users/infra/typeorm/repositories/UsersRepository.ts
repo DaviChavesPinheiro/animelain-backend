@@ -13,6 +13,7 @@ class UsersRepository implements IUsersRepository {
   public async findById(id: string): Promise<User | undefined> {
     const user = await this.ormRepository.findOne({
       where: { id },
+      relations: ['favorite_animes'],
     });
     return user;
   }
