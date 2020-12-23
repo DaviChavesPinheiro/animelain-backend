@@ -11,9 +11,7 @@ export default class AnimesRepository implements IAnimeRepository {
   }
 
   public async find(): Promise<Anime[]> {
-    return this.ormRepository.find({
-      relations: ['genres', 'genres.category', 'characters'],
-    });
+    return this.ormRepository.find({});
   }
 
   public async findByTitle(title: string): Promise<Anime | undefined> {
@@ -42,5 +40,17 @@ export default class AnimesRepository implements IAnimeRepository {
     await this.ormRepository.save(anime);
 
     return anime;
+  }
+
+  public async findById(id: string): Promise<Anime | undefined> {
+    const user = await this.ormRepository.findOne({
+      where: { id },
+      relations: ['genres', 'genres.category', 'characters'],
+    });
+    return user;
+  }
+
+  public async save(data: Anime): Promise<Anime> {
+    return this.ormRepository.save(data);
   }
 }

@@ -36,4 +36,20 @@ export default class FakeAnimesRepository implements IAnimeRepository {
 
     return anime;
   }
+
+  public async findById(id: string): Promise<Anime | undefined> {
+    const animeWithSameId = this.animes.find(anime => anime.id === id);
+
+    return animeWithSameId;
+  }
+
+  public async save(anime: Anime): Promise<Anime> {
+    const findIndex = this.animes.findIndex(
+      findAnime => findAnime.id === anime.id,
+    );
+
+    this.animes[findIndex] = anime;
+
+    return anime;
+  }
 }
