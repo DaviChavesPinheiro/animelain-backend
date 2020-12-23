@@ -5,12 +5,14 @@ import multer from 'multer';
 import AnimesController from '../controllers/AnimesController';
 import AnimeController from '../controllers/AnimeController';
 import AnimeProfileController from '../controllers/AnimeProfileController';
+import AnimeBannerController from '../controllers/AnimeBannerController';
 
 const animesRouter = Router();
 const upload = multer(uploadConfig.multer);
 const animesController = new AnimesController();
 const animeController = new AnimeController();
 const animeProfileController = new AnimeProfileController();
+const animeBannerController = new AnimeBannerController();
 
 animesRouter.use(ensureAuthenticated);
 
@@ -27,6 +29,13 @@ animesRouter.patch(
   ensureAuthenticated,
   upload.single('avatar'),
   animeProfileController.update,
+);
+
+animesRouter.patch(
+  '/:id/banner',
+  ensureAuthenticated,
+  upload.single('avatar'),
+  animeBannerController.update,
 );
 
 export default animesRouter;
