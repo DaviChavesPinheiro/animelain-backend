@@ -1,6 +1,6 @@
 import FakeAnimesRepository from '@modules/animes/repositories/fakes/FakeAnimesRepository';
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
-import AppError from '@shared/errors/AppError';
+// import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 import AddFavoriteAnimeService from './AddFavoriteAnimeService';
