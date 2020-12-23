@@ -19,8 +19,6 @@ describe('UpdateProfile', () => {
       description: 'fghj',
       episodesAmount: 10,
       created_by_id: 'some_id',
-      genres: [],
-      characters: [],
     });
 
     const updatedAnime = await updateProfileService.execute({
@@ -52,8 +50,6 @@ describe('UpdateProfile', () => {
       description: 'fghj',
       episodesAmount: 10,
       created_by_id: 'some_id',
-      genres: [],
-      characters: [],
     });
 
     expect(
@@ -72,8 +68,6 @@ describe('UpdateProfile', () => {
       description: 'fghj',
       episodesAmount: 10,
       created_by_id: 'some_id',
-      genres: [],
-      characters: [],
     });
 
     const updatedAnime = await updateProfileService.execute({
@@ -91,8 +85,6 @@ describe('UpdateProfile', () => {
       description: 'fghj',
       episodesAmount: 10,
       created_by_id: 'some_id',
-      genres: [],
-      characters: [],
     });
 
     await fakeAnimesRepository.create({
@@ -100,8 +92,6 @@ describe('UpdateProfile', () => {
       description: 'fghj',
       episodesAmount: 10,
       created_by_id: 'some_id',
-      genres: [],
-      characters: [],
     });
 
     await expect(

@@ -25,16 +25,12 @@ export default class AnimesRepository implements IAnimeRepository {
     description,
     episodesAmount,
     created_by_id,
-    genres,
-    characters,
   }: ICreateAnimeDTO): Promise<Anime> {
     const anime = this.ormRepository.create({
       title,
       description,
       episodesAmount,
       created_by_id,
-      genres,
-      characters,
     });
 
     await this.ormRepository.save(anime);

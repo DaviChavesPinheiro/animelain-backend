@@ -22,7 +22,6 @@ describe('CreateFavoriteAnime', () => {
       description: 'Description',
       episodesAmount: 700,
       created_by_id: 'some_user_id',
-      genres: [],
     });
 
     const user = await fakeUsersRepository.create({

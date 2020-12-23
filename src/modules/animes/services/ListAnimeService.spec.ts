@@ -17,8 +17,6 @@ describe('ListAnime', () => {
       description: 'fghj',
       episodesAmount: 10,
       created_by_id: 'some_id',
-      genres: [],
-      characters: [],
     });
 
     const findedAnime = await listAnimeService.execute({

@@ -10,6 +10,6 @@ const profileController = new FavoritesController();
 favoriteRouter.use(ensureAuthenticated);
 
 favoriteRouter.post('/animes/add/:id', profileController.create);
-favoriteRouter.post('/animes/remove/:id', profileController.remove);
+favoriteRouter.delete('/animes/remove/:id', profileController.remove);
 
 export default favoriteRouter;
