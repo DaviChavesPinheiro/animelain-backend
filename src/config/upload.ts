@@ -33,7 +33,7 @@ interface IUploadConfig {
 }
 
 export default {
-  driver: 'disk',
+  driver: process.env.STORAGE_DRIVER,
 
   tmpFolder,
   uploadsFolder: path.resolve(tmpFolder, 'uploads'),
@@ -64,7 +64,7 @@ export default {
   config: {
     disk: {},
     aws: {
-      bucket: 'manganero.site',
+      bucket: process.env.AWS_BUCKET_NAME,
     },
   },
 } as IUploadConfig;
