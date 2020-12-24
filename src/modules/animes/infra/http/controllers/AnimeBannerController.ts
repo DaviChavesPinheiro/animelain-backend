@@ -1,4 +1,5 @@
 import UpdateAnimeBannerService from '@modules/animes/services/UpdateAnimeBannerService';
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -16,6 +17,6 @@ export default class AnimeBannerController {
       avatarFilename: file.filename,
     });
 
-    return response.json(anime);
+    return response.json(classToClass(anime));
   }
 }

@@ -17,7 +17,8 @@ export default class ListAnimesService {
   public async execute(): Promise<Anime[]> {
     const cacheKey = `animes`;
 
-    let animes = await this.cacheProvider.recover<Anime[]>(cacheKey);
+    // let animes = await this.cacheProvider.recover<Anime[]>(cacheKey);
+    let animes;
 
     if (!animes) {
       animes = await this.animesRepository.find();

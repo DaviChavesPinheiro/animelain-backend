@@ -15,7 +15,6 @@ const animeController = new AnimeController();
 const animeProfileController = new AnimeProfileController();
 const animeBannerController = new AnimeBannerController();
 
-animesRouter.use(ensureAuthenticated);
 
 animesRouter.get('/', animesController.index);
 
@@ -28,6 +27,7 @@ animesRouter.post(
       episodesAmount: Joi.number().integer().required(),
     }),
   }),
+  ensureAuthenticated,
   animesController.create,
 );
 
@@ -43,6 +43,7 @@ animesRouter.put(
       id: Joi.string().uuid().required(),
     }),
   }),
+  ensureAuthenticated,
   animeController.update,
 );
 

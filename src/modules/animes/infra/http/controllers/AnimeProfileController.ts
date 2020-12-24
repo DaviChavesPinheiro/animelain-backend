@@ -1,4 +1,5 @@
 import UpdateAnimeProfileService from '@modules/animes/services/UpdateAnimeProfileService';
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -16,6 +17,6 @@ export default class AnimeProfileController {
       avatarFilename: file.filename,
     });
 
-    return response.json(anime);
+    return response.json(classToClass(anime));
   }
 }

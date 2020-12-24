@@ -1,5 +1,6 @@
 import CreateAnimeService from '@modules/animes/services/CreateAnimeService';
 import ListAnimesService from '@modules/animes/services/ListAnimesService';
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -9,7 +10,7 @@ export default class AnimesController {
 
     const animes = await listAnimesService.execute();
 
-    return response.json(animes);
+    return response.json(classToClass(animes));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -24,6 +25,6 @@ export default class AnimesController {
       created_by_id: id,
     });
 
-    return response.json(anime);
+    return response.json(classToClass(anime));
   }
 }

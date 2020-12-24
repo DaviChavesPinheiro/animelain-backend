@@ -1,5 +1,6 @@
 import ListAnimeService from '@modules/animes/services/ListAnimeService';
 import UpdateProfileService from '@modules/animes/services/UpdateAnimeService';
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -11,7 +12,7 @@ export default class AnimesController {
 
     const anime = await listAnimeService.execute({ id });
 
-    return response.json(anime);
+    return response.json(classToClass(anime));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -27,6 +28,6 @@ export default class AnimesController {
       episodesAmount,
     });
 
-    return response.json(anime);
+    return response.json(classToClass(anime));
   }
 }

@@ -1,5 +1,7 @@
 import Character from '@modules/characters/infra/typeorm/entities/Character';
 import User from '@modules/users/infra/typeorm/entities/User';
+import uploadConfig from '@config/upload';
+import { Expose } from 'class-transformer';
 import {
   Entity,
   Column,
@@ -58,6 +60,38 @@ class Anime {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Expose({ name: 'profile_url' })
+  getProfileUrl(): string | null {
+    if (!this.profile) {
+      return null;
+    }
+
+    switch (uploadConfig.driver) {
+      case 'disk':
+        return `${process.env.APP_WEB_API}/files/uploads/${this.profile}`;
+      case 's3':
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.profile}`;
+      default:
+        return null;
+    }
+  }
+
+  @Expose({ name: 'banner_url' })
+  getBannerUrl(): string | null {
+    if (!this.banner) {
+      return null;
+    }
+
+    switch (uploadConfig.driver) {
+      case 'disk':
+        return `${process.env.APP_WEB_API}/files/uploads/${this.banner}`;
+      case 's3':
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.banner}`;
+      default:
+        return null;
+    }
+  }
 }
 
 export default Anime;

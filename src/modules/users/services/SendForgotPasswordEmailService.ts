@@ -43,7 +43,7 @@ class SendForgotPasswordEmailService {
         name: user.name,
         email: user.email,
       },
-      subject: '[AnimeLand] Recuperação de senha',
+      subject: '[AnimeLain] Recuperação de senha',
       templateData: {
         file: forgotPasswordTemplate,
         variables: {
