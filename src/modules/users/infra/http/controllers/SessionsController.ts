@@ -1,4 +1,5 @@
 import CreateSessionService from '@modules/users/services/CreateSessionService';
+import { classToClass } from 'class-transformer';
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
@@ -12,6 +13,6 @@ export default class SessionsController {
       password,
     });
 
-    return response.json({ user, token });
+    return response.json({ user: classToClass(user), token });
   }
 }
