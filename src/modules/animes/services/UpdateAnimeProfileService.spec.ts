@@ -3,19 +3,16 @@ import IStorageProvider from '@shared/container/providers/StorageProvider/models
 import AppError from '@shared/errors/AppError';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 import IAnimesRepository from '../repositories/IAnimesRepository';
-import CreateAnimeService from './CreateAnimeService';
 import UpdateAnimeProfileService from './UpdateAnimeProfileService';
 
 let fakeAnimesRepository: IAnimesRepository;
 let fakeStorageProvider: IStorageProvider;
-let createAnimeService: CreateAnimeService;
 let updateAnimeProfileService: UpdateAnimeProfileService;
 
 describe('UpdateAnimeProfileService', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
     fakeStorageProvider = new FakeStorageProvider();
-    createAnimeService = new CreateAnimeService(fakeAnimesRepository);
     updateAnimeProfileService = new UpdateAnimeProfileService(
       fakeAnimesRepository,
       fakeStorageProvider,
@@ -32,7 +29,7 @@ describe('UpdateAnimeProfileService', () => {
   });
 
   it('should be able to update an profile of an anime', async () => {
-    const anime = await createAnimeService.execute({
+    const anime = await fakeAnimesRepository.create({
       title: 'Naruto',
       description: 'description',
       episodesAmount: 10,

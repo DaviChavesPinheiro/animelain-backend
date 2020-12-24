@@ -1,3 +1,4 @@
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import Anime from '../infra/typeorm/entities/Anime';
@@ -15,6 +16,9 @@ export default class CreateAnimeService {
   constructor(
     @inject('AnimesRepository')
     private animesRepository: IAnimeRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -34,6 +38,8 @@ export default class CreateAnimeService {
     if (findAnimeWithSameTitle) {
       throw new AppError('This anime already exists');
     }
+
+    await this.cacheProvider.invalidate('animes');
 
     const anime = await this.animesRepository.create({
       title,

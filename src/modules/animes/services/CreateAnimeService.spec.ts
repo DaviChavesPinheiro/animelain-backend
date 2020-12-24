@@ -1,15 +1,21 @@
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 import CreateAnimeService from './CreateAnimeService';
 
 let fakeAnimesRepository: FakeAnimesRepository;
+let fakeCacheProvider: FakeCacheProvider;
 let createAnimeService: CreateAnimeService;
 
 describe('CreateAnimeService', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
-    createAnimeService = new CreateAnimeService(fakeAnimesRepository);
+    fakeCacheProvider = new FakeCacheProvider();
+    createAnimeService = new CreateAnimeService(
+      fakeAnimesRepository,
+      fakeCacheProvider,
+    );
   });
 
   it('should be able to create an anime', async () => {
