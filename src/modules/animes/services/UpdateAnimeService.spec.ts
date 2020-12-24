@@ -8,9 +8,10 @@ let fakeAnimesRepository: FakeAnimesRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
 let updateProfileService: UpdateProfileService;
 
-describe('UpdateProfile', () => {
+describe('UpdateAnimeService', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
+    fakeNotificationsRepository = new FakeNotificationsRepository();
 
     updateProfileService = new UpdateProfileService(
       fakeAnimesRepository,

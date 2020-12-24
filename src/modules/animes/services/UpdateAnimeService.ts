@@ -50,7 +50,7 @@ class UpdateAnimeService {
     anime.description = description;
     anime.episodesAmount = episodesAmount;
 
-    this.notificationsRepository.create({
+    await this.notificationsRepository.create({
       target_id: anime.created_by_id,
       content: `O anime ${anime.title} foi atualizado.`,
     });

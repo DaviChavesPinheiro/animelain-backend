@@ -19,7 +19,6 @@ describe('CreateCharacterService', () => {
       name: 'Luffy',
       description: 'Boing',
       age: 18,
-      animesIds: [],
     });
 
     expect(character).toHaveProperty('id');
@@ -31,46 +30,7 @@ describe('CreateCharacterService', () => {
         name: 'Naruto',
         description: 'Blah blah',
         age: -10,
-        animesIds: [],
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
-
-  // it('should not be able to create an anime with a non existing category', async () => {
-  //   await expect(
-  //     createCharacterService.execute({
-  //       title: 'Naruto',
-  //       description: 'Blah blah',
-  //       episodesAmount: 500,
-  //       created_by_id: 'some-uuid-id',
-  //       genres: [
-  //         {
-  //           score: 10,
-  //           category_id: 'some-uuid-id',
-  //         },
-  //       ],
-  //     }),
-  //   ).rejects.toBeInstanceOf(AppError);
-  // });
-
-  // it('should be able to create an anime with a existing category', async () => {
-  //   const category = await fakeCategoriesRepository.create({
-  //     name: 'some-category',
-  //   });
-
-  //   await expect(
-  //     createCharacterService.execute({
-  //       title: 'Naruto',
-  //       description: 'Blah blah',
-  //       episodesAmount: 500,
-  //       created_by_id: 'some-uuid-id',
-  //       genres: [
-  //         {
-  //           score: 10,
-  //           category_id: category.id,
-  //         },
-  //       ],
-  //     }),
-  //   ).resolves;
-  // });
 });

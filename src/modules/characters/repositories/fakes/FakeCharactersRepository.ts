@@ -22,7 +22,6 @@ export default class FakeCharactersRepository implements ICharactersRepository {
     name,
     description,
     age,
-    animes,
   }: ICreateCharacterDTO): Promise<Character> {
     const character = new Character();
 
@@ -31,7 +30,6 @@ export default class FakeCharactersRepository implements ICharactersRepository {
       name,
       description,
       age,
-      animes,
     });
 
     this.characters.push(character);

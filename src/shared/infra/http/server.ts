@@ -3,6 +3,7 @@ import '@shared/container';
 
 import express, { Response, Request, NextFunction } from 'express';
 import 'express-async-errors';
+import { errors } from 'celebrate';
 import uploadConfig from '@config/upload';
 import multer from 'multer';
 import MulterError from '@shared/errors/MulterError';
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/files', express.static(uploadConfig.tmpFolder));
 app.use(routes);
 
+app.use(errors());
 app.use(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (error: Error, request: Request, response: Response, _: NextFunction) => {
