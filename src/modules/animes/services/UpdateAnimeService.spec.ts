@@ -1,16 +1,21 @@
 import AppError from '@shared/errors/AppError';
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 
 import UpdateProfileService from './UpdateAnimeService';
 
 let fakeAnimesRepository: FakeAnimesRepository;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 let updateProfileService: UpdateProfileService;
 
 describe('UpdateProfile', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
 
-    updateProfileService = new UpdateProfileService(fakeAnimesRepository);
+    updateProfileService = new UpdateProfileService(
+      fakeAnimesRepository,
+      fakeNotificationsRepository,
+    );
   });
 
   it('should be able update the profile from an anime', async () => {

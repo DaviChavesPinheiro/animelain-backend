@@ -15,5 +15,16 @@
     "cli": {
       "migrationsDir": "./src/shared/infra/typeorm/migrations"
     }
+  },
+  {
+    "name": "mongo",
+    "type": "mongodb",
+    "host": "localhost",
+    "port": 27017,
+    "database": "anime_lain",
+    "useUnifiedTopology": true,
+    "entities": [
+      "./src/modules/**/infra/typeorm/schemas/*.ts"
+    ]
   }
 ]

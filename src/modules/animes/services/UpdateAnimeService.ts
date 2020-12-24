@@ -1,6 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
+import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import IAnimeRepository from '../repositories/IAnimesRepository';
 import Anime from '../infra/typeorm/entities/Anime';
 
@@ -16,6 +17,9 @@ class UpdateAnimeService {
   constructor(
     @inject('AnimesRepository')
     private animesRepository: IAnimeRepository,
+
+    @inject('NotificationsRepository')
+    private notificationsRepository: INotificationsRepository,
   ) {}
 
   public async execute({
@@ -45,6 +49,11 @@ class UpdateAnimeService {
     anime.title = title;
     anime.description = description;
     anime.episodesAmount = episodesAmount;
+
+    this.notificationsRepository.create({
+      target_id: anime.created_by_id,
+      content: `O anime ${anime.title} foi atualizado.`,
+    });
 
     return this.animesRepository.save(anime);
   }

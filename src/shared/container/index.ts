@@ -18,6 +18,9 @@ import ICategoriesRepository from '@modules/categories/repositories/ICategoriesR
 import CharactersRepository from '@modules/characters/infra/typeorm/repositories/CharactersRepository';
 import ICharactersRepository from '@modules/characters/repositories/ICharactersRepository';
 
+import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
+import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+
 container.registerSingleton<IAnimeRepository>(
   'AnimesRepository',
   AnimesRepository,
@@ -41,4 +44,9 @@ container.registerSingleton<ICategoriesRepository>(
 container.registerSingleton<ICharactersRepository>(
   'CharactersRepository',
   CharactersRepository,
+);
+
+container.registerSingleton<INotificationsRepository>(
+  'NotificationsRepository',
+  NotificationsRepository,
 );
