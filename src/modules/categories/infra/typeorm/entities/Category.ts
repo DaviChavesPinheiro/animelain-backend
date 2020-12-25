@@ -16,9 +16,7 @@ class Category {
   @Column({ type: 'varchar' })
   name: string;
 
-  @OneToMany(() => Genre, genre => genre.category, {
-    cascade: true,
-  })
+  @OneToMany(() => Genre, genre => genre.category)
   genres: Genre[];
 
   @CreateDateColumn()

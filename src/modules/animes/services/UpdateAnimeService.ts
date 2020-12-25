@@ -14,8 +14,11 @@ interface ICharacter {
 }
 
 interface IGenre {
+  id?: string;
   score: number;
-  category_id: string;
+  category: {
+    id: string;
+  };
 }
 
 interface IRequest {
@@ -70,36 +73,27 @@ class UpdateAnimeService {
     }
 
     if (genres) {
-      const categoriesIdsToUpdate = genres.map(genre => genre.category_id);
+      const categoriesIdsToAdd = genres.map(genre => genre.category.id);
 
       const existentCategories = await this.categoriesRepository.findAllById(
-        categoriesIdsToUpdate,
+        categoriesIdsToAdd,
       );
 
       const existentCategoriesIds = existentCategories.map(
         category => category.id,
       );
 
-      const checkInexistentCategoriesIds = categoriesIdsToUpdate.filter(
-        id => !existentCategoriesIds.includes(id),
-      );
+      const validGenres = genres.filter(genre => {
+        return existentCategoriesIds.includes(genre.category.id);
+      });
 
-      if (checkInexistentCategoriesIds.length) {
-        throw new AppError(
-          `Could not find category ${checkInexistentCategoriesIds[0]}`,
-        );
-      }
-
-      anime.genres = genres.map(genre => {
-        const genreToAdd = new Genre();
-        const categoryToAdd = new Category();
-        categoryToAdd.id = genre.category_id;
-        Object.assign(genreToAdd, {
-          score: genre.score,
-          category: categoryToAdd,
+      anime.genres = validGenres.map(genre => {
+        const category = new Category();
+        category.id = genre.category.id;
+        return Object.assign(new Genre(), {
+          ...genre,
+          category,
         });
-
-        return genreToAdd;
       });
     }
 

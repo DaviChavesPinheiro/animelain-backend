@@ -40,7 +40,13 @@ animesRouter.put(
       genres: Joi.array().items(
         Joi.object()
           .keys({
-            id: Joi.string().uuid().required(),
+            id: Joi.string().uuid(),
+            score: Joi.number().integer().required(),
+            category: Joi.object()
+              .keys({
+                id: Joi.string().uuid().required(),
+              })
+              .unknown(),
           })
           .unknown(),
       ),
