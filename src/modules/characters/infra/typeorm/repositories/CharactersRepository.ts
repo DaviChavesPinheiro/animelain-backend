@@ -10,6 +10,7 @@ export default class CharactersRepository implements ICharactersRepository {
     this.ormRepository = getRepository(Character);
   }
 
+
   public async find(): Promise<Character[]> {
     return this.ormRepository.find();
   }
@@ -36,5 +37,16 @@ export default class CharactersRepository implements ICharactersRepository {
     await this.ormRepository.save(character);
 
     return character;
+  }
+
+  public async findById(id: string): Promise<Character | undefined> {
+    const character = await this.ormRepository.findOne({
+      where: { id },
+    });
+    return character;
+  }
+
+  public async save(data: Character): Promise<Character> {
+    return this.ormRepository.save(data);
   }
 }

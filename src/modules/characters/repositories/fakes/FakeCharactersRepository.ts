@@ -36,4 +36,20 @@ export default class FakeCharactersRepository implements ICharactersRepository {
 
     return character;
   }
+
+  public async findById(id: string): Promise<Character | undefined> {
+    const characterWithSameId = this.characters.find(character => character.id === id);
+
+    return characterWithSameId;
+  }
+
+  public async save(character: Character): Promise<Character> {
+    const findIndex = this.characters.findIndex(
+      findCharacter => findCharacter.id === character.id,
+    );
+
+    this.characters[findIndex] = character;
+
+    return character;
+  }
 }
