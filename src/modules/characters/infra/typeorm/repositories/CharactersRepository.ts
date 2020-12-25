@@ -11,9 +11,7 @@ export default class CharactersRepository implements ICharactersRepository {
   }
 
   public async find(): Promise<Character[]> {
-    return this.ormRepository.find({
-      relations: ['animes'],
-    });
+    return this.ormRepository.find();
   }
 
   public async findByName(name: string): Promise<Character | undefined> {
