@@ -1,12 +1,14 @@
 import AppError from '@shared/errors/AppError';
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
+import FakeCategoriesRepository from '@modules/categories/repositories/fakes/FakeCategoriesRepository';
+import FakeCharactersRepository from '@modules/characters/repositories/fakes/FakeCharactersRepository';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 
 import UpdateProfileService from './UpdateAnimeService';
-import FakeCategoriesRepository from '@modules/categories/repositories/fakes/FakeCategoriesRepository';
 
 let fakeAnimesRepository: FakeAnimesRepository;
 let fakeCategoriesRepository: FakeCategoriesRepository;
+let fakeCharactersRepository: FakeCharactersRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
 let updateProfileService: UpdateProfileService;
 
@@ -14,12 +16,14 @@ describe('UpdateAnimeService', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
     fakeCategoriesRepository = new FakeCategoriesRepository();
+    fakeCharactersRepository = new FakeCharactersRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
 
     updateProfileService = new UpdateProfileService(
       fakeAnimesRepository,
       fakeNotificationsRepository,
-      fakeCategoriesRepository
+      fakeCategoriesRepository,
+      fakeCharactersRepository,
     );
   });
 
@@ -123,8 +127,8 @@ describe('UpdateAnimeService', () => {
     });
 
     const category = await fakeCategoriesRepository.create({
-      name: 'Seinen'
-    })
+      name: 'Seinen',
+    });
 
     const updatedAnime = await updateProfileService.execute({
       anime_id: anime.id,
@@ -135,8 +139,8 @@ describe('UpdateAnimeService', () => {
         {
           score: 3,
           category_id: category.id,
-        }
-      ]
+        },
+      ],
     });
 
     expect(updatedAnime.genres).toHaveLength(1);
@@ -163,10 +167,9 @@ describe('UpdateAnimeService', () => {
           {
             score: 3,
             category_id: 'non-existent-catogory-id',
-          }
-        ]
-      })
-    ).rejects.toBeInstanceOf(AppError)
-
+          },
+        ],
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });

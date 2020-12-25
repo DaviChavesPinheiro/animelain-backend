@@ -15,7 +15,6 @@ const animeController = new AnimeController();
 const animeProfileController = new AnimeProfileController();
 const animeBannerController = new AnimeBannerController();
 
-
 animesRouter.get('/', animesController.index);
 
 animesRouter.post(
@@ -38,7 +37,20 @@ animesRouter.put(
       title: Joi.string().required(),
       description: Joi.string().required(),
       episodesAmount: Joi.number().integer().required(),
-      genres: Joi.array(),
+      genres: Joi.array().items(
+        Joi.object()
+          .keys({
+            id: Joi.string().uuid().required(),
+          })
+          .unknown(),
+      ),
+      characters: Joi.array().items(
+        Joi.object()
+          .keys({
+            id: Joi.string().uuid().required(),
+          })
+          .unknown(),
+      ),
     }),
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().uuid().required(),

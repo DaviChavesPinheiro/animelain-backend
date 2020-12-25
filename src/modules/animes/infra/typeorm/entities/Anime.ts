@@ -48,7 +48,7 @@ class Anime {
   })
   genres: Genre[];
 
-  @ManyToMany(() => Character, character => character.animes, { cascade: true })
+  @ManyToMany(() => Character, character => character.animes)
   @JoinTable()
   characters: Character[];
 

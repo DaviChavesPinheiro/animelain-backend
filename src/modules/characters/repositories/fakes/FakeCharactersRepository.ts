@@ -38,7 +38,9 @@ export default class FakeCharactersRepository implements ICharactersRepository {
   }
 
   public async findById(id: string): Promise<Character | undefined> {
-    const characterWithSameId = this.characters.find(character => character.id === id);
+    const characterWithSameId = this.characters.find(
+      character => character.id === id,
+    );
 
     return characterWithSameId;
   }
@@ -51,5 +53,13 @@ export default class FakeCharactersRepository implements ICharactersRepository {
     this.characters[findIndex] = character;
 
     return character;
+  }
+
+  public async findAllById(ids: string[]): Promise<Character[]> {
+    const existentCharacters = this.characters.filter(character =>
+      ids.includes(character.id),
+    );
+
+    return existentCharacters;
   }
 }

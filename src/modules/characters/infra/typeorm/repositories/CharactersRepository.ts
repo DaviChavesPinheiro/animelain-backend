@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, In, Repository } from 'typeorm';
 import ICreateCharacterDTO from '@modules/characters/dtos/ICreateCharacterDTO';
 import ICharactersRepository from '@modules/characters/repositories/ICharactersRepository';
 import Character from '../entities/Character';
@@ -9,7 +9,6 @@ export default class CharactersRepository implements ICharactersRepository {
   constructor() {
     this.ormRepository = getRepository(Character);
   }
-
 
   public async find(): Promise<Character[]> {
     return this.ormRepository.find();
@@ -48,5 +47,15 @@ export default class CharactersRepository implements ICharactersRepository {
 
   public async save(data: Character): Promise<Character> {
     return this.ormRepository.save(data);
+  }
+
+  public async findAllById(ids: string[]): Promise<Character[]> {
+    const existentCharacters = await this.ormRepository.find({
+      where: {
+        id: In(ids),
+      },
+    });
+
+    return existentCharacters;
   }
 }

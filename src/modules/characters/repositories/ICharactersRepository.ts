@@ -7,4 +7,5 @@ export default interface ICharactersRepository {
   findById(id: string): Promise<Character | undefined>;
   create(data: ICreateCharacterDTO): Promise<Character>;
   save(data: Character): Promise<Character>;
+  findAllById(ids: string[]): Promise<Character[]>;
 }
