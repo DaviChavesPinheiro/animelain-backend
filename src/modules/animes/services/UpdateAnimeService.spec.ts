@@ -3,19 +3,23 @@ import FakeNotificationsRepository from '@modules/notifications/repositories/fak
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 
 import UpdateProfileService from './UpdateAnimeService';
+import FakeCategoriesRepository from '@modules/categories/repositories/fakes/FakeCategoriesRepository';
 
 let fakeAnimesRepository: FakeAnimesRepository;
+let fakeCategoriesRepository: FakeCategoriesRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
 let updateProfileService: UpdateProfileService;
 
 describe('UpdateAnimeService', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
+    fakeCategoriesRepository = new FakeCategoriesRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
 
     updateProfileService = new UpdateProfileService(
       fakeAnimesRepository,
       fakeNotificationsRepository,
+      fakeCategoriesRepository
     );
   });
 
@@ -108,5 +112,61 @@ describe('UpdateAnimeService', () => {
         episodesAmount: 500,
       }),
     ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should be able update the genres in profile of an anime', async () => {
+    const anime = await fakeAnimesRepository.create({
+      title: 'Naruto',
+      description: 'descriptionnn',
+      episodesAmount: 10,
+      created_by_id: 'some_id',
+    });
+
+    const category = await fakeCategoriesRepository.create({
+      name: 'Seinen'
+    })
+
+    const updatedAnime = await updateProfileService.execute({
+      anime_id: anime.id,
+      title: 'Naruto2',
+      description: 'descriptionnn',
+      episodesAmount: 10,
+      genres: [
+        {
+          score: 3,
+          category_id: category.id,
+        }
+      ]
+    });
+
+    expect(updatedAnime.genres).toHaveLength(1);
+    expect(updatedAnime.genres[0]).toHaveProperty('id');
+    expect(updatedAnime.genres[0]).toHaveProperty('category_id', category.id);
+    expect(updatedAnime.genres[0]).toHaveProperty('score', 3);
+  });
+
+  it('should not be able update a non existent genre in profile of an anime', async () => {
+    const anime = await fakeAnimesRepository.create({
+      title: 'Naruto',
+      description: 'descriptionnn',
+      episodesAmount: 10,
+      created_by_id: 'some_id',
+    });
+
+    await expect(
+      updateProfileService.execute({
+        anime_id: anime.id,
+        title: 'Naruto2',
+        description: 'descriptionnn',
+        episodesAmount: 10,
+        genres: [
+          {
+            score: 3,
+            category_id: 'non-existent-catogory-id',
+          }
+        ]
+      })
+    ).rejects.toBeInstanceOf(AppError)
+
   });
 });

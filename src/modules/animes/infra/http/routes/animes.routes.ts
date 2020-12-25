@@ -38,6 +38,7 @@ animesRouter.put(
       title: Joi.string().required(),
       description: Joi.string().required(),
       episodesAmount: Joi.number().integer().required(),
+      genres: Joi.array(),
     }),
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().uuid().required(),

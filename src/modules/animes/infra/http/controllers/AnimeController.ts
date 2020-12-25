@@ -16,7 +16,7 @@ export default class AnimesController {
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { title, description, episodesAmount } = request.body;
+    const { title, description, episodesAmount, genres } = request.body;
     const { id } = request.params;
 
     const updateProfileService = container.resolve(UpdateProfileService);
@@ -26,6 +26,7 @@ export default class AnimesController {
       title,
       description,
       episodesAmount,
+      genres,
     });
 
     return response.json(classToClass(anime));
