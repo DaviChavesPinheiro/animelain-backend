@@ -1,9 +1,7 @@
 import AppError from '@shared/errors/AppError';
-import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeCharactersRepository from '../repositories/fakes/FakeCharactersRepository';
 
 import UpdateCharacterService from './UpdateCharacterService';
-import FakeCategoriesRepository from '@modules/categories/repositories/fakes/FakeCategoriesRepository';
 
 let fakeCharactersRepository: FakeCharactersRepository;
 let updateCharacterService: UpdateCharacterService;

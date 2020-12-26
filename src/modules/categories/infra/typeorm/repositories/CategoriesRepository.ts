@@ -22,6 +22,13 @@ export default class CategoriesRepository implements ICategoriesRepository {
     return findedCategory;
   }
 
+  public async findById(id: string): Promise<Category | undefined> {
+    const category = await this.ormRepository.findOne({
+      where: { id },
+    });
+    return category;
+  }
+
   public async create({ name }: ICreateCategoryDTO): Promise<Category> {
     const category = this.ormRepository.create({
       name,
@@ -40,5 +47,9 @@ export default class CategoriesRepository implements ICategoriesRepository {
     });
 
     return existentCategories;
+  }
+
+  public async save(data: Category): Promise<Category> {
+    return this.ormRepository.save(data);
   }
 }

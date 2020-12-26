@@ -2,11 +2,11 @@ import { Router } from 'express';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import uploadConfig from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
+import multer from 'multer';
 import CharactersController from '../controllers/CharactersController';
 import CharacterController from '../controllers/CharacterController';
 import CharacterProfileController from '../controllers/CharacterProfileController';
 import CharacterBannerController from '../controllers/CharacterBannerController';
-import multer from 'multer';
 
 const charactersRouter = Router();
 const upload = multer(uploadConfig.multer);

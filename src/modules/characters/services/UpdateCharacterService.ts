@@ -16,7 +16,6 @@ class UpdateCharacterService {
   constructor(
     @inject('CharactersRepository')
     private charactersRepository: ICharactersRepository,
-
   ) {}
 
   public async execute({
@@ -39,10 +38,12 @@ class UpdateCharacterService {
       name,
     );
 
-    if (findCharacterWithSameName && findCharacterWithSameName.id !== character_id) {
+    if (
+      findCharacterWithSameName &&
+      findCharacterWithSameName.id !== character_id
+    ) {
       throw new AppError('This character already exists');
     }
-
 
     character.name = name;
     character.description = description;
