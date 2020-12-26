@@ -1,6 +1,7 @@
-import { getRepository, In, Repository } from 'typeorm';
+import { getRepository, ILike, In, Repository } from 'typeorm';
 import ICreateCategoryDTO from '@modules/categories/dtos/ICreateCategoryDTO';
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
+import IFindCategoryDTO from '@modules/categories/dtos/IFindCategoryDTO';
 import Category from '../entities/Category';
 
 export default class CategoriesRepository implements ICategoriesRepository {
@@ -10,8 +11,12 @@ export default class CategoriesRepository implements ICategoriesRepository {
     this.ormRepository = getRepository(Category);
   }
 
-  public async find(): Promise<Category[]> {
-    return this.ormRepository.find();
+  public async find({ search }: IFindCategoryDTO): Promise<Category[]> {
+    return this.ormRepository.find({
+      where: {
+        ...(search && { name: ILike(`%${search}%`) }),
+      },
+    });
   }
 
   public async findByName(name: string): Promise<Category | undefined> {

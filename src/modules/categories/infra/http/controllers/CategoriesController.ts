@@ -5,9 +5,13 @@ import { container } from 'tsyringe';
 
 export default class CategoriesController {
   public async index(request: Request, response: Response): Promise<Response> {
+    const { search } = request.query;
+
     const listCategoriesService = container.resolve(ListCategoriesService);
 
-    const categories = await listCategoriesService.execute();
+    const categories = await listCategoriesService.execute({
+      search: search as string,
+    });
 
     return response.json(categories);
   }

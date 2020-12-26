@@ -8,7 +8,15 @@ const categoriesRouter = Router();
 const categoriesController = new CategoriesController();
 const categoryController = new CategoryController();
 
-categoriesRouter.get('/', categoriesController.index);
+categoriesRouter.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: Joi.object().keys({
+      search: Joi.string().allow('').lowercase().max(20),
+    }),
+  }),
+  categoriesController.index,
+);
 
 categoriesRouter.post(
   '/',

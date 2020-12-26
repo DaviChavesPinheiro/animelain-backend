@@ -33,31 +33,33 @@ animesRouter.post(
 animesRouter.put(
   '/:id',
   celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      title: Joi.string().required(),
-      description: Joi.string().required(),
-      episodesAmount: Joi.number().integer().required(),
-      genres: Joi.array().items(
-        Joi.object()
-          .keys({
-            id: Joi.string().uuid(),
-            score: Joi.number().integer().required(),
-            category: Joi.object()
-              .keys({
-                id: Joi.string().uuid().required(),
-              })
-              .unknown(),
-          })
-          .unknown(),
-      ),
-      characters: Joi.array().items(
-        Joi.object()
-          .keys({
-            id: Joi.string().uuid().required(),
-          })
-          .unknown(),
-      ),
-    }),
+    [Segments.BODY]: Joi.object()
+      .keys({
+        title: Joi.string().required(),
+        description: Joi.string().required(),
+        episodesAmount: Joi.number().integer().required(),
+        genres: Joi.array().items(
+          Joi.object()
+            .keys({
+              id: Joi.string().uuid(),
+              score: Joi.number().integer().required(),
+              category: Joi.object()
+                .keys({
+                  id: Joi.string().uuid().required(),
+                })
+                .unknown(),
+            })
+            .unknown(),
+        ),
+        characters: Joi.array().items(
+          Joi.object()
+            .keys({
+              id: Joi.string().uuid().required(),
+            })
+            .unknown(),
+        ),
+      })
+      .unknown(),
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().uuid().required(),
     }),
