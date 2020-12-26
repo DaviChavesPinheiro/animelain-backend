@@ -17,7 +17,15 @@ const characterBannerController = new CharacterBannerController();
 
 charactersRouter.use(ensureAuthenticated);
 
-charactersRouter.get('/', charactersController.index);
+charactersRouter.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: Joi.object().keys({
+      search: Joi.string().allow('').lowercase().max(20),
+    }),
+  }),
+  charactersController.index,
+);
 
 charactersRouter.post(
   '/',

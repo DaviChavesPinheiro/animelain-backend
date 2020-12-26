@@ -1,6 +1,7 @@
-import { getRepository, In, Repository } from 'typeorm';
+import { getRepository, ILike, In, Repository } from 'typeorm';
 import ICreateCharacterDTO from '@modules/characters/dtos/ICreateCharacterDTO';
 import ICharactersRepository from '@modules/characters/repositories/ICharactersRepository';
+import IFindCharacterDTO from '@modules/characters/dtos/IFindCharacterDTO';
 import Character from '../entities/Character';
 
 export default class CharactersRepository implements ICharactersRepository {
@@ -10,8 +11,12 @@ export default class CharactersRepository implements ICharactersRepository {
     this.ormRepository = getRepository(Character);
   }
 
-  public async find(): Promise<Character[]> {
-    return this.ormRepository.find();
+  public async find({ search }: IFindCharacterDTO): Promise<Character[]> {
+    return this.ormRepository.find({
+      where: {
+        ...(search && { name: ILike(`%${search}%`) }),
+      },
+    });
   }
 
   public async findByName(name: string): Promise<Character | undefined> {
