@@ -1,4 +1,4 @@
-import Anime from '@modules/animes/infra/typeorm/entities/Anime';
+import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -13,6 +13,9 @@ export default class AddFavoriteAnimeService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('AnimesRepository')
+    private animesRepository: IAnimeRepository,
   ) {}
 
   public async execute({ user_id, anime_id }: IRequest): Promise<void> {
@@ -22,20 +25,24 @@ export default class AddFavoriteAnimeService {
       throw new AppError('User does not exist');
     }
 
+    const anime = await this.animesRepository.findById(anime_id);
+
+    if (!anime) {
+      throw new AppError('Anime does not exist');
+    }
+
     const checkIfAnimeIsAlreadyFavorited = user.favorite_animes?.find(
-      anime => anime.id === anime_id,
+      favoriteAnime => favoriteAnime.id === anime_id,
     );
 
-    if (user.favorite_animes === undefined) {
-      user.favorite_animes = [];
+    if (checkIfAnimeIsAlreadyFavorited) {
+      throw new AppError(
+        `${checkIfAnimeIsAlreadyFavorited.title} is already favorited`,
+      );
     }
 
-    if (!checkIfAnimeIsAlreadyFavorited) {
-      const anime = new Anime();
-      anime.id = anime_id;
-      user.favorite_animes = [...user?.favorite_animes, anime];
+    user.favorite_animes = [...(user.favorite_animes || []), anime];
 
-      this.usersRepository.save(user);
-    }
+    this.usersRepository.save(user);
   }
 }

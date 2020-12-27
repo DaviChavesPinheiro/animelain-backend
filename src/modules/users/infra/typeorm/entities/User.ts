@@ -30,7 +30,7 @@ class User {
   avatar: string;
 
   @ManyToMany(() => Anime, anime => anime.favorite_users, {
-    cascade: true,
+    cascade: ['insert'],
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
