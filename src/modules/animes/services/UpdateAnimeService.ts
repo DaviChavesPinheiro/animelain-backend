@@ -88,11 +88,11 @@ class UpdateAnimeService {
       });
 
       anime.genres = validGenres.map(genre => {
-        const category = new Category();
-        category.id = genre.category.id;
         return Object.assign(new Genre(), {
           ...genre,
-          category,
+          category: existentCategories.find(
+            category => category.id === genre.category.id,
+          ),
         });
       });
     }
