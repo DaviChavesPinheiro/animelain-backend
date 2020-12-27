@@ -39,7 +39,7 @@ export default class AddFavoriteAnimeService {
       throw new AppError(`This anime is not favorited`);
     }
 
-    user.favorite_animes = user.favorite_animes?.filter(
+    user.favorite_animes = user.favorite_animes.filter(
       favoriteAnime => favoriteAnime.id !== anime_id,
     );
 
