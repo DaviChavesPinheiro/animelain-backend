@@ -15,11 +15,17 @@ class Genre {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Category, category => category.genres)
+  @ManyToOne(() => Category, category => category.genres, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'category_id' })
   category: Category;
 
-  @ManyToOne(() => Anime, anime => anime.genres)
+  @ManyToOne(() => Anime, anime => anime.genres, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'anime_id' })
   anime: Anime;
 
