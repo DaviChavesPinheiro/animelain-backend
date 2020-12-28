@@ -1,5 +1,5 @@
-import IFindCategoryDTO from '@modules/categories/dtos/IFindCategoryDTO';
 import ICreateCharacterDTO from '@modules/characters/dtos/ICreateCharacterDTO';
+import IFindCharacterDTO from '@modules/characters/dtos/IFindCharacterDTO';
 import Character from '@modules/characters/infra/typeorm/entities/Character';
 import ICharactersRepository from '@modules/characters/repositories/ICharactersRepository';
 import { v4 as uuid } from 'uuid';
@@ -8,7 +8,7 @@ export default class FakeCharactersRepository implements ICharactersRepository {
   private characters: Character[] = [];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async find({ search }: IFindCategoryDTO): Promise<Character[]> {
+  public async find({ search }: IFindCharacterDTO): Promise<Character[]> {
     return this.characters;
   }
 
@@ -63,5 +63,13 @@ export default class FakeCharactersRepository implements ICharactersRepository {
     );
 
     return existentCharacters;
+  }
+
+  public async deleteById(id: string): Promise<void> {
+    const charactersFiltered = this.characters.filter(
+      character => character.id !== id,
+    );
+
+    this.characters = charactersFiltered;
   }
 }

@@ -39,6 +39,17 @@ charactersRouter.post(
   charactersController.create,
 );
 
+charactersRouter.delete(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      id: Joi.string().uuid().required(),
+    }),
+  }),
+  ensureAuthenticated,
+  charactersController.delete,
+);
+
 charactersRouter.put(
   '/:id',
   celebrate({

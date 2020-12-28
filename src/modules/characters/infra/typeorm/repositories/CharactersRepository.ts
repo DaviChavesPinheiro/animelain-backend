@@ -63,4 +63,8 @@ export default class CharactersRepository implements ICharactersRepository {
 
     return existentCharacters;
   }
+
+  public async deleteById(id: string): Promise<void> {
+    await this.ormRepository.delete(id);
+  }
 }

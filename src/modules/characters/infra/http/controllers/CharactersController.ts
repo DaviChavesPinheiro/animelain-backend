@@ -1,4 +1,5 @@
 import CreateCharacterService from '@modules/characters/services/CreateCharacterService';
+import DeleteCharacterService from '@modules/characters/services/DeleteCharacterService';
 import ListCharactersService from '@modules/characters/services/ListCharactersService';
 import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
@@ -28,5 +29,16 @@ export default class AnimesController {
     });
 
     return response.json(classToClass(character));
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const deleteCharacterService = container.resolve(DeleteCharacterService);
+
+    await deleteCharacterService.execute({
+      id,
+    });
+
+    return response.status(204).json();
   }
 }

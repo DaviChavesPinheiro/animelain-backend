@@ -9,4 +9,5 @@ export default interface ICharactersRepository {
   create(data: ICreateCharacterDTO): Promise<Character>;
   save(data: Character): Promise<Character>;
   findAllById(ids: string[]): Promise<Character[]>;
+  deleteById(id: string): Promise<void>;
 }
