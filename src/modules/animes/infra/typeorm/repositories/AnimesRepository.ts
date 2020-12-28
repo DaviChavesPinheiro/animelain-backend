@@ -49,4 +49,8 @@ export default class AnimesRepository implements IAnimeRepository {
   public async save(data: Anime): Promise<Anime> {
     return this.ormRepository.save(data);
   }
+
+  public async deleteById(id: string): Promise<void> {
+    await this.ormRepository.delete(id);
+  }
 }

@@ -58,4 +58,10 @@ export default class FakeAnimesRepository implements IAnimeRepository {
 
     return mappedAnime;
   }
+
+  public async deleteById(id: string): Promise<void> {
+    const animesFiltered = this.animes.filter(anime => anime.id !== id);
+
+    this.animes = animesFiltered;
+  }
 }

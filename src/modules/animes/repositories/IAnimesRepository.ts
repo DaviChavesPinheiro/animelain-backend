@@ -7,4 +7,5 @@ export default interface IAnimeRepository {
   find(): Promise<Anime[]>;
   create(data: ICreateAnimeDTO): Promise<Anime>;
   save(data: Anime): Promise<Anime>;
+  deleteById(id: string): Promise<void>;
 }

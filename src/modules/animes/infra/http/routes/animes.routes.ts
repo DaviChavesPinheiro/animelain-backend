@@ -62,6 +62,17 @@ animesRouter.put(
   animeController.update,
 );
 
+animesRouter.delete(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      id: Joi.string().uuid().required(),
+    }),
+  }),
+  ensureAuthenticated,
+  animesController.delete,
+);
+
 animesRouter.get(
   '/:id',
   celebrate({

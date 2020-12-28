@@ -1,4 +1,5 @@
 import CreateAnimeService from '@modules/animes/services/CreateAnimeService';
+import DeleteAnimeService from '@modules/animes/services/DeleteAnimeService';
 import ListAnimesService from '@modules/animes/services/ListAnimesService';
 import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
@@ -26,5 +27,16 @@ export default class AnimesController {
     });
 
     return response.json(classToClass(anime));
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const deleteAnimeService = container.resolve(DeleteAnimeService);
+
+    await deleteAnimeService.execute({
+      id,
+    });
+
+    return response.status(204).json();
   }
 }
