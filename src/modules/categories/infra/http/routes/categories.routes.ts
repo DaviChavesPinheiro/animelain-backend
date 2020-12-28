@@ -29,6 +29,17 @@ categoriesRouter.post(
   categoriesController.create,
 );
 
+categoriesRouter.delete(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      id: Joi.string().uuid().required(),
+    }),
+  }),
+  ensureAuthenticated,
+  categoriesController.delete,
+);
+
 categoriesRouter.get(
   '/:id',
   celebrate({

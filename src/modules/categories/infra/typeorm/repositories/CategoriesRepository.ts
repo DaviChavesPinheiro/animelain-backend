@@ -57,4 +57,8 @@ export default class CategoriesRepository implements ICategoriesRepository {
   public async save(data: Category): Promise<Category> {
     return this.ormRepository.save(data);
   }
+
+  public async deleteById(id: string): Promise<void> {
+    await this.ormRepository.delete(id);
+  }
 }

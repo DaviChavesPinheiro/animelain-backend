@@ -9,4 +9,5 @@ export default interface ICategoriesRepository {
   create(data: ICreateCategoryDTO): Promise<Category>;
   save(data: Category): Promise<Category>;
   findAllById(ids: string[]): Promise<Category[]>;
+  deleteById(id: string): Promise<void>;
 }

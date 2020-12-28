@@ -1,4 +1,5 @@
 import CreateCategoryService from '@modules/categories/services/CreateCategoryService';
+import DeleteCategoryService from '@modules/categories/services/DeleteCategoryService';
 import ListCategoriesService from '@modules/categories/services/ListCategoriesService';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
@@ -25,5 +26,16 @@ export default class CategoriesController {
     });
 
     return response.json(category);
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const deleteCategoryService = container.resolve(DeleteCategoryService);
+
+    await deleteCategoryService.execute({
+      category_id: id,
+    });
+
+    return response.status(204).json();
   }
 }

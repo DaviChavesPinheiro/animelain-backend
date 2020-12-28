@@ -58,4 +58,12 @@ export default class FakeCategoriesRepository implements ICategoriesRepository {
 
     return category;
   }
+
+  public async deleteById(id: string): Promise<void> {
+    const categoriesFiltered = this.categories.filter(
+      category => category.id !== id,
+    );
+
+    this.categories = categoriesFiltered;
+  }
 }
