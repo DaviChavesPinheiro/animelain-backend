@@ -45,7 +45,7 @@ class CreateSessionService {
 
     const token = sign(
       {
-        isAdmin: false,
+        isAdmin: user.isAdmin,
       },
       authConfig.jwt.secret,
       {

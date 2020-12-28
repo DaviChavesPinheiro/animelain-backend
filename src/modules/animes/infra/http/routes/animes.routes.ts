@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+import ensureAdmin from '@modules/users/infra/http/middlewares/ensureAdmin';
 import uploadConfig from '@config/upload';
 import multer from 'multer';
 import { celebrate, Segments, Joi } from 'celebrate';
@@ -27,6 +28,7 @@ animesRouter.post(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   animesController.create,
 );
 
@@ -59,6 +61,7 @@ animesRouter.put(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   animeController.update,
 );
 
@@ -70,6 +73,7 @@ animesRouter.delete(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   animesController.delete,
 );
 
@@ -91,6 +95,7 @@ animesRouter.patch(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   upload.single('avatar'),
   animeProfileController.update,
 );
@@ -103,6 +108,7 @@ animesRouter.patch(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   upload.single('avatar'),
   animeBannerController.update,
 );

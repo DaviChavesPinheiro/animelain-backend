@@ -37,6 +37,9 @@ class User {
   @JoinTable({ name: 'favorite_animes' })
   favorite_animes: Anime[];
 
+  @Column('boolean', { default: false })
+  isAdmin: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 

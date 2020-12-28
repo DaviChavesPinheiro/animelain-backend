@@ -3,6 +3,7 @@ import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAut
 import uploadConfig from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
 import multer from 'multer';
+import ensureAdmin from '@modules/users/infra/http/middlewares/ensureAdmin';
 import CharactersController from '../controllers/CharactersController';
 import CharacterController from '../controllers/CharacterController';
 import CharacterProfileController from '../controllers/CharacterProfileController';
@@ -14,8 +15,6 @@ const charactersController = new CharactersController();
 const characterController = new CharacterController();
 const characterProfileController = new CharacterProfileController();
 const characterBannerController = new CharacterBannerController();
-
-charactersRouter.use(ensureAuthenticated);
 
 charactersRouter.get(
   '/',
@@ -36,6 +35,8 @@ charactersRouter.post(
       age: Joi.number().integer().required(),
     }),
   }),
+  ensureAuthenticated,
+  ensureAdmin,
   charactersController.create,
 );
 
@@ -47,6 +48,7 @@ charactersRouter.delete(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   charactersController.delete,
 );
 
@@ -63,6 +65,7 @@ charactersRouter.put(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   characterController.update,
 );
 
@@ -84,6 +87,7 @@ charactersRouter.patch(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   upload.single('avatar'),
   characterProfileController.update,
 );
@@ -96,6 +100,7 @@ charactersRouter.patch(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   upload.single('avatar'),
   characterBannerController.update,
 );

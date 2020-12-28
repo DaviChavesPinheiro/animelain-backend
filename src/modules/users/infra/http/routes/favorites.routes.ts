@@ -8,8 +8,6 @@ import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 const favoriteRouter = Router();
 const profileController = new FavoritesController();
 
-favoriteRouter.use(ensureAuthenticated);
-
 favoriteRouter.post(
   '/animes/add/:id',
   celebrate({
@@ -17,6 +15,7 @@ favoriteRouter.post(
       id: Joi.string().uuid().required(),
     }),
   }),
+  ensureAuthenticated,
   profileController.create,
 );
 favoriteRouter.delete(
@@ -26,6 +25,7 @@ favoriteRouter.delete(
       id: Joi.string().uuid().required(),
     }),
   }),
+  ensureAuthenticated,
   profileController.remove,
 );
 

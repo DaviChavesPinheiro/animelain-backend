@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import { celebrate, Segments, Joi } from 'celebrate';
+import ensureAdmin from '@modules/users/infra/http/middlewares/ensureAdmin';
 import CategoriesController from '../controllers/CategoriesController';
 import CategoryController from '../controllers/CategoryController';
 
@@ -26,6 +27,7 @@ categoriesRouter.post(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   categoriesController.create,
 );
 
@@ -37,6 +39,7 @@ categoriesRouter.delete(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   categoriesController.delete,
 );
 
@@ -61,6 +64,7 @@ categoriesRouter.put(
     }),
   }),
   ensureAuthenticated,
+  ensureAdmin,
   categoryController.update,
 );
 
