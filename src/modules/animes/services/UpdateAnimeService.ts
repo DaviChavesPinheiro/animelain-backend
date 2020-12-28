@@ -79,6 +79,19 @@ class UpdateAnimeService {
         categoriesIdsToAdd,
       );
 
+      const nonexistentCategoriesIds = categoriesIdsToAdd.filter(
+        categoryIdToAdd =>
+          !existentCategories.find(
+            existentCategory => existentCategory.id === categoryIdToAdd,
+          ),
+      );
+
+      if (nonexistentCategoriesIds.length) {
+        throw new AppError(
+          `The category ${nonexistentCategoriesIds[0]} does not exist`,
+        );
+      }
+
       const existentCategoriesIds = existentCategories.map(
         category => category.id,
       );
@@ -103,6 +116,19 @@ class UpdateAnimeService {
       const existentCharacters = await this.charactersRepository.findAllById(
         charactersIdsToAdd,
       );
+
+      const nonexistentCharactersIds = charactersIdsToAdd.filter(
+        characterIdToAdd =>
+          !existentCharacters.find(
+            existentCharacter => existentCharacter.id === characterIdToAdd,
+          ),
+      );
+
+      if (nonexistentCharactersIds.length) {
+        throw new AppError(
+          `The character ${nonexistentCharactersIds[0]} does not exist`,
+        );
+      }
 
       anime.characters = existentCharacters;
     }

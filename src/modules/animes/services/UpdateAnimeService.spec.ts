@@ -27,27 +27,7 @@ describe('UpdateAnimeService', () => {
     );
   });
 
-  it('should be able update the profile from an anime', async () => {
-    const anime = await fakeAnimesRepository.create({
-      title: 'Naruto',
-      description: 'fghj',
-      episodesAmount: 10,
-      created_by_id: 'some_id',
-    });
-
-    const updatedAnime = await updateProfileService.execute({
-      anime_id: anime.id,
-      title: 'Naruto 2',
-      description: 'updated description',
-      episodesAmount: 700,
-    });
-
-    expect(updatedAnime.title).toBe('Naruto 2');
-    expect(updatedAnime.description).toBe('updated description');
-    expect(updatedAnime.episodesAmount).toBe(700);
-  });
-
-  it('should not be able update the profile from non-existing anime', async () => {
+  it('should not be able update a non-existing anime', async () => {
     expect(
       updateProfileService.execute({
         anime_id: 'some-non-existent-id',
@@ -76,23 +56,6 @@ describe('UpdateAnimeService', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should be able to update an anime to the same title', async () => {
-    const anime = await fakeAnimesRepository.create({
-      title: 'Naruto',
-      description: 'fghj',
-      episodesAmount: 10,
-      created_by_id: 'some_id',
-    });
-
-    const updatedAnime = await updateProfileService.execute({
-      anime_id: anime.id,
-      title: 'Naruto',
-      description: 'updated description',
-      episodesAmount: 700,
-    });
-
-    expect(updatedAnime.title).toBe('Naruto');
-  });
   it('should not be able to update an anime to a title that already exist in another anime', async () => {
     const anime1 = await fakeAnimesRepository.create({
       title: 'Naruto',
@@ -118,62 +81,175 @@ describe('UpdateAnimeService', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  // it('should be able update the genres in profile of an anime', async () => {
-  //   const anime = await fakeAnimesRepository.create({
-  //     title: 'Naruto',
-  //     description: 'descriptionnn',
-  //     episodesAmount: 10,
-  //     created_by_id: 'some_id',
-  //   });
+  it('should not be able to update an anime with a non existent category', async () => {
+    const anime = await fakeAnimesRepository.create({
+      title: 'Naruto',
+      description: 'description',
+      episodesAmount: 10,
+      created_by_id: 'some_id',
+    });
 
-  //   const category = await fakeCategoriesRepository.create({
-  //     name: 'Seinen',
-  //   });
+    expect(
+      updateProfileService.execute({
+        anime_id: anime.id,
+        title: 'Naruto',
+        description: 'description',
+        episodesAmount: 10,
+        genres: [
+          {
+            score: 1,
+            category: {
+              id: 'non-existent-category-id',
+            },
+          },
+        ],
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 
-  //   const updatedAnime = await updateProfileService.execute({
-  //     anime_id: anime.id,
-  //     title: 'Naruto2',
-  //     description: 'descriptionnn',
-  //     episodesAmount: 10,
-  //     genres: [
-  //       {
-  //         score: 3,
-  //         category: {
-  //           id: category.id,
-  //         },
-  //       },
-  //     ],
-  //   });
-  //   console.log(updatedAnime.genres);
-  //   expect(updatedAnime.genres).toHaveLength(1);
-  //   expect(updatedAnime.genres[0]).toHaveProperty('id');
-  //   expect(updatedAnime.genres[0]).toHaveProperty('category_id', category.id);
-  //   expect(updatedAnime.genres[0]).toHaveProperty('score', 3);
-  // });
+  it('should not be able to update an anime with a non existent character', async () => {
+    const anime = await fakeAnimesRepository.create({
+      title: 'Naruto',
+      description: 'description',
+      episodesAmount: 10,
+      created_by_id: 'some_id',
+    });
 
-  // it('should not be able update a genre with non existent category in profile of an anime', async () => {
-  //   const anime = await fakeAnimesRepository.create({
-  //     title: 'Naruto',
-  //     description: 'descriptionnn',
-  //     episodesAmount: 10,
-  //     created_by_id: 'some_id',
-  //   });
+    expect(
+      updateProfileService.execute({
+        anime_id: anime.id,
+        title: 'Naruto',
+        description: 'description',
+        episodesAmount: 10,
+        characters: [
+          {
+            id: 'non-existent-character-id',
+          },
+        ],
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 
-  //   await expect(
-  //     updateProfileService.execute({
-  //       anime_id: anime.id,
-  //       title: 'Naruto2',
-  //       description: 'descriptionnn',
-  //       episodesAmount: 10,
-  //       genres: [
-  //         {
-  //           score: 3,
-  //           category: {
-  //             id: 'non-existent-category-id',
-  //           },
-  //         },
-  //       ],
-  //     }),
-  //   ).rejects.toBeInstanceOf(AppError);
-  // });
+  it('should be able to update an anime with a valid genre', async () => {
+    const anime = await fakeAnimesRepository.create({
+      title: 'Naruto',
+      description: 'description',
+      episodesAmount: 10,
+      created_by_id: 'some_id',
+    });
+
+    const category = await fakeCategoriesRepository.create({
+      name: 'seinen',
+    });
+
+    const updatedAnime1 = await updateProfileService.execute({
+      anime_id: anime.id,
+      title: 'Naruto',
+      description: 'description',
+      episodesAmount: 10,
+      genres: [
+        {
+          score: 1,
+          category: {
+            id: category.id,
+          },
+        },
+      ],
+    });
+
+    expect(updatedAnime1.genres).toHaveLength(1);
+    expect(updatedAnime1.genres[0]).toHaveProperty('id');
+    expect(updatedAnime1.genres[0]).toHaveProperty('score', 1);
+
+    const updatedAnime2 = await updateProfileService.execute({
+      anime_id: anime.id,
+      title: 'Naruto',
+      description: 'description',
+      episodesAmount: 10,
+      genres: [
+        {
+          id: updatedAnime1.genres[0].id,
+          score: 2,
+          category: {
+            id: category.id,
+          },
+        },
+      ],
+    });
+
+    expect(updatedAnime2.genres).toHaveLength(1);
+    expect(updatedAnime2.genres[0]).toHaveProperty(
+      'id',
+      updatedAnime1.genres[0].id,
+    );
+    expect(updatedAnime2.genres[0]).toHaveProperty('score', 2);
+  });
+
+  it('should be able to update an anime with a valid character', async () => {
+    const anime = await fakeAnimesRepository.create({
+      title: 'Naruto',
+      description: 'description',
+      episodesAmount: 10,
+      created_by_id: 'some_id',
+    });
+
+    const character = await fakeCharactersRepository.create({
+      name: 'naruto',
+      description: 'description',
+      age: 18,
+    });
+
+    const updatedAnime = await updateProfileService.execute({
+      anime_id: anime.id,
+      title: 'Naruto',
+      description: 'description',
+      episodesAmount: 10,
+      characters: [
+        {
+          id: character.id,
+        },
+      ],
+    });
+
+    expect(updatedAnime.characters).toHaveLength(1);
+    expect(updatedAnime.characters[0]).toHaveProperty('id');
+  });
+
+  it('should be able to update an anime to the same title', async () => {
+    const anime = await fakeAnimesRepository.create({
+      title: 'Naruto',
+      description: 'fghj',
+      episodesAmount: 10,
+      created_by_id: 'some_id',
+    });
+
+    const updatedAnime = await updateProfileService.execute({
+      anime_id: anime.id,
+      title: 'Naruto',
+      description: 'updated description',
+      episodesAmount: 700,
+    });
+
+    expect(updatedAnime.title).toBe('Naruto');
+  });
+
+  it('should be able update the profile from an anime', async () => {
+    const anime = await fakeAnimesRepository.create({
+      title: 'Naruto',
+      description: 'fghj',
+      episodesAmount: 10,
+      created_by_id: 'some_id',
+    });
+
+    const updatedAnime = await updateProfileService.execute({
+      anime_id: anime.id,
+      title: 'Naruto 2',
+      description: 'updated description',
+      episodesAmount: 700,
+    });
+
+    expect(updatedAnime.title).toBe('Naruto 2');
+    expect(updatedAnime.description).toBe('updated description');
+    expect(updatedAnime.episodesAmount).toBe(700);
+  });
 });

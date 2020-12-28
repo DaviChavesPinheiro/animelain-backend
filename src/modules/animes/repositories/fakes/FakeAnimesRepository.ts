@@ -42,12 +42,20 @@ export default class FakeAnimesRepository implements IAnimeRepository {
   }
 
   public async save(anime: Anime): Promise<Anime> {
+    const mappedAnime = {
+      ...anime,
+      genres: anime.genres?.map(genre => ({
+        ...genre,
+        ...(!genre.id && { id: uuid() }),
+      })),
+    } as Anime;
+
     const findIndex = this.animes.findIndex(
-      findAnime => findAnime.id === anime.id,
+      findAnime => findAnime.id === mappedAnime.id,
     );
 
-    this.animes[findIndex] = anime;
+    this.animes[findIndex] = mappedAnime;
 
-    return anime;
+    return mappedAnime;
   }
 }
