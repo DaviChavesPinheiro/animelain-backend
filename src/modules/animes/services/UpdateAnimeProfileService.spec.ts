@@ -46,6 +46,7 @@ describe('UpdateAnimeProfileService', () => {
 
   it('should delete old profile when updating new one', async () => {
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
+    const saveFile = jest.spyOn(fakeStorageProvider, 'saveFile');
 
     const anime = await fakeAnimesRepository.create({
       title: 'Naruto',
@@ -59,12 +60,13 @@ describe('UpdateAnimeProfileService', () => {
       avatarFilename: 'profile.jpg',
     });
 
-    await updateAnimeProfileService.execute({
+    const updatedAnime = await updateAnimeProfileService.execute({
       anime_id: anime.id,
       avatarFilename: 'avatar2.jpg',
     });
 
     expect(deleteFile).toHaveBeenCalledWith('profile.jpg');
-    expect(anime.profile).toBe('avatar2.jpg');
+    expect(saveFile).toHaveBeenCalledWith('avatar2.jpg');
+    expect(updatedAnime.profile).toBe('avatar2.jpg');
   });
 });

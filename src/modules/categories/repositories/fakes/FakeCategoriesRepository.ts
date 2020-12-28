@@ -1,4 +1,5 @@
 import ICreateCategoryDTO from '@modules/categories/dtos/ICreateCategoryDTO';
+import IFindCategoryDTO from '@modules/categories/dtos/IFindCategoryDTO';
 import Category from '@modules/categories/infra/typeorm/entities/Category';
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
 import { v4 as uuid } from 'uuid';
@@ -6,7 +7,8 @@ import { v4 as uuid } from 'uuid';
 export default class FakeCategoriesRepository implements ICategoriesRepository {
   private categories: Category[] = [];
 
-  public async find(): Promise<Category[]> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async find({ search }: IFindCategoryDTO): Promise<Category[]> {
     return this.categories;
   }
 

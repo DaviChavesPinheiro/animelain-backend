@@ -12,7 +12,7 @@ describe('ListCharacterService', () => {
   });
 
   it('should be able to list all characters', async () => {
-    const character = await listCharactersService.execute();
+    const character = await listCharactersService.execute({});
 
     expect(character).toMatchObject<Character[]>(character);
   });

@@ -14,6 +14,7 @@ class UpdateAnimeProfileService {
   constructor(
     @inject('AnimesRepository')
     private animesRepository: IAnimeRepository,
+
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
   ) {}

@@ -12,7 +12,7 @@ describe('ListCategories', () => {
   });
 
   it('should be able to list all categories', async () => {
-    const categories = await listCategoriesService.execute();
+    const categories = await listCategoriesService.execute({});
 
     expect(categories).toMatchObject<Category[]>(categories);
   });

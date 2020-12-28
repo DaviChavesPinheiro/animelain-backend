@@ -1,3 +1,4 @@
+import IFindCategoryDTO from '@modules/categories/dtos/IFindCategoryDTO';
 import ICreateCharacterDTO from '@modules/characters/dtos/ICreateCharacterDTO';
 import Character from '@modules/characters/infra/typeorm/entities/Character';
 import ICharactersRepository from '@modules/characters/repositories/ICharactersRepository';
@@ -6,7 +7,8 @@ import { v4 as uuid } from 'uuid';
 export default class FakeCharactersRepository implements ICharactersRepository {
   private characters: Character[] = [];
 
-  public async find(): Promise<Character[]> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async find({ search }: IFindCategoryDTO): Promise<Character[]> {
     return this.characters;
   }
 
