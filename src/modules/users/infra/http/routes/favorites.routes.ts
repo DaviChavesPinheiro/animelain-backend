@@ -8,6 +8,8 @@ import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 const favoriteRouter = Router();
 const profileController = new FavoritesController();
 
+favoriteRouter.get('/animes', ensureAuthenticated, profileController.index);
+
 favoriteRouter.post(
   '/animes/add/:id',
   celebrate({

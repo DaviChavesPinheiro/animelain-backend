@@ -5,6 +5,7 @@ import Anime from '../infra/typeorm/entities/Anime';
 export default interface IAnimeRepository {
   findByTitle(title: string): Promise<Anime | undefined>;
   findById(id: string): Promise<Anime | undefined>;
+  findFavoritesByUserId(id: string): Promise<Anime[]>;
   find(data: IFindAnimeDTO): Promise<Anime[]>;
   findNews(): Promise<Anime[]>;
   findInSeason(): Promise<Anime[]>;

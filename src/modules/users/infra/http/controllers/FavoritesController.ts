@@ -1,9 +1,23 @@
 import AddFavoriteAnimeService from '@modules/users/services/AddFavoriteAnimeService';
+import ListFavoriteAnimesService from '@modules/users/services/ListFavoriteAnimesService';
 import RemoveFavoriteAnimeService from '@modules/users/services/RemoveFavoriteAnimeService';
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
 export default class FavoritesController {
+  public async index(request: Request, response: Response): Promise<Response> {
+    const { id: user_id } = request.user;
+    const listFavoriteAnimesService = container.resolve(
+      ListFavoriteAnimesService,
+    );
+
+    const animes = await listFavoriteAnimesService.execute({
+      user_id,
+    });
+
+    return response.json(animes);
+  }
+
   public async create(request: Request, response: Response): Promise<Response> {
     const { id: anime_id } = request.params;
     const { id: user_id } = request.user;
