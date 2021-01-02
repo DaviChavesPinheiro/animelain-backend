@@ -6,7 +6,6 @@ export default function ensureAdmin(
   response: Response,
   next: NextFunction,
 ): void {
-  console.log(request.user);
   if (!request.user.isAdmin) {
     throw new AppError('Unauthorized');
   }

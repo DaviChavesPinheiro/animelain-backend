@@ -4,6 +4,10 @@ import { inject, injectable } from 'tsyringe';
 import Anime from '../infra/typeorm/entities/Anime';
 import IAnimeRepository from '../repositories/IAnimesRepository';
 
+interface IRequest {
+  search?: string;
+}
+
 @injectable()
 export default class ListAnimesService {
   constructor(
@@ -14,14 +18,14 @@ export default class ListAnimesService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(): Promise<Anime[]> {
+  public async execute({ search }: IRequest): Promise<Anime[]> {
     const cacheKey = `animes`;
 
     // let animes = await this.cacheProvider.recover<Anime[]>(cacheKey);
     let animes;
 
     if (!animes) {
-      animes = await this.animesRepository.find();
+      animes = await this.animesRepository.find({ search });
 
       await this.cacheProvider.save(cacheKey, classToClass(animes));
     }

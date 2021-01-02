@@ -1,6 +1,7 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, ILike, Repository } from 'typeorm';
 import ICreateAnimeDTO from '@modules/animes/dtos/ICreateAnimeDTO';
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
+import IFindAnimeDTO from '@modules/animes/dtos/IFindAnimeDTO';
 import Anime from '../entities/Anime';
 
 export default class AnimesRepository implements IAnimeRepository {
@@ -10,8 +11,12 @@ export default class AnimesRepository implements IAnimeRepository {
     this.ormRepository = getRepository(Anime);
   }
 
-  public async find(): Promise<Anime[]> {
-    return this.ormRepository.find({});
+  public async find({ search }: IFindAnimeDTO): Promise<Anime[]> {
+    return this.ormRepository.find({
+      where: {
+        ...(search && { title: ILike(`%${search}%`) }),
+      },
+    });
   }
 
   public async findByTitle(title: string): Promise<Anime | undefined> {

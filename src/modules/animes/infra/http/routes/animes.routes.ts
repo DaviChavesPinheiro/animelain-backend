@@ -16,7 +16,15 @@ const animeController = new AnimeController();
 const animeProfileController = new AnimeProfileController();
 const animeBannerController = new AnimeBannerController();
 
-animesRouter.get('/', animesController.index);
+animesRouter.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: Joi.object().keys({
+      search: Joi.string().allow('').lowercase().max(20),
+    }),
+  }),
+  animesController.index,
+);
 
 animesRouter.post(
   '/',
