@@ -3,6 +3,7 @@ import ICreateAnimeDTO from '@modules/animes/dtos/ICreateAnimeDTO';
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import IFindAnimeDTO from '@modules/animes/dtos/IFindAnimeDTO';
 import getCurrentSeason from '@shared/utils/getCurrentSeason';
+import IFindAnimeByIdDTO from '@modules/animes/dtos/IFindAnimeByIdDTO';
 import Anime from '../entities/Anime';
 
 export default class AnimesRepository implements IAnimeRepository {
@@ -57,12 +58,40 @@ export default class AnimesRepository implements IAnimeRepository {
     return anime;
   }
 
-  public async findById(id: string): Promise<Anime | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: { id },
-      relations: ['genres', 'genres.category', 'characters'],
-    });
-    return user;
+  public async findById({
+    id,
+    user_id,
+  }: IFindAnimeByIdDTO): Promise<Anime | undefined> {
+    let query = this.ormRepository
+      .createQueryBuilder('anime')
+      .where('anime.id = :id', { id })
+      .leftJoin('anime.characters', 'character')
+      .addSelect([
+        'character.id',
+        'character.name',
+        'character.age',
+        'character.profile',
+        'character.banner',
+      ])
+      .leftJoin('anime.genres', 'genre')
+      .addSelect(['genre.id', 'genre.score'])
+      .leftJoin('genre.category', 'category')
+      .addSelect(['category.id', 'category.name']);
+
+    if (user_id) {
+      query = query
+        .leftJoin(
+          'anime.favorite_users',
+          'favorite_user',
+          'favorite_user.id = :user_id',
+          {
+            user_id,
+          },
+        )
+        .addSelect(['favorite_user.id']);
+    }
+
+    return query.getOne();
   }
 
   public async save(data: Anime): Promise<Anime> {

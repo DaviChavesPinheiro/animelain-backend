@@ -1,4 +1,5 @@
 import ICreateAnimeDTO from '@modules/animes/dtos/ICreateAnimeDTO';
+import IFindAnimeByIdDTO from '@modules/animes/dtos/IFindAnimeByIdDTO';
 import Anime from '@modules/animes/infra/typeorm/entities/Anime';
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import { v4 as uuid } from 'uuid';
@@ -34,7 +35,10 @@ export default class FakeAnimesRepository implements IAnimeRepository {
     return anime;
   }
 
-  public async findById(id: string): Promise<Anime | undefined> {
+  public async findById({
+    id,
+    user_id,
+  }: IFindAnimeByIdDTO): Promise<Anime | undefined> {
     const animeWithSameId = this.animes.find(anime => anime.id === id);
 
     return animeWithSameId;

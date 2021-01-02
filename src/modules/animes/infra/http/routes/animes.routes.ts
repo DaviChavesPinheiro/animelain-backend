@@ -93,6 +93,7 @@ animesRouter.get(
       id: Joi.string().uuid().required(),
     }),
   }),
+  ensureAuthenticated,
   animeController.index,
 );
 
