@@ -22,7 +22,6 @@ export default class FakeAnimesRepository implements IAnimeRepository {
     episodesAmount,
   }: ICreateAnimeDTO): Promise<Anime> {
     const anime = new Anime();
-
     Object.assign(anime, {
       id: uuid(),
       title,
@@ -63,5 +62,9 @@ export default class FakeAnimesRepository implements IAnimeRepository {
     const animesFiltered = this.animes.filter(anime => anime.id !== id);
 
     this.animes = animesFiltered;
+  }
+
+  public async findNews(): Promise<Anime[]> {
+    throw new Error('Method not implemented.');
   }
 }

@@ -6,11 +6,13 @@ import passwordRouter from '@modules/users/infra/http/routes/password.routes';
 import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 import favoritesRouter from '@modules/users/infra/http/routes/favorites.routes';
 import animesRouter from '../../../../modules/animes/infra/http/routes/animes.routes';
+import newAnimes from '../../../../modules/animes/infra/http/routes/newAnimes.routes';
 import categoriesRouter from '../../../../modules/categories/infra/http/routes/categories.routes';
 import charactersRouter from '../../../../modules/characters/infra/http/routes/characters.routes';
 
 const router = Router();
 
+router.use('/animes/news', newAnimes);
 router.use('/animes', animesRouter);
 router.use('/users', usersRouter);
 router.use('/password', passwordRouter);

@@ -71,4 +71,17 @@ export default class AnimesRepository implements IAnimeRepository {
   public async deleteById(id: string): Promise<void> {
     await this.ormRepository.delete(id);
   }
+
+  public async findNews(): Promise<Anime[]> {
+    const today = new Date();
+    today.setDate(today.getDate() - 7);
+
+    const query = this.ormRepository
+      .createQueryBuilder('anime')
+      .where('anime.created_at > :week_ago', {
+        week_ago: today.toLocaleString(),
+      });
+
+    return query.getMany();
+  }
 }
