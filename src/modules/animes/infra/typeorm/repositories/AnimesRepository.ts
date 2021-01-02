@@ -2,6 +2,7 @@ import { getRepository, Repository } from 'typeorm';
 import ICreateAnimeDTO from '@modules/animes/dtos/ICreateAnimeDTO';
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import IFindAnimeDTO from '@modules/animes/dtos/IFindAnimeDTO';
+import getCurrentSeason from '@shared/utils/getCurrentSeason';
 import Anime from '../entities/Anime';
 
 export default class AnimesRepository implements IAnimeRepository {
@@ -80,6 +81,28 @@ export default class AnimesRepository implements IAnimeRepository {
       .createQueryBuilder('anime')
       .where('anime.created_at > :week_ago', {
         week_ago: today.toLocaleString(),
+      });
+
+    return query.getMany();
+  }
+
+  public async findInSeason(): Promise<Anime[]> {
+    const today = new Date();
+    const currentSeason = getCurrentSeason();
+
+    const currentSeasonStart = new Date(
+      today.getFullYear(),
+      (currentSeason - 1) * 4,
+      1,
+      0,
+      0,
+      0,
+    );
+
+    const query = this.ormRepository
+      .createQueryBuilder('anime')
+      .where('anime.created_at > :currentSeasonStart', {
+        currentSeasonStart: currentSeasonStart.toLocaleString(),
       });
 
     return query.getMany();

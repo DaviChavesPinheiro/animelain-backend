@@ -7,6 +7,7 @@ export default interface IAnimeRepository {
   findById(id: string): Promise<Anime | undefined>;
   find(data: IFindAnimeDTO): Promise<Anime[]>;
   findNews(): Promise<Anime[]>;
+  findInSeason(): Promise<Anime[]>;
   create(data: ICreateAnimeDTO): Promise<Anime>;
   save(data: Anime): Promise<Anime>;
   deleteById(id: string): Promise<void>;

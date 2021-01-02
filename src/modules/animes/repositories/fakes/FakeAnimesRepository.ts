@@ -67,4 +67,8 @@ export default class FakeAnimesRepository implements IAnimeRepository {
   public async findNews(): Promise<Anime[]> {
     throw new Error('Method not implemented.');
   }
+
+  public async findInSeason(): Promise<Anime[]> {
+    throw new Error('Method not implemented.');
+  }
 }
