@@ -3,6 +3,6 @@ dist
 .env
 tmp/*
 !tmp/.gitkeep
-covarege/*
+**/covarege/*
 
 ormconfig.json

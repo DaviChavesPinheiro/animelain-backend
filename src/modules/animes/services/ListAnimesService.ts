@@ -6,6 +6,7 @@ import IAnimeRepository from '../repositories/IAnimesRepository';
 
 interface IRequest {
   search?: string;
+  categories?: string[];
 }
 
 @injectable()
@@ -18,14 +19,14 @@ export default class ListAnimesService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute({ search }: IRequest): Promise<Anime[]> {
+  public async execute({ search, categories }: IRequest): Promise<Anime[]> {
     const cacheKey = `animes`;
 
     // let animes = await this.cacheProvider.recover<Anime[]>(cacheKey);
     let animes;
 
     if (!animes) {
-      animes = await this.animesRepository.find({ search });
+      animes = await this.animesRepository.find({ search, categories });
 
       await this.cacheProvider.save(cacheKey, classToClass(animes));
     }

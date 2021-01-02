@@ -21,6 +21,7 @@ animesRouter.get(
   celebrate({
     [Segments.QUERY]: Joi.object().keys({
       search: Joi.string().allow('').lowercase().max(20),
+      categories: Joi.array().max(10).items(Joi.string().uuid()),
     }),
   }),
   animesController.index,
