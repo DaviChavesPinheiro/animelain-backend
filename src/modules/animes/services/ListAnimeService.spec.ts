@@ -1,15 +1,23 @@
+import FakeFavoriteUsersAnimesRepository from '@modules/users/repositories/fakes/FakeFavoriteUsersAnimesRepository';
+import IFavoriteUsersAnimesRepository from '@modules/users/repositories/IFavoriteUsersAnimesRepository';
 import AppError from '@shared/errors/AppError';
 import Anime from '../infra/typeorm/entities/Anime';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
+import IAnimeRepository from '../repositories/IAnimesRepository';
 import ListAnimeService from './ListAnimeService';
 
-let fakeAnimesRepository: FakeAnimesRepository;
+let fakeAnimesRepository: IAnimeRepository;
+let fakeFavoriteUsersAnimesRepository: IFavoriteUsersAnimesRepository;
 let listAnimeService: ListAnimeService;
 
 describe('ListAnime', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
-    listAnimeService = new ListAnimeService(fakeAnimesRepository);
+    fakeFavoriteUsersAnimesRepository = new FakeFavoriteUsersAnimesRepository();
+    listAnimeService = new ListAnimeService(
+      fakeAnimesRepository,
+      fakeFavoriteUsersAnimesRepository,
+    );
   });
 
   it('should be able to list an anime', async () => {
