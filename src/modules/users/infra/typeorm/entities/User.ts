@@ -12,6 +12,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import RecentUserAnime from './RecentUserAnime';
+import FavoriteUserAnime from './FavoriteUserAnime';
 
 @Entity('users')
 class User {
@@ -41,6 +42,12 @@ class User {
 
   @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.user)
   recent_users_animes: RecentUserAnime[];
+
+  @OneToMany(
+    () => FavoriteUserAnime,
+    favoriteUserAnime => favoriteUserAnime.user,
+  )
+  favorite_users_animes: FavoriteUserAnime[];
 
   @Column('boolean', { default: false })
   isAdmin: boolean;

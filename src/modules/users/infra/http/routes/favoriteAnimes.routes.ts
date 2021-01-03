@@ -1,16 +1,20 @@
 import { celebrate, Segments, Joi } from 'celebrate';
 import { Router } from 'express';
 
-import RecentAnimesController from '../controllers/RecentAnimesController';
+import FavoriteAnimesController from '../controllers/FavoriteAnimesController';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
-const recentAnimesRouter = Router();
-const recentAnimesController = new RecentAnimesController();
+const favoriteAnimesRouter = Router();
+const favoriteAnimesController = new FavoriteAnimesController();
 
-recentAnimesRouter.get('/', ensureAuthenticated, recentAnimesController.index);
+favoriteAnimesRouter.get(
+  '/',
+  ensureAuthenticated,
+  favoriteAnimesController.index,
+);
 
-recentAnimesRouter.post(
+favoriteAnimesRouter.post(
   '/add/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
@@ -18,9 +22,9 @@ recentAnimesRouter.post(
     }),
   }),
   ensureAuthenticated,
-  recentAnimesController.create,
+  favoriteAnimesController.create,
 );
-recentAnimesRouter.delete(
+favoriteAnimesRouter.delete(
   '/remove/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
@@ -28,7 +32,7 @@ recentAnimesRouter.delete(
     }),
   }),
   ensureAuthenticated,
-  recentAnimesController.remove,
+  favoriteAnimesController.remove,
 );
 
-export default recentAnimesRouter;
+export default favoriteAnimesRouter;

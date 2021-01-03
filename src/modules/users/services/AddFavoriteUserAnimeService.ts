@@ -1,6 +1,8 @@
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
+import FavoriteUserAnime from '../infra/typeorm/entities/FavoriteUserAnime';
+import IFavoriteUsersAnimesRepository from '../repositories/IFavoriteUsersAnimesRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -16,9 +18,15 @@ export default class AddFavoriteAnimeService {
 
     @inject('AnimesRepository')
     private animesRepository: IAnimeRepository,
+
+    @inject('FavoriteUsersAnimesRepository')
+    private favoriteUsersAnimesRepository: IFavoriteUsersAnimesRepository,
   ) {}
 
-  public async execute({ user_id, anime_id }: IRequest): Promise<void> {
+  public async execute({
+    user_id,
+    anime_id,
+  }: IRequest): Promise<FavoriteUserAnime> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
@@ -31,22 +39,19 @@ export default class AddFavoriteAnimeService {
       throw new AppError('Anime does not exist');
     }
 
-    const userFavoriteAnimes = await this.animesRepository.findFavoritesByUserId(
-      user.id,
+    const checkIfFavoriteUserAnimeAlreadyExist = await this.favoriteUsersAnimesRepository.findByUserIdAndAnimeId(
+      { anime_id, user_id },
     );
 
-    const checkIfAnimeIsAlreadyFavorited = userFavoriteAnimes.find(
-      favoriteAnime => favoriteAnime.id === anime_id,
-    );
-
-    if (checkIfAnimeIsAlreadyFavorited) {
-      throw new AppError(
-        `${checkIfAnimeIsAlreadyFavorited.title} is already favorited`,
-      );
+    if (checkIfFavoriteUserAnimeAlreadyExist) {
+      throw new AppError('This Favorite User Anime already exists');
     }
 
-    user.favorite_animes = [...(userFavoriteAnimes || []), anime];
+    const favoriteUserAnime = await this.favoriteUsersAnimesRepository.create({
+      anime_id,
+      user_id,
+    });
 
-    this.usersRepository.save(user);
+    return favoriteUserAnime;
   }
 }

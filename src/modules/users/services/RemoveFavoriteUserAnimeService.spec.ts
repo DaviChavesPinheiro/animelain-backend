@@ -1,25 +1,30 @@
 import FakeAnimesRepository from '@modules/animes/repositories/fakes/FakeAnimesRepository';
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import AppError from '@shared/errors/AppError';
+import FakeRecentUsersAnimesRepository from '../repositories/fakes/FakeFavoriteUsersAnimesRepository';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
+import IFavoriteUsersAnimesRepository from '../repositories/IFavoriteUsersAnimesRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
-import RemoveFavoriteAnimeService from './RemoveFavoriteAnimeService';
+import RemoveFavoriteAnimeService from './RemoveFavoriteUserAnimeService';
 
 let fakeUsersRepository: IUsersRepository;
 let fakeAnimesRepository: IAnimeRepository;
+let fakeFavoriteUsersAnimesRepository: IFavoriteUsersAnimesRepository;
 let removeFavoriteAnimeService: RemoveFavoriteAnimeService;
 
-describe('CreateFavoriteAnime', () => {
+describe('RemoveFavoriteAnimeService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeAnimesRepository = new FakeAnimesRepository();
+    fakeFavoriteUsersAnimesRepository = new FakeRecentUsersAnimesRepository();
     removeFavoriteAnimeService = new RemoveFavoriteAnimeService(
       fakeUsersRepository,
       fakeAnimesRepository,
+      fakeFavoriteUsersAnimesRepository,
     );
   });
 
-  it('should not be able to remove a new favorite anime using a non existent user', async () => {
+  it('should not be able to remove a new favorite user anime using a non existent user', async () => {
     const anime = await fakeAnimesRepository.create({
       title: 'Naruto',
       description: 'Description',
@@ -35,7 +40,7 @@ describe('CreateFavoriteAnime', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to unfavorite an non existent anime', async () => {
+  it('should not be able to remove a new favorite user anime using a non existent anime', async () => {
     const user = await fakeUsersRepository.create({
       name: 'Lain',
       email: 'lain@gmail.com',
@@ -50,7 +55,7 @@ describe('CreateFavoriteAnime', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to unfavorite a non favorited anime', async () => {
+  it('should not be able to remove a non existent favorite user anime', async () => {
     const user = await fakeUsersRepository.create({
       name: 'Lain',
       email: 'lain@gmail.com',
@@ -72,28 +77,32 @@ describe('CreateFavoriteAnime', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  // it('should be able to remove a new favorite anime', async () => {
-  //   const anime = await fakeAnimesRepository.create({
-  //     title: 'Naruto',
-  //     description: 'Description',
-  //     episodesAmount: 700,
-  //     created_by_id: 'some_user_id',
-  //   });
+  it('should be able to remove a favorite user anime', async () => {
+    const anime = await fakeAnimesRepository.create({
+      title: 'Naruto',
+      description: 'Description',
+      episodesAmount: 700,
+      created_by_id: 'some_user_id',
+    });
 
-  //   const user = await fakeUsersRepository.create({
-  //     name: 'Lain',
-  //     email: 'lain@gmail.com',
-  //     password: 'Password123',
-  //   });
+    const user = await fakeUsersRepository.create({
+      name: 'Lain',
+      email: 'lain@gmail.com',
+      password: 'Password123',
+    });
 
-  //   user.favorite_animes = [anime];
+    const createdRecentUserAnime = await fakeFavoriteUsersAnimesRepository.create(
+      {
+        user_id: user.id,
+        anime_id: anime.id,
+      },
+    );
 
-  //   await removeFavoriteAnimeService.execute({
-  //     user_id: user.id,
-  //     anime_id: anime.id,
-  //   });
+    const removedRecentUserAnime = await removeFavoriteAnimeService.execute({
+      user_id: user.id,
+      anime_id: anime.id,
+    });
 
-  //   expect(user).toHaveProperty('favorite_animes');
-  //   expect(user.favorite_animes).toHaveLength(0);
-  // });
+    expect(removedRecentUserAnime.id).toBe(createdRecentUserAnime.id);
+  });
 });

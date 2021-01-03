@@ -1,4 +1,3 @@
-import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import RecentUserAnime from '../infra/typeorm/entities/RecentUserAnime';
@@ -14,9 +13,6 @@ export default class ListRecentUserAnimesService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
-
-    @inject('AnimesRepository')
-    private animesRepository: IAnimeRepository,
 
     @inject('RecentUsersAnimesRepository')
     private recentUsersAnimesRepository: IRecentUsersAnimesRepository,

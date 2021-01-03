@@ -15,6 +15,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import RecentUserAnime from '@modules/users/infra/typeorm/entities/RecentUserAnime';
+import FavoriteUserAnime from '@modules/users/infra/typeorm/entities/FavoriteUserAnime';
 import Genre from './Genre';
 
 @Entity('animes')
@@ -58,6 +59,12 @@ class Anime {
 
   @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.anime)
   recent_users_animes: RecentUserAnime[];
+
+  @OneToMany(
+    () => FavoriteUserAnime,
+    favoriteUserAnime => favoriteUserAnime.anime,
+  )
+  favorite_users_animes: FavoriteUserAnime[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -1,14 +1,14 @@
-import AddFavoriteAnimeService from '@modules/users/services/AddFavoriteAnimeService';
-import ListFavoriteAnimesService from '@modules/users/services/ListFavoriteAnimesService';
-import RemoveFavoriteAnimeService from '@modules/users/services/RemoveFavoriteAnimeService';
+import AddFavoriteUserAnimeService from '@modules/users/services/AddFavoriteUserAnimeService';
+import ListFavoriteUserAnimesService from '@modules/users/services/ListFavoriteUserAnimesService';
+import RemoveFavoriteUserAnimeService from '@modules/users/services/RemoveFavoriteUserAnimeService';
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
-export default class FavoritesController {
+export default class FavoriteAnimesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { id: user_id } = request.user;
     const listFavoriteAnimesService = container.resolve(
-      ListFavoriteAnimesService,
+      ListFavoriteUserAnimesService,
     );
 
     const animes = await listFavoriteAnimesService.execute({
@@ -21,7 +21,9 @@ export default class FavoritesController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { id: anime_id } = request.params;
     const { id: user_id } = request.user;
-    const addFavoriteAnimeService = container.resolve(AddFavoriteAnimeService);
+    const addFavoriteAnimeService = container.resolve(
+      AddFavoriteUserAnimeService,
+    );
 
     await addFavoriteAnimeService.execute({
       anime_id,
@@ -35,7 +37,7 @@ export default class FavoritesController {
     const { id: anime_id } = request.params;
     const { id: user_id } = request.user;
     const removeFavoriteAnimeService = container.resolve(
-      RemoveFavoriteAnimeService,
+      RemoveFavoriteUserAnimeService,
     );
 
     await removeFavoriteAnimeService.execute({

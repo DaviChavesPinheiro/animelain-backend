@@ -136,22 +136,4 @@ export default class AnimesRepository implements IAnimeRepository {
 
     return query.getMany();
   }
-
-  public async findFavoritesByUserId(user_id: string): Promise<Anime[]> {
-    const query = this.ormRepository
-      .createQueryBuilder('anime')
-      .leftJoin('anime.favorite_users', 'user')
-      .where('user.id = :user_id', {
-        user_id,
-      })
-      .select([
-        'anime.id',
-        'anime.title',
-        'anime.episodesAmount',
-        'anime.profile',
-        'anime.banner',
-      ]);
-
-    return query.getMany();
-  }
 }

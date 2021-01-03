@@ -72,10 +72,4 @@ export default class FakeAnimesRepository implements IAnimeRepository {
   public async findInSeason(): Promise<Anime[]> {
     return this.animes;
   }
-
-  public async findFavoritesByUserId(user_id: string): Promise<Anime[]> {
-    return this.animes.filter(anime =>
-      anime.favorite_users?.find(user => user.id === user_id),
-    );
-  }
 }

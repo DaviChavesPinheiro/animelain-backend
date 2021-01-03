@@ -20,8 +20,12 @@ import ICharactersRepository from '@modules/characters/repositories/ICharactersR
 
 import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
-import IRecentUsersAnimesRepository from '@modules/users/repositories/IRecentUsersAnimesRepository';
+
 import RecentUsersAnimesRepository from '@modules/users/infra/typeorm/repositories/RecentUsersAnimesRepository';
+import IRecentUsersAnimesRepository from '@modules/users/repositories/IRecentUsersAnimesRepository';
+
+import FavoriteUsersAnimesRepository from '@modules/users/infra/typeorm/repositories/FavoriteUsersAnimesRepository';
+import IFavoriteUsersAnimesRepository from '@modules/users/repositories/IFavoriteUsersAnimesRepository';
 
 container.registerSingleton<IAnimeRepository>(
   'AnimesRepository',
@@ -56,4 +60,9 @@ container.registerSingleton<INotificationsRepository>(
 container.registerSingleton<IRecentUsersAnimesRepository>(
   'RecentUsersAnimesRepository',
   RecentUsersAnimesRepository,
+);
+
+container.registerSingleton<IFavoriteUsersAnimesRepository>(
+  'FavoriteUsersAnimesRepository',
+  FavoriteUsersAnimesRepository,
 );

@@ -1,37 +1,37 @@
 import FakeAnimesRepository from '@modules/animes/repositories/fakes/FakeAnimesRepository';
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import AppError from '@shared/errors/AppError';
-import FakeRecentUsersAnimesRepository from '../repositories/fakes/FakeRecentUsersAnimesRepository';
+import FakeFavoriteUsersAnimesRepository from '../repositories/fakes/FakeFavoriteUsersAnimesRepository';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
-import IRecentUsersAnimesRepository from '../repositories/IRecentUsersAnimesRepository';
+import IFavoriteUsersAnimesRepository from '../repositories/IFavoriteUsersAnimesRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
-import ListRecentUserAnimesService from './ListRecentUserAnimesService';
+import ListFavoriteUserAnimesService from './ListFavoriteUserAnimesService';
 
 let fakeUsersRepository: IUsersRepository;
 let fakeAnimesRepository: IAnimeRepository;
-let fakeRecentUsersAnimesRepository: IRecentUsersAnimesRepository;
-let listRecentUserAnimesService: ListRecentUserAnimesService;
+let fakeFavoriteUsersAnimesRepository: IFavoriteUsersAnimesRepository;
+let listFavoriteUserAnimesService: ListFavoriteUserAnimesService;
 
-describe('ListRecentUserAnimesService', () => {
+describe('ListFavoriteUserAnimesService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeAnimesRepository = new FakeAnimesRepository();
-    fakeRecentUsersAnimesRepository = new FakeRecentUsersAnimesRepository();
-    listRecentUserAnimesService = new ListRecentUserAnimesService(
+    fakeFavoriteUsersAnimesRepository = new FakeFavoriteUsersAnimesRepository();
+    listFavoriteUserAnimesService = new ListFavoriteUserAnimesService(
       fakeUsersRepository,
-      fakeRecentUsersAnimesRepository,
+      fakeFavoriteUsersAnimesRepository,
     );
   });
 
-  it('should not be able to list recent user animes using a non existent user', async () => {
+  it('should not be able to list favorite user animes using a non existent user', async () => {
     await expect(
-      listRecentUserAnimesService.execute({
+      listFavoriteUserAnimesService.execute({
         user_id: 'some-non-existent-user-id',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should be able to list recent user animes from a user', async () => {
+  it('should be able to list favorite user animes from a user', async () => {
     const user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@gmail.com',
@@ -52,21 +52,21 @@ describe('ListRecentUserAnimesService', () => {
       created_by_id: 'some_user_id',
     });
 
-    await fakeRecentUsersAnimesRepository.create({
+    await fakeFavoriteUsersAnimesRepository.create({
       user_id: user.id,
       anime_id: animeA.id,
     });
 
-    await fakeRecentUsersAnimesRepository.create({
+    await fakeFavoriteUsersAnimesRepository.create({
       user_id: user.id,
       anime_id: animeB.id,
     });
 
-    const recentUserAnimes = await listRecentUserAnimesService.execute({
+    const favoriteUserAnimes = await listFavoriteUserAnimesService.execute({
       user_id: user.id,
     });
 
-    expect(recentUserAnimes).toEqual(
+    expect(favoriteUserAnimes).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           anime_id: animeA.id,
