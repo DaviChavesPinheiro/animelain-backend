@@ -13,7 +13,16 @@ export default class AnimesRepository implements IAnimeRepository {
   }
 
   public async find({ search, categories }: IFindAnimeDTO): Promise<Anime[]> {
-    let query = this.ormRepository.createQueryBuilder('anime');
+    let query = this.ormRepository
+      .createQueryBuilder('anime')
+      .select([
+        'anime.id',
+        'anime.title',
+        'anime.episodesAmount',
+        'anime.created_by_id',
+        'anime.profile',
+        'anime.banner',
+      ]);
 
     if (search) {
       query = query.where('anime.title ILIKE :search', {
@@ -74,19 +83,6 @@ export default class AnimesRepository implements IAnimeRepository {
         'character.profile',
         'character.banner',
       ]);
-
-    // if (user_id) {
-    //   query = query
-    //     .leftJoin(
-    //       'anime.favorite_users',
-    //       'favorite_user',
-    //       'favorite_user.id = :user_id',
-    //       {
-    //         user_id,
-    //       },
-    //     )
-    //     .addSelect(['favorite_user.id']);
-    // }
 
     return query.getOne();
   }
