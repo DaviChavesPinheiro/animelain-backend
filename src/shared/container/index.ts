@@ -26,6 +26,8 @@ import IRecentUsersAnimesRepository from '@modules/users/repositories/IRecentUse
 
 import FavoriteUsersAnimesRepository from '@modules/users/infra/typeorm/repositories/FavoriteUsersAnimesRepository';
 import IFavoriteUsersAnimesRepository from '@modules/users/repositories/IFavoriteUsersAnimesRepository';
+import IAnimesCharactersRepository from '@modules/animes/repositories/IAnimesCharactersRepository';
+import AnimesCharactersRepository from '@modules/animes/infra/typeorm/repositories/AnimesCharactersRepository';
 
 container.registerSingleton<IAnimeRepository>(
   'AnimesRepository',
@@ -65,4 +67,9 @@ container.registerSingleton<IRecentUsersAnimesRepository>(
 container.registerSingleton<IFavoriteUsersAnimesRepository>(
   'FavoriteUsersAnimesRepository',
   FavoriteUsersAnimesRepository,
+);
+
+container.registerSingleton<IAnimesCharactersRepository>(
+  'AnimesCharactersRepository',
+  AnimesCharactersRepository,
 );

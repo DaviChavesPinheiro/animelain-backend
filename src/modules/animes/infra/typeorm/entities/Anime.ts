@@ -1,4 +1,3 @@
-import Character from '@modules/characters/infra/typeorm/entities/Character';
 import User from '@modules/users/infra/typeorm/entities/User';
 import uploadConfig from '@config/upload';
 import { Expose } from 'class-transformer';
@@ -11,12 +10,11 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
 import RecentUserAnime from '@modules/users/infra/typeorm/entities/RecentUserAnime';
 import FavoriteUserAnime from '@modules/users/infra/typeorm/entities/FavoriteUserAnime';
 import Genre from './Genre';
+import AnimeCharacter from './AnimeCharacter';
 
 @Entity('animes')
 class Anime {
@@ -50,13 +48,6 @@ class Anime {
   })
   genres: Genre[];
 
-  @ManyToMany(() => Character, character => character.animes)
-  @JoinTable()
-  characters: Character[];
-
-  @ManyToMany(() => User, user => user.favorite_animes)
-  favorite_users?: User[];
-
   @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.anime)
   recent_users_animes: RecentUserAnime[];
 
@@ -65,6 +56,9 @@ class Anime {
     favoriteUserAnime => favoriteUserAnime.anime,
   )
   favorite_users_animes: FavoriteUserAnime[];
+
+  @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.anime)
+  animes_characters: AnimeCharacter[];
 
   @CreateDateColumn()
   created_at: Date;

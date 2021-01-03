@@ -1,4 +1,3 @@
-import Anime from '@modules/animes/infra/typeorm/entities/Anime';
 import { Expose } from 'class-transformer';
 import uploadConfig from '@config/upload';
 import {
@@ -7,8 +6,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
+  OneToMany,
 } from 'typeorm';
+import AnimeCharacter from '@modules/animes/infra/typeorm/entities/AnimeCharacter';
 
 @Entity('characters')
 class Character {
@@ -30,8 +30,8 @@ class Character {
   @Column('varchar', { nullable: true })
   banner: string;
 
-  @ManyToMany(() => Anime, anime => anime.characters)
-  animes: Anime[];
+  @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.character)
+  animes_characters: AnimeCharacter[];
 
   @CreateDateColumn()
   created_at: Date;

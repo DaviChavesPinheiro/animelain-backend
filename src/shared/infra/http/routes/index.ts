@@ -7,6 +7,7 @@ import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 import favoriteAnimesRouter from '@modules/users/infra/http/routes/favoriteAnimes.routes';
 import recentAnimesRouter from '@modules/users/infra/http/routes/recentAnimes.routes';
 import animesRouter from '../../../../modules/animes/infra/http/routes/animes.routes';
+import animesCharacters from '../../../../modules/animes/infra/http/routes/animesCharacters.routes';
 import newAnimes from '../../../../modules/animes/infra/http/routes/newAnimes.routes';
 import seasonAnimes from '../../../../modules/animes/infra/http/routes/seasonAnimes.routes';
 import categoriesRouter from '../../../../modules/categories/infra/http/routes/categories.routes';
@@ -14,6 +15,7 @@ import charactersRouter from '../../../../modules/characters/infra/http/routes/c
 
 const router = Router();
 
+router.use('/animes/characters', animesCharacters);
 router.use('/animes/season', seasonAnimes);
 router.use('/animes/news', newAnimes);
 router.use('/animes', animesRouter);

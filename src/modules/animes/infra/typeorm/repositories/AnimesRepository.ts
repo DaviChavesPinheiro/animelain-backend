@@ -62,34 +62,26 @@ export default class AnimesRepository implements IAnimeRepository {
     id,
     user_id,
   }: IFindAnimeByIdDTO): Promise<Anime | undefined> {
-    let query = this.ormRepository
+    const query = this.ormRepository
       .createQueryBuilder('anime')
       .where('anime.id = :id', { id })
-      .leftJoin('anime.characters', 'character')
-      .addSelect([
-        'character.id',
-        'character.name',
-        'character.age',
-        'character.profile',
-        'character.banner',
-      ])
       .leftJoin('anime.genres', 'genre')
       .addSelect(['genre.id', 'genre.score'])
       .leftJoin('genre.category', 'category')
       .addSelect(['category.id', 'category.name']);
 
-    if (user_id) {
-      query = query
-        .leftJoin(
-          'anime.favorite_users',
-          'favorite_user',
-          'favorite_user.id = :user_id',
-          {
-            user_id,
-          },
-        )
-        .addSelect(['favorite_user.id']);
-    }
+    // if (user_id) {
+    //   query = query
+    //     .leftJoin(
+    //       'anime.favorite_users',
+    //       'favorite_user',
+    //       'favorite_user.id = :user_id',
+    //       {
+    //         user_id,
+    //       },
+    //     )
+    //     .addSelect(['favorite_user.id']);
+    // }
 
     return query.getOne();
   }
