@@ -20,6 +20,8 @@ import ICharactersRepository from '@modules/characters/repositories/ICharactersR
 
 import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import IRecentUsersAnimesRepository from '@modules/users/repositories/IRecentUsersAnimesRepository';
+import RecentUsersAnimesRepository from '@modules/users/infra/typeorm/repositories/RecentUsersAnimesRepository';
 
 container.registerSingleton<IAnimeRepository>(
   'AnimesRepository',
@@ -49,4 +51,9 @@ container.registerSingleton<ICharactersRepository>(
 container.registerSingleton<INotificationsRepository>(
   'NotificationsRepository',
   NotificationsRepository,
+);
+
+container.registerSingleton<IRecentUsersAnimesRepository>(
+  'RecentUsersAnimesRepository',
+  RecentUsersAnimesRepository,
 );

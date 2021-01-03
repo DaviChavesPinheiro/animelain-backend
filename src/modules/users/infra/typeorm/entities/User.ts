@@ -9,7 +9,9 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
+import RecentUserAnime from './RecentUserAnime';
 
 @Entity('users')
 class User {
@@ -36,6 +38,9 @@ class User {
   })
   @JoinTable({ name: 'favorite_animes' })
   favorite_animes?: Anime[];
+
+  @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.user)
+  recent_users_animes: RecentUserAnime[];
 
   @Column('boolean', { default: false })
   isAdmin: boolean;

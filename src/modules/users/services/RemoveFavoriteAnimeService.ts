@@ -9,7 +9,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class AddFavoriteAnimeService {
+export default class RemoveFavoriteAnimeService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -31,7 +31,11 @@ export default class AddFavoriteAnimeService {
       throw new AppError('Anime does not exist');
     }
 
-    const checkIfAnimeIsAlreadyFavorited = user.favorite_animes?.find(
+    const userFavoriteAnimes = await this.animesRepository.findFavoritesByUserId(
+      user.id,
+    );
+
+    const checkIfAnimeIsAlreadyFavorited = userFavoriteAnimes.find(
       favoriteAnime => favoriteAnime.id === anime_id,
     );
 
@@ -39,7 +43,7 @@ export default class AddFavoriteAnimeService {
       throw new AppError(`This anime is not favorited`);
     }
 
-    user.favorite_animes = user.favorite_animes?.filter(
+    user.favorite_animes = userFavoriteAnimes.filter(
       favoriteAnime => favoriteAnime.id !== anime_id,
     );
 
