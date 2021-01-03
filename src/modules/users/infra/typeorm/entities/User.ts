@@ -1,4 +1,3 @@
-import Anime from '@modules/animes/infra/typeorm/entities/Anime';
 import uploadConfig from '@config/upload';
 import { Exclude, Expose } from 'class-transformer';
 import {
@@ -7,8 +6,6 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
   OneToMany,
 } from 'typeorm';
 import RecentUserAnime from './RecentUserAnime';
@@ -22,23 +19,15 @@ class User {
   @Column()
   name: string;
 
-  @Column('varchar', { unique: true })
+  @Column()
   email: string;
 
   @Column()
   @Exclude()
   password: string;
 
-  @Column('varchar', { nullable: true })
-  avatar: string;
-
-  @ManyToMany(() => Anime, anime => anime.favorite_users, {
-    cascade: ['insert'],
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @JoinTable({ name: 'favorite_animes' })
-  favorite_animes?: Anime[];
+  @Column()
+  avatar?: string;
 
   @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.user)
   recent_users_animes: RecentUserAnime[];
@@ -49,7 +38,7 @@ class User {
   )
   favorite_users_animes: FavoriteUserAnime[];
 
-  @Column('boolean', { default: false })
+  @Column()
   isAdmin: boolean;
 
   @CreateDateColumn()

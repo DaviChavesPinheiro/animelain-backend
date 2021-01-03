@@ -18,17 +18,17 @@ class Character {
   @Column()
   name: string;
 
-  @Column('text', { nullable: true })
-  description: string;
+  @Column()
+  description?: string;
 
-  @Column('int2', { nullable: true })
-  age: number;
+  @Column()
+  age?: number;
 
-  @Column('varchar', { nullable: true })
-  profile: string;
+  @Column()
+  profile?: string;
 
-  @Column('varchar', { nullable: true })
-  banner: string;
+  @Column()
+  banner?: string;
 
   @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.character)
   animes_characters: AnimeCharacter[];

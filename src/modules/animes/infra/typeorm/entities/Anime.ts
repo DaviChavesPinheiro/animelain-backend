@@ -24,24 +24,24 @@ class Anime {
   @Column()
   title: string;
 
-  @Column('text', { nullable: true })
-  description: string;
+  @Column()
+  description?: string;
 
-  @Column('int2', { nullable: false })
+  @Column()
   episodesAmount: number;
 
-  @Column('uuid', { nullable: true })
-  created_by_id: string;
+  @Column()
+  created_by_id?: string;
 
   @ManyToOne(() => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'created_by_id' })
   created_by: User;
 
-  @Column('varchar', { nullable: true })
-  profile: string;
+  @Column()
+  profile?: string;
 
-  @Column('varchar', { nullable: true })
-  banner: string;
+  @Column()
+  banner?: string;
 
   @OneToMany(() => Genre, genre => genre.anime, {
     cascade: true,
@@ -65,6 +65,8 @@ class Anime {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  isFavorited?: boolean;
 
   @Expose({ name: 'profile_url' })
   getProfileUrl(): string | null {

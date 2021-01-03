@@ -35,7 +35,7 @@ class Genre {
   @Column()
   category_id: string;
 
-  @Column('integer')
+  @Column()
   score: number;
 
   @CreateDateColumn()

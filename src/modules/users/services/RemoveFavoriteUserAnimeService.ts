@@ -33,7 +33,7 @@ export default class RemoveFavoriteUserAnimeService {
       throw new AppError('User does not exist');
     }
 
-    const anime = await this.animesRepository.findById({ id: anime_id });
+    const anime = await this.animesRepository.findById(anime_id);
 
     if (!anime) {
       throw new AppError('Anime does not exist');

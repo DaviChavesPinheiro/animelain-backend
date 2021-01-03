@@ -5,7 +5,6 @@ import IAnimeRepository from '../repositories/IAnimesRepository';
 
 interface IRequest {
   id: string;
-  user_id?: string;
 }
 
 @injectable()
@@ -15,8 +14,8 @@ export default class ListAnimesService {
     private animesRepository: IAnimeRepository,
   ) {}
 
-  public async execute({ id, user_id }: IRequest): Promise<Anime | undefined> {
-    const anime = await this.animesRepository.findById({ id, user_id });
+  public async execute({ id }: IRequest): Promise<Anime | undefined> {
+    const anime = await this.animesRepository.findById(id);
 
     if (!anime) {
       throw new AppError('This anime does not exist');

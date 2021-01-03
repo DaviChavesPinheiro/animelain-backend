@@ -53,7 +53,7 @@ class UpdateAnimeService {
     genres,
     characters,
   }: IRequest): Promise<Anime> {
-    const anime = await this.animesRepository.findById({ id: anime_id });
+    const anime = await this.animesRepository.findById(anime_id);
 
     if (!anime) {
       throw new AppError('Anime not found.');
@@ -109,37 +109,39 @@ class UpdateAnimeService {
       });
     }
 
-    if (characters) {
-      const charactersIdsToAdd = characters.map(character => character.id);
+    // if (characters) {
+    //   const charactersIdsToAdd = characters.map(character => character.id);
 
-      const existentCharacters = await this.charactersRepository.findAllById(
-        charactersIdsToAdd,
-      );
+    //   const existentCharacters = await this.charactersRepository.findAllById(
+    //     charactersIdsToAdd,
+    //   );
 
-      const nonexistentCharactersIds = charactersIdsToAdd.filter(
-        characterIdToAdd =>
-          !existentCharacters.find(
-            existentCharacter => existentCharacter.id === characterIdToAdd,
-          ),
-      );
+    //   const nonexistentCharactersIds = charactersIdsToAdd.filter(
+    //     characterIdToAdd =>
+    //       !existentCharacters.find(
+    //         existentCharacter => existentCharacter.id === characterIdToAdd,
+    //       ),
+    //   );
 
-      if (nonexistentCharactersIds.length) {
-        throw new AppError(
-          `The character ${nonexistentCharactersIds[0]} does not exist`,
-        );
-      }
+    //   if (nonexistentCharactersIds.length) {
+    //     throw new AppError(
+    //       `The character ${nonexistentCharactersIds[0]} does not exist`,
+    //     );
+    //   }
 
-      anime.characters = existentCharacters;
-    }
+    //   anime.characters = existentCharacters;
+    // }
 
     anime.title = title;
     anime.description = description;
     anime.episodesAmount = episodesAmount;
 
-    await this.notificationsRepository.create({
-      target_id: anime.created_by_id,
-      content: `O anime ${anime.title} foi atualizado.`,
-    });
+    if (anime.created_by_id) {
+      await this.notificationsRepository.create({
+        target_id: anime.created_by_id,
+        content: `O anime ${anime.title} foi atualizado.`,
+      });
+    }
 
     return this.animesRepository.save(anime);
   }

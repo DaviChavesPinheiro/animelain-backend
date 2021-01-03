@@ -13,7 +13,7 @@ class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar' })
+  @Column()
   name: string;
 
   @OneToMany(() => Genre, genre => genre.category)

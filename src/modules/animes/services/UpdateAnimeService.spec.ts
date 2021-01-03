@@ -185,35 +185,35 @@ describe('UpdateAnimeService', () => {
     expect(updatedAnime2.genres[0]).toHaveProperty('score', 2);
   });
 
-  it('should be able to update an anime with a valid character', async () => {
-    const anime = await fakeAnimesRepository.create({
-      title: 'Naruto',
-      description: 'description',
-      episodesAmount: 10,
-      created_by_id: 'some_id',
-    });
+  // it('should be able to update an anime with a valid character', async () => {
+  //   const anime = await fakeAnimesRepository.create({
+  //     title: 'Naruto',
+  //     description: 'description',
+  //     episodesAmount: 10,
+  //     created_by_id: 'some_id',
+  //   });
 
-    const character = await fakeCharactersRepository.create({
-      name: 'naruto',
-      description: 'description',
-      age: 18,
-    });
+  //   const character = await fakeCharactersRepository.create({
+  //     name: 'naruto',
+  //     description: 'description',
+  //     age: 18,
+  //   });
 
-    const updatedAnime = await updateProfileService.execute({
-      anime_id: anime.id,
-      title: 'Naruto',
-      description: 'description',
-      episodesAmount: 10,
-      characters: [
-        {
-          id: character.id,
-        },
-      ],
-    });
+  //   const updatedAnime = await updateProfileService.execute({
+  //     anime_id: anime.id,
+  //     title: 'Naruto',
+  //     description: 'description',
+  //     episodesAmount: 10,
+  //     characters: [
+  //       {
+  //         id: character.id,
+  //       },
+  //     ],
+  //   });
 
-    expect(updatedAnime.characters).toHaveLength(1);
-    expect(updatedAnime.characters[0]).toHaveProperty('id');
-  });
+  //   expect(updatedAnime.characters).toHaveLength(1);
+  //   expect(updatedAnime.characters[0]).toHaveProperty('id');
+  // });
 
   it('should be able to update an anime to the same title', async () => {
     const anime = await fakeAnimesRepository.create({

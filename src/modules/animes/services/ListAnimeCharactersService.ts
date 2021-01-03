@@ -19,7 +19,7 @@ export default class ListAnimeCharactersService {
   ) {}
 
   public async execute({ anime_id }: IRequest): Promise<AnimeCharacter[]> {
-    const anime = await this.animeRepository.findById({ id: anime_id });
+    const anime = await this.animeRepository.findById(anime_id);
 
     if (!anime) {
       throw new AppError('Anime does not exist');

@@ -18,7 +18,10 @@ class UpdateCharacterBannerService {
     private storageProvider: IStorageProvider,
   ) {}
 
-  public async execute({ character_id, avatarFilename }: IRequest): Promise<Character> {
+  public async execute({
+    character_id,
+    avatarFilename,
+  }: IRequest): Promise<Character> {
     const character = await this.charactersRepository.findById(character_id);
 
     if (!character) {

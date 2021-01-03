@@ -35,7 +35,7 @@ export default class AddAnimeCharacterService {
       throw new AppError('Character does not exist');
     }
 
-    const anime = await this.animesRepository.findById({ id: anime_id });
+    const anime = await this.animesRepository.findById(anime_id);
 
     if (!anime) {
       throw new AppError('Anime does not exist');

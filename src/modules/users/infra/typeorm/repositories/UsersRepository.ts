@@ -11,10 +11,11 @@ class UsersRepository implements IUsersRepository {
   }
 
   public async findById(id: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: { id },
-    });
-    return user;
+    const query = this.ormRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id });
+
+    return query.getOne();
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {

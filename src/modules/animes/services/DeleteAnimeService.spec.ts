@@ -33,8 +33,6 @@ describe('DeleteAnimeService', () => {
       id: anime.id,
     });
 
-    expect(await fakeAnimesRepository.findById({ id: anime.id })).toBe(
-      undefined,
-    );
+    expect(await fakeAnimesRepository.findById(anime.id)).toBe(undefined);
   });
 });

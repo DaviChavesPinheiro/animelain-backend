@@ -19,8 +19,8 @@ class UserToken {
   @Generated('uuid')
   token: string;
 
-  @Column('uuid', { nullable: true })
-  user_id: string;
+  @Column()
+  user_id?: string;
 
   @ManyToOne(() => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
