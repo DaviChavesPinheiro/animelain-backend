@@ -20,7 +20,7 @@ class UpdateAnimeProfileService {
   ) {}
 
   public async execute({ anime_id, avatarFilename }: IRequest): Promise<Anime> {
-    const anime = await this.animesRepository.findById(anime_id);
+    const anime = await this.animesRepository.findById({ id: anime_id });
 
     if (!anime) {
       throw new AppError('This anime does not exist', 401);

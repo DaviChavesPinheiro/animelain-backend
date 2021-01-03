@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import Category from '../infra/typeorm/entities/Category';
 import ICharactersRepository from '../repositories/ICategoriesRepository';
@@ -14,8 +15,12 @@ export default class ListCategoryService {
   ) {}
 
   public async execute({ id }: IRequest): Promise<Category | undefined> {
-    const character = this.categoriesRepository.findById(id);
+    const category = await this.categoriesRepository.findById(id);
 
-    return character;
+    if (!category) {
+      throw new AppError('This category does not exist');
+    }
+
+    return category;
   }
 }

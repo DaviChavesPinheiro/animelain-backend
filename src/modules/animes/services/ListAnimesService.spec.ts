@@ -18,7 +18,7 @@ describe('ListAnimes', () => {
   });
 
   it('should be able to list all animes', async () => {
-    const animes = await listAnimesService.execute();
+    const animes = await listAnimesService.execute({});
 
     expect(animes).toMatchObject<Anime[]>(animes);
   });

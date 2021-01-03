@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import Character from '../infra/typeorm/entities/Character';
 import ICharactersRepository from '../repositories/ICharactersRepository';
@@ -14,7 +15,11 @@ export default class ListAnimesService {
   ) {}
 
   public async execute({ id }: IRequest): Promise<Character | undefined> {
-    const character = this.charactersRepository.findById(id);
+    const character = await this.charactersRepository.findById(id);
+
+    if (!character) {
+      throw new AppError('This character does not exist');
+    }
 
     return character;
   }

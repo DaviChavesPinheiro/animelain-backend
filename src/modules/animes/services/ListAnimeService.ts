@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import Anime from '../infra/typeorm/entities/Anime';
 import IAnimeRepository from '../repositories/IAnimesRepository';
@@ -15,7 +16,11 @@ export default class ListAnimesService {
   ) {}
 
   public async execute({ id, user_id }: IRequest): Promise<Anime | undefined> {
-    const anime = this.animesRepository.findById({ id, user_id });
+    const anime = await this.animesRepository.findById({ id, user_id });
+
+    if (!anime) {
+      throw new AppError('This anime does not exist');
+    }
 
     return anime;
   }

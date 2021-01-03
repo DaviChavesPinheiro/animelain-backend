@@ -3,7 +3,6 @@ import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
-import Category from '@modules/categories/infra/typeorm/entities/Category';
 import ICharactersRepository from '@modules/characters/repositories/ICharactersRepository';
 import IAnimeRepository from '../repositories/IAnimesRepository';
 import Anime from '../infra/typeorm/entities/Anime';
@@ -54,7 +53,7 @@ class UpdateAnimeService {
     genres,
     characters,
   }: IRequest): Promise<Anime> {
-    const anime = await this.animesRepository.findById(anime_id);
+    const anime = await this.animesRepository.findById({ id: anime_id });
 
     if (!anime) {
       throw new AppError('Anime not found.');

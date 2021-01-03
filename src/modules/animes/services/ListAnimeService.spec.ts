@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import Anime from '../infra/typeorm/entities/Anime';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 import ListAnimeService from './ListAnimeService';
@@ -9,6 +10,14 @@ describe('ListAnime', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
     listAnimeService = new ListAnimeService(fakeAnimesRepository);
+  });
+
+  it('should be able to list an anime', async () => {
+    await expect(
+      listAnimeService.execute({
+        id: 'some_non_existent_anime_id',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 
   it('should be able to list an anime', async () => {

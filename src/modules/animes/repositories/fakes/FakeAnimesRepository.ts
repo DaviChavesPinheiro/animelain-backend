@@ -35,10 +35,7 @@ export default class FakeAnimesRepository implements IAnimeRepository {
     return anime;
   }
 
-  public async findById({
-    id,
-    user_id,
-  }: IFindAnimeByIdDTO): Promise<Anime | undefined> {
+  public async findById({ id }: IFindAnimeByIdDTO): Promise<Anime | undefined> {
     const animeWithSameId = this.animes.find(anime => anime.id === id);
 
     return animeWithSameId;
@@ -69,14 +66,16 @@ export default class FakeAnimesRepository implements IAnimeRepository {
   }
 
   public async findNews(): Promise<Anime[]> {
-    throw new Error('Method not implemented.');
+    return this.animes;
   }
 
   public async findInSeason(): Promise<Anime[]> {
-    throw new Error('Method not implemented.');
+    return this.animes;
   }
 
-  public async findFavoritesByUserId(id: string): Promise<Anime[]> {
-    throw new Error('Method not implemented.');
+  public async findFavoritesByUserId(user_id: string): Promise<Anime[]> {
+    return this.animes.filter(anime =>
+      anime.favorite_users?.find(user => user.id === user_id),
+    );
   }
 }

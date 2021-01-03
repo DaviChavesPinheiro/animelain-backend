@@ -25,13 +25,17 @@ export default class AddFavoriteAnimeService {
       throw new AppError('User does not exist');
     }
 
-    const anime = await this.animesRepository.findById(anime_id);
+    const anime = await this.animesRepository.findById({ id: anime_id });
 
     if (!anime) {
       throw new AppError('Anime does not exist');
     }
 
-    const checkIfAnimeIsAlreadyFavorited = user.favorite_animes?.find(
+    const userFavoriteAnimes = await this.animesRepository.findFavoritesByUserId(
+      user.id,
+    );
+
+    const checkIfAnimeIsAlreadyFavorited = userFavoriteAnimes.find(
       favoriteAnime => favoriteAnime.id === anime_id,
     );
 
@@ -41,7 +45,7 @@ export default class AddFavoriteAnimeService {
       );
     }
 
-    user.favorite_animes = [...(user.favorite_animes || []), anime];
+    user.favorite_animes = [...(userFavoriteAnimes || []), anime];
 
     this.usersRepository.save(user);
   }

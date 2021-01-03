@@ -35,7 +35,7 @@ class User {
     onUpdate: 'CASCADE',
   })
   @JoinTable({ name: 'favorite_animes' })
-  favorite_animes: Anime[];
+  favorite_animes?: Anime[];
 
   @Column('boolean', { default: false })
   isAdmin: boolean;

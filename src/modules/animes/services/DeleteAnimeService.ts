@@ -15,7 +15,7 @@ class DeleteAnimeService {
   ) {}
 
   public async execute({ id }: IRequest): Promise<void> {
-    const anime = await this.animesRepository.findById(id);
+    const anime = await this.animesRepository.findById({ id });
 
     if (!anime) {
       throw new AppError('Anime does not exist.');
