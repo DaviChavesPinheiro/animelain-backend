@@ -75,7 +75,11 @@ export default class AnimesRepository implements IAnimeRepository {
       .leftJoin('genre.category', 'category')
       .addSelect(['category.id', 'category.name'])
       .leftJoin('anime.animes_characters', 'anime_character')
-      .addSelect(['anime_character.character_id'])
+      .addSelect([
+        'anime_character.id',
+        'anime_character.character_id',
+        'anime_character.role',
+      ])
       .leftJoin('anime_character.character', 'character')
       .addSelect([
         'character.id',

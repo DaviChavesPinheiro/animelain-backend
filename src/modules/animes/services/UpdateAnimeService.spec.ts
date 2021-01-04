@@ -1,29 +1,21 @@
 import AppError from '@shared/errors/AppError';
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
-import FakeCategoriesRepository from '@modules/categories/repositories/fakes/FakeCategoriesRepository';
-import FakeCharactersRepository from '@modules/characters/repositories/fakes/FakeCharactersRepository';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 
 import UpdateProfileService from './UpdateAnimeService';
 
 let fakeAnimesRepository: FakeAnimesRepository;
-let fakeCategoriesRepository: FakeCategoriesRepository;
-let fakeCharactersRepository: FakeCharactersRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
 let updateProfileService: UpdateProfileService;
 
 describe('UpdateAnimeService', () => {
   beforeEach(() => {
     fakeAnimesRepository = new FakeAnimesRepository();
-    fakeCategoriesRepository = new FakeCategoriesRepository();
-    fakeCharactersRepository = new FakeCharactersRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
 
     updateProfileService = new UpdateProfileService(
       fakeAnimesRepository,
       fakeNotificationsRepository,
-      fakeCategoriesRepository,
-      fakeCharactersRepository,
     );
   });
 
@@ -81,109 +73,109 @@ describe('UpdateAnimeService', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to update an anime with a non existent category', async () => {
-    const anime = await fakeAnimesRepository.create({
-      title: 'Naruto',
-      description: 'description',
-      episodesAmount: 10,
-      created_by_id: 'some_id',
-    });
+  // it('should not be able to update an anime with a non existent category', async () => {
+  //   const anime = await fakeAnimesRepository.create({
+  //     title: 'Naruto',
+  //     description: 'description',
+  //     episodesAmount: 10,
+  //     created_by_id: 'some_id',
+  //   });
 
-    expect(
-      updateProfileService.execute({
-        anime_id: anime.id,
-        title: 'Naruto',
-        description: 'description',
-        episodesAmount: 10,
-        genres: [
-          {
-            score: 1,
-            category: {
-              id: 'non-existent-category-id',
-            },
-          },
-        ],
-      }),
-    ).rejects.toBeInstanceOf(AppError);
-  });
+  //   expect(
+  //     updateProfileService.execute({
+  //       anime_id: anime.id,
+  //       title: 'Naruto',
+  //       description: 'description',
+  //       episodesAmount: 10,
+  //       genres: [
+  //         {
+  //           score: 1,
+  //           category: {
+  //             id: 'non-existent-category-id',
+  //           },
+  //         },
+  //       ],
+  //     }),
+  //   ).rejects.toBeInstanceOf(AppError);
+  // });
 
-  it('should not be able to update an anime with a non existent character', async () => {
-    const anime = await fakeAnimesRepository.create({
-      title: 'Naruto',
-      description: 'description',
-      episodesAmount: 10,
-      created_by_id: 'some_id',
-    });
+  // it('should not be able to update an anime with a non existent character', async () => {
+  //   const anime = await fakeAnimesRepository.create({
+  //     title: 'Naruto',
+  //     description: 'description',
+  //     episodesAmount: 10,
+  //     created_by_id: 'some_id',
+  //   });
 
-    expect(
-      updateProfileService.execute({
-        anime_id: anime.id,
-        title: 'Naruto',
-        description: 'description',
-        episodesAmount: 10,
-        characters: [
-          {
-            id: 'non-existent-character-id',
-          },
-        ],
-      }),
-    ).rejects.toBeInstanceOf(AppError);
-  });
+  //   expect(
+  //     updateProfileService.execute({
+  //       anime_id: anime.id,
+  //       title: 'Naruto',
+  //       description: 'description',
+  //       episodesAmount: 10,
+  //       characters: [
+  //         {
+  //           id: 'non-existent-character-id',
+  //         },
+  //       ],
+  //     }),
+  //   ).rejects.toBeInstanceOf(AppError);
+  // });
 
-  it('should be able to update an anime with a valid genre', async () => {
-    const anime = await fakeAnimesRepository.create({
-      title: 'Naruto',
-      description: 'description',
-      episodesAmount: 10,
-      created_by_id: 'some_id',
-    });
+  // it('should be able to update an anime with a valid genre', async () => {
+  //   const anime = await fakeAnimesRepository.create({
+  //     title: 'Naruto',
+  //     description: 'description',
+  //     episodesAmount: 10,
+  //     created_by_id: 'some_id',
+  //   });
 
-    const category = await fakeCategoriesRepository.create({
-      name: 'seinen',
-    });
+  //   const category = await fakeCategoriesRepository.create({
+  //     name: 'seinen',
+  //   });
 
-    const updatedAnime1 = await updateProfileService.execute({
-      anime_id: anime.id,
-      title: 'Naruto',
-      description: 'description',
-      episodesAmount: 10,
-      genres: [
-        {
-          score: 1,
-          category: {
-            id: category.id,
-          },
-        },
-      ],
-    });
+  //   const updatedAnime1 = await updateProfileService.execute({
+  //     anime_id: anime.id,
+  //     title: 'Naruto',
+  //     description: 'description',
+  //     episodesAmount: 10,
+  //     genres: [
+  //       {
+  //         score: 1,
+  //         category: {
+  //           id: category.id,
+  //         },
+  //       },
+  //     ],
+  //   });
 
-    expect(updatedAnime1.genres).toHaveLength(1);
-    expect(updatedAnime1.genres[0]).toHaveProperty('id');
-    expect(updatedAnime1.genres[0]).toHaveProperty('score', 1);
+  //   expect(updatedAnime1.genres).toHaveLength(1);
+  //   expect(updatedAnime1.genres[0]).toHaveProperty('id');
+  //   expect(updatedAnime1.genres[0]).toHaveProperty('score', 1);
 
-    const updatedAnime2 = await updateProfileService.execute({
-      anime_id: anime.id,
-      title: 'Naruto',
-      description: 'description',
-      episodesAmount: 10,
-      genres: [
-        {
-          id: updatedAnime1.genres[0].id,
-          score: 2,
-          category: {
-            id: category.id,
-          },
-        },
-      ],
-    });
+  //   const updatedAnime2 = await updateProfileService.execute({
+  //     anime_id: anime.id,
+  //     title: 'Naruto',
+  //     description: 'description',
+  //     episodesAmount: 10,
+  //     genres: [
+  //       {
+  //         id: updatedAnime1.genres[0].id,
+  //         score: 2,
+  //         category: {
+  //           id: category.id,
+  //         },
+  //       },
+  //     ],
+  //   });
 
-    expect(updatedAnime2.genres).toHaveLength(1);
-    expect(updatedAnime2.genres[0]).toHaveProperty(
-      'id',
-      updatedAnime1.genres[0].id,
-    );
-    expect(updatedAnime2.genres[0]).toHaveProperty('score', 2);
-  });
+  //   expect(updatedAnime2.genres).toHaveLength(1);
+  //   expect(updatedAnime2.genres[0]).toHaveProperty(
+  //     'id',
+  //     updatedAnime1.genres[0].id,
+  //   );
+  //   expect(updatedAnime2.genres[0]).toHaveProperty('score', 2);
+  // });
 
   // it('should be able to update an anime with a valid character', async () => {
   //   const anime = await fakeAnimesRepository.create({

@@ -2,31 +2,14 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
-import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
-import ICharactersRepository from '@modules/characters/repositories/ICharactersRepository';
 import IAnimeRepository from '../repositories/IAnimesRepository';
 import Anime from '../infra/typeorm/entities/Anime';
-import Genre from '../infra/typeorm/entities/Genre';
-
-interface ICharacter {
-  id: string;
-}
-
-interface IGenre {
-  id?: string;
-  score: number;
-  category: {
-    id: string;
-  };
-}
 
 interface IRequest {
   anime_id: string;
-  title: string;
-  description: string;
-  episodesAmount: number;
-  genres?: IGenre[];
-  characters?: ICharacter[];
+  title?: string;
+  description?: string;
+  episodesAmount?: number;
 }
 
 @injectable()
@@ -37,12 +20,6 @@ class UpdateAnimeService {
 
     @inject('NotificationsRepository')
     private notificationsRepository: INotificationsRepository,
-
-    @inject('CategoriesRepository')
-    private categoriesRepository: ICategoriesRepository,
-
-    @inject('CharactersRepository')
-    private charactersRepository: ICharactersRepository,
   ) {}
 
   public async execute({
@@ -50,8 +27,6 @@ class UpdateAnimeService {
     title,
     description,
     episodesAmount,
-    genres,
-    characters,
   }: IRequest): Promise<Anime> {
     const anime = await this.animesRepository.findById(anime_id);
 
@@ -59,55 +34,67 @@ class UpdateAnimeService {
       throw new AppError('Anime not found.');
     }
 
-    if (!Number.isInteger(episodesAmount) || Number(episodesAmount) < 0) {
-      throw new AppError('Episodes cannot be negative');
-    }
-
-    const findAnimeWithSameTitle = await this.animesRepository.findByTitle(
-      title,
-    );
-
-    if (findAnimeWithSameTitle && findAnimeWithSameTitle.id !== anime_id) {
-      throw new AppError('This anime already exists');
-    }
-
-    if (genres) {
-      const categoriesIdsToAdd = genres.map(genre => genre.category.id);
-
-      const existentCategories = await this.categoriesRepository.findAllById(
-        categoriesIdsToAdd,
-      );
-
-      const nonexistentCategoriesIds = categoriesIdsToAdd.filter(
-        categoryIdToAdd =>
-          !existentCategories.find(
-            existentCategory => existentCategory.id === categoryIdToAdd,
-          ),
-      );
-
-      if (nonexistentCategoriesIds.length) {
-        throw new AppError(
-          `The category ${nonexistentCategoriesIds[0]} does not exist`,
-        );
+    if (episodesAmount) {
+      if (!Number.isInteger(episodesAmount) || Number(episodesAmount) < 0) {
+        throw new AppError('Episodes cannot be negative');
       }
 
-      const existentCategoriesIds = existentCategories.map(
-        category => category.id,
+      anime.episodesAmount = episodesAmount;
+    }
+
+    if (title) {
+      const findAnimeWithSameTitle = await this.animesRepository.findByTitle(
+        title,
       );
 
-      const validGenres = genres.filter(genre => {
-        return existentCategoriesIds.includes(genre.category.id);
-      });
+      if (findAnimeWithSameTitle && findAnimeWithSameTitle.id !== anime_id) {
+        throw new AppError('This anime already exists');
+      }
 
-      anime.genres = validGenres.map(genre => {
-        return Object.assign(new Genre(), {
-          ...genre,
-          category: existentCategories.find(
-            category => category.id === genre.category.id,
-          ),
-        });
-      });
+      anime.title = title;
     }
+
+    if (description) {
+      anime.description = description;
+    }
+
+    // if (genres) {
+    //   const categoriesIdsToAdd = genres.map(genre => genre.category.id);
+
+    //   const existentCategories = await this.categoriesRepository.findAllById(
+    //     categoriesIdsToAdd,
+    //   );
+
+    //   const nonexistentCategoriesIds = categoriesIdsToAdd.filter(
+    //     categoryIdToAdd =>
+    //       !existentCategories.find(
+    //         existentCategory => existentCategory.id === categoryIdToAdd,
+    //       ),
+    //   );
+
+    //   if (nonexistentCategoriesIds.length) {
+    //     throw new AppError(
+    //       `The category ${nonexistentCategoriesIds[0]} does not exist`,
+    //     );
+    //   }
+
+    //   const existentCategoriesIds = existentCategories.map(
+    //     category => category.id,
+    //   );
+
+    //   const validGenres = genres.filter(genre => {
+    //     return existentCategoriesIds.includes(genre.category.id);
+    //   });
+
+    //   anime.genres = validGenres.map(genre => {
+    //     return Object.assign(new Genre(), {
+    //       ...genre,
+    //       category: existentCategories.find(
+    //         category => category.id === genre.category.id,
+    //       ),
+    //     });
+    //   });
+    // }
 
     // if (characters) {
     //   const charactersIdsToAdd = characters.map(character => character.id);
@@ -131,10 +118,6 @@ class UpdateAnimeService {
 
     //   anime.characters = existentCharacters;
     // }
-
-    anime.title = title;
-    anime.description = description;
-    anime.episodesAmount = episodesAmount;
 
     if (anime.created_by_id) {
       await this.notificationsRepository.create({

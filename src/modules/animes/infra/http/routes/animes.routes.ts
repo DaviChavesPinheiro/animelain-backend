@@ -44,27 +44,11 @@ animesRouter.post(
 animesRouter.put(
   '/:id',
   celebrate({
-    [Segments.BODY]: Joi.object()
-      .options({ stripUnknown: true })
-      .keys({
-        title: Joi.string().required(),
-        description: Joi.string().required(),
-        episodesAmount: Joi.number().integer().required(),
-        genres: Joi.array().items(
-          Joi.object().keys({
-            id: Joi.string().uuid(),
-            score: Joi.number().integer().required(),
-            category: Joi.object().keys({
-              id: Joi.string().uuid().required(),
-            }),
-          }),
-        ),
-        characters: Joi.array().items(
-          Joi.object().keys({
-            id: Joi.string().uuid().required(),
-          }),
-        ),
-      }),
+    [Segments.BODY]: Joi.object().options({ stripUnknown: true }).keys({
+      title: Joi.string(),
+      description: Joi.string(),
+      episodesAmount: Joi.number().integer(),
+    }),
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().uuid().required(),
     }),

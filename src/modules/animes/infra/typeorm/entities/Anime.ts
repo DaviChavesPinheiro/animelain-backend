@@ -33,7 +33,7 @@ class Anime {
   @Column()
   created_by_id?: string;
 
-  @ManyToOne(() => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'created_by_id' })
   created_by: User;
 
@@ -43,9 +43,7 @@ class Anime {
   @Column()
   banner?: string;
 
-  @OneToMany(() => Genre, genre => genre.anime, {
-    cascade: true,
-  })
+  @OneToMany(() => Genre, genre => genre.anime)
   genres: Genre[];
 
   @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.anime)
