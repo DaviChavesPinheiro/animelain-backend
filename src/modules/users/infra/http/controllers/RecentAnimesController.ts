@@ -25,12 +25,12 @@ export default class RecentAnimesController {
       AddRecentUserAnimeService,
     );
 
-    await addFavoriteAnimeService.execute({
+    const anime = await addFavoriteAnimeService.execute({
       anime_id,
       user_id,
     });
 
-    return response.status(204).json();
+    return response.json(anime);
   }
 
   public async remove(request: Request, response: Response): Promise<Response> {
@@ -40,11 +40,11 @@ export default class RecentAnimesController {
       RemoveRecentUserAnimeService,
     );
 
-    await removeFavoriteAnimeService.execute({
+    const anime = await removeFavoriteAnimeService.execute({
       anime_id,
       user_id,
     });
 
-    return response.status(204).json();
+    return response.json(anime);
   }
 }

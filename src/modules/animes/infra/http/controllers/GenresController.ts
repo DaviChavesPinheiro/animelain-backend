@@ -22,13 +22,13 @@ export default class GenresController {
 
     const addGenreService = container.resolve(AddGenreService);
 
-    await addGenreService.execute({
+    const anime = await addGenreService.execute({
       anime_id,
       category_id,
       score: Number(score),
     });
 
-    return response.status(204).json();
+    return response.json(anime);
   }
 
   public async remove(request: Request, response: Response): Promise<Response> {
@@ -36,11 +36,11 @@ export default class GenresController {
 
     const removeGenreService = container.resolve(RemoveGenreService);
 
-    await removeGenreService.execute({
+    const anime = await removeGenreService.execute({
       anime_id,
       category_id,
     });
 
-    return response.status(204).json();
+    return response.json(anime);
   }
 }
