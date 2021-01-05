@@ -8,11 +8,11 @@ import { container } from 'tsyringe';
 export default class RecentAnimesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { id: user_id } = request.user;
-    const listFavoriteAnimesService = container.resolve(
+    const listRecentUserAnimesService = container.resolve(
       ListRecentUserAnimesService,
     );
 
-    const animes = await listFavoriteAnimesService.execute({
+    const animes = await listRecentUserAnimesService.execute({
       user_id,
     });
 
@@ -22,30 +22,30 @@ export default class RecentAnimesController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { id: anime_id } = request.params;
     const { id: user_id } = request.user;
-    const addFavoriteAnimeService = container.resolve(
+    const addRecentUserAnimeService = container.resolve(
       AddRecentUserAnimeService,
     );
 
-    const anime = await addFavoriteAnimeService.execute({
+    const anime = await addRecentUserAnimeService.execute({
       anime_id,
       user_id,
     });
 
-    return response.json(anime);
+    return response.json(classToClass(anime));
   }
 
   public async remove(request: Request, response: Response): Promise<Response> {
     const { id: anime_id } = request.params;
     const { id: user_id } = request.user;
-    const removeFavoriteAnimeService = container.resolve(
+    const removeRecentUserAnimeService = container.resolve(
       RemoveRecentUserAnimeService,
     );
 
-    const anime = await removeFavoriteAnimeService.execute({
+    const anime = await removeRecentUserAnimeService.execute({
       anime_id,
       user_id,
     });
 
-    return response.json(anime);
+    return response.json(classToClass(anime));
   }
 }

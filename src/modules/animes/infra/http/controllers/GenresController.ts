@@ -1,6 +1,7 @@
 import AddGenreService from '@modules/animes/services/AddGenreService';
 import ListGenresService from '@modules/animes/services/ListGenresService';
 import RemoveGenreService from '@modules/animes/services/RemoveGenreService';
+import { classToClass } from 'class-transformer';
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
@@ -9,11 +10,11 @@ export default class GenresController {
     const { id: anime_id } = request.params;
     const listGenresService = container.resolve(ListGenresService);
 
-    const animes = await listGenresService.execute({
+    const genres = await listGenresService.execute({
       anime_id,
     });
 
-    return response.json(animes);
+    return response.json(classToClass(genres));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -22,13 +23,13 @@ export default class GenresController {
 
     const addGenreService = container.resolve(AddGenreService);
 
-    const anime = await addGenreService.execute({
+    const genre = await addGenreService.execute({
       anime_id,
       category_id,
       score: Number(score),
     });
 
-    return response.json(anime);
+    return response.json(classToClass(genre));
   }
 
   public async remove(request: Request, response: Response): Promise<Response> {
@@ -36,11 +37,11 @@ export default class GenresController {
 
     const removeGenreService = container.resolve(RemoveGenreService);
 
-    const anime = await removeGenreService.execute({
+    const genre = await removeGenreService.execute({
       anime_id,
       category_id,
     });
 
-    return response.json(anime);
+    return response.json(classToClass(genre));
   }
 }

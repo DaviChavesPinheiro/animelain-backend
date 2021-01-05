@@ -1,5 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
+import Category from '../infra/typeorm/entities/Category';
 import ICategoriesRepository from '../repositories/ICategoriesRepository';
 
 interface IRequest {
@@ -13,7 +14,7 @@ export default class CreateCategoryService {
     private categoriesRepository: ICategoriesRepository,
   ) {}
 
-  public async execute({ name }: IRequest): Promise<IRequest> {
+  public async execute({ name }: IRequest): Promise<Category> {
     const categoryWithSameName = await this.categoriesRepository.findByName(
       name,
     );

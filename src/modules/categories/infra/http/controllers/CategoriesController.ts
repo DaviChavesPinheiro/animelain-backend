@@ -1,6 +1,7 @@
 import CreateCategoryService from '@modules/categories/services/CreateCategoryService';
 import DeleteCategoryService from '@modules/categories/services/DeleteCategoryService';
 import ListCategoriesService from '@modules/categories/services/ListCategoriesService';
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -14,7 +15,7 @@ export default class CategoriesController {
       search: search as string,
     });
 
-    return response.json(categories);
+    return response.json(classToClass(categories));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -25,7 +26,7 @@ export default class CategoriesController {
       name,
     });
 
-    return response.json(category);
+    return response.json(classToClass(category));
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {

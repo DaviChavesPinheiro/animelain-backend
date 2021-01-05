@@ -1,6 +1,7 @@
 import AddAnimeCharacterService from '@modules/animes/services/AddAnimeCharacterService';
 import ListAnimeCharactersService from '@modules/animes/services/ListAnimeCharactersService';
 import RemoveAnimeCharacterService from '@modules/animes/services/RemoveAnimeCharacterService';
+import { classToClass } from 'class-transformer';
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
@@ -15,7 +16,7 @@ export default class AnimesCharactersController {
       anime_id,
     });
 
-    return response.json(animes);
+    return response.json(classToClass(animes));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -25,12 +26,12 @@ export default class AnimesCharactersController {
       AddAnimeCharacterService,
     );
 
-    await addAnimeCharacterService.execute({
+    const animeCharacter = await addAnimeCharacterService.execute({
       anime_id,
       character_id,
     });
 
-    return response.status(204).json();
+    return response.json(classToClass(animeCharacter));
   }
 
   public async remove(request: Request, response: Response): Promise<Response> {
@@ -40,11 +41,11 @@ export default class AnimesCharactersController {
       RemoveAnimeCharacterService,
     );
 
-    await removeAnimeCharacterService.execute({
+    const animeCharacter = await removeAnimeCharacterService.execute({
       anime_id,
       character_id,
     });
 
-    return response.status(204).json();
+    return response.json(classToClass(animeCharacter));
   }
 }

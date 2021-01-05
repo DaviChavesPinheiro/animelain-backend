@@ -31,7 +31,7 @@ export default class FavoriteAnimesController {
       user_id,
     });
 
-    return response.json(favoriteUserAnime);
+    return response.json(classToClass(favoriteUserAnime));
   }
 
   public async remove(request: Request, response: Response): Promise<Response> {
@@ -46,6 +46,6 @@ export default class FavoriteAnimesController {
       user_id,
     });
 
-    return response.json(favoriteUserAnime);
+    return response.json(classToClass(favoriteUserAnime));
   }
 }
