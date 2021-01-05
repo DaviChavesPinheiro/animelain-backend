@@ -3,6 +3,7 @@ import ICreateAnimeDTO from '@modules/animes/dtos/ICreateAnimeDTO';
 import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import IFindAnimeDTO from '@modules/animes/dtos/IFindAnimeDTO';
 import getCurrentSeason from '@shared/utils/getCurrentSeason';
+import IFindAnimeOptionsDTO from '@modules/animes/dtos/IFindAnimeOptionsDTO';
 import Anime from '../entities/Anime';
 
 export default class AnimesRepository implements IAnimeRepository {
@@ -12,7 +13,10 @@ export default class AnimesRepository implements IAnimeRepository {
     this.ormRepository = getRepository(Anime);
   }
 
-  public async find({ search, categories }: IFindAnimeDTO): Promise<Anime[]> {
+  public async find(
+    { search, categories }: IFindAnimeDTO,
+    { page }: IFindAnimeOptionsDTO = {},
+  ): Promise<Anime[]> {
     let query = this.ormRepository
       .createQueryBuilder('anime')
       .select([
@@ -40,7 +44,10 @@ export default class AnimesRepository implements IAnimeRepository {
         });
     }
 
-    return query.getMany();
+    return query
+      .take(25)
+      .skip(((page || 1) - 1) * 25)
+      .getMany();
   }
 
   public async findByTitle(title: string): Promise<Anime | undefined> {
