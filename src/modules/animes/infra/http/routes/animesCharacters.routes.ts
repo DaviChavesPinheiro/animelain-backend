@@ -19,7 +19,7 @@ animesCharactersRouter.get(
 );
 
 animesCharactersRouter.post(
-  '/:anime_id/add/:character_id',
+  '/:anime_id/:character_id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       anime_id: Joi.string().uuid().required(),
@@ -30,7 +30,7 @@ animesCharactersRouter.post(
   animesCharactersController.create,
 );
 animesCharactersRouter.delete(
-  '/:anime_id/remove/:character_id',
+  '/:anime_id/:character_id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       anime_id: Joi.string().uuid().required(),

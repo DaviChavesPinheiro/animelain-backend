@@ -15,7 +15,7 @@ favoriteAnimesRouter.get(
 );
 
 favoriteAnimesRouter.post(
-  '/add/:id',
+  '/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().uuid().required(),
@@ -25,7 +25,7 @@ favoriteAnimesRouter.post(
   favoriteAnimesController.create,
 );
 favoriteAnimesRouter.delete(
-  '/remove/:id',
+  '/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().uuid().required(),

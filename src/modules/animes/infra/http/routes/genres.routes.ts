@@ -19,7 +19,7 @@ genresRouter.get(
 );
 
 genresRouter.post(
-  '/:anime_id/add/:category_id',
+  '/:anime_id/:category_id',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       score: Joi.number().positive().required(),
@@ -33,7 +33,7 @@ genresRouter.post(
   genresController.create,
 );
 genresRouter.delete(
-  '/:anime_id/remove/:category_id',
+  '/:anime_id/:category_id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       anime_id: Joi.string().uuid().required(),

@@ -11,7 +11,7 @@ const recentAnimesController = new RecentAnimesController();
 recentAnimesRouter.get('/', ensureAuthenticated, recentAnimesController.index);
 
 recentAnimesRouter.post(
-  '/add/:id',
+  '/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().uuid().required(),
@@ -21,7 +21,7 @@ recentAnimesRouter.post(
   recentAnimesController.create,
 );
 recentAnimesRouter.delete(
-  '/remove/:id',
+  '/:id',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().uuid().required(),

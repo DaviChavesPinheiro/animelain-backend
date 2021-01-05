@@ -1,6 +1,7 @@
 import AddRecentUserAnimeService from '@modules/users/services/AddRecentUserAnimeService';
 import ListRecentUserAnimesService from '@modules/users/services/ListRecentUserAnimesService';
 import RemoveRecentUserAnimeService from '@modules/users/services/RemoveRecentUserAnimeService';
+import { classToClass } from 'class-transformer';
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
@@ -15,7 +16,7 @@ export default class RecentAnimesController {
       user_id,
     });
 
-    return response.json(animes);
+    return response.json(classToClass(animes));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

@@ -19,6 +19,7 @@ export default class AnimesRepository implements IAnimeRepository {
         'anime.id',
         'anime.title',
         'anime.episodesAmount',
+        'anime.authors',
         'anime.created_by_id',
         'anime.profile',
         'anime.banner',

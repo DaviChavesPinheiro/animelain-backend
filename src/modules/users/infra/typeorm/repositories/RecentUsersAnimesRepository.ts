@@ -12,11 +12,19 @@ class RecentUsersAnimesRepository implements IRecentUsersAnimesRepository {
   }
 
   public async findByUserId(user_id: string): Promise<RecentUserAnime[]> {
-    const recentUserAnime = await this.ormRepository.find({
-      user_id,
-    });
+    const query = this.ormRepository
+      .createQueryBuilder('recentUserAnime')
+      .where('recentUserAnime.user_id = :user_id', { user_id })
+      .leftJoin('recentUserAnime.anime', 'anime')
+      .addSelect([
+        'anime.id',
+        'anime.title',
+        'anime.episodesAmount',
+        'anime.profile',
+        'anime.banner',
+      ]);
 
-    return recentUserAnime;
+    return query.getMany();
   }
 
   public async findByUserIdAndAnimeId({

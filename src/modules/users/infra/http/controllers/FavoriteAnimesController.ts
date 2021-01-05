@@ -1,6 +1,7 @@
 import AddFavoriteUserAnimeService from '@modules/users/services/AddFavoriteUserAnimeService';
 import ListFavoriteUserAnimesService from '@modules/users/services/ListFavoriteUserAnimesService';
 import RemoveFavoriteUserAnimeService from '@modules/users/services/RemoveFavoriteUserAnimeService';
+import { classToClass } from 'class-transformer';
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
@@ -11,11 +12,11 @@ export default class FavoriteAnimesController {
       ListFavoriteUserAnimesService,
     );
 
-    const animes = await listFavoriteAnimesService.execute({
+    const favoriteUserAnimes = await listFavoriteAnimesService.execute({
       user_id,
     });
 
-    return response.json(animes);
+    return response.json(classToClass(favoriteUserAnimes));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -25,12 +26,12 @@ export default class FavoriteAnimesController {
       AddFavoriteUserAnimeService,
     );
 
-    const anime = await addFavoriteAnimeService.execute({
+    const favoriteUserAnime = await addFavoriteAnimeService.execute({
       anime_id,
       user_id,
     });
 
-    return response.json(anime);
+    return response.json(favoriteUserAnime);
   }
 
   public async remove(request: Request, response: Response): Promise<Response> {
@@ -40,11 +41,11 @@ export default class FavoriteAnimesController {
       RemoveFavoriteUserAnimeService,
     );
 
-    const anime = await removeFavoriteAnimeService.execute({
+    const favoriteUserAnime = await removeFavoriteAnimeService.execute({
       anime_id,
       user_id,
     });
 
-    return response.json(anime);
+    return response.json(favoriteUserAnime);
   }
 }

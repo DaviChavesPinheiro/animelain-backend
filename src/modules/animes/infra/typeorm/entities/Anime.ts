@@ -31,6 +31,9 @@ class Anime {
   episodesAmount: number;
 
   @Column()
+  authors?: string;
+
+  @Column()
   created_by_id?: string;
 
   @ManyToOne(() => User)
