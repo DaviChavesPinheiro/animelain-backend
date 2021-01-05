@@ -56,9 +56,9 @@ charactersRouter.put(
   '/:id',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().required(),
-      description: Joi.string().required(),
-      age: Joi.number().integer().required(),
+      name: Joi.string(),
+      description: Joi.string(),
+      age: Joi.number().integer(),
     }),
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.string().uuid().required(),

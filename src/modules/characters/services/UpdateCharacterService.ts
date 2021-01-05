@@ -6,9 +6,9 @@ import ICharactersRepository from '../repositories/ICharactersRepository';
 
 interface IRequest {
   character_id: string;
-  name: string;
-  description: string;
-  age: number;
+  name?: string;
+  description?: string;
+  age?: number;
 }
 
 @injectable()
@@ -30,24 +30,32 @@ class UpdateCharacterService {
       throw new AppError('Character not found.');
     }
 
-    if (!Number.isInteger(age) || Number(age) < 0) {
-      throw new AppError('An age cannot be negative');
+    if (age) {
+      if (!Number.isInteger(age) || Number(age) < 0) {
+        throw new AppError('An age cannot be negative');
+      }
+
+      character.age = age;
     }
 
-    const findCharacterWithSameName = await this.charactersRepository.findByName(
-      name,
-    );
+    if (name) {
+      const findCharacterWithSameName = await this.charactersRepository.findByName(
+        name,
+      );
 
-    if (
-      findCharacterWithSameName &&
-      findCharacterWithSameName.id !== character_id
-    ) {
-      throw new AppError('This character already exists');
+      if (
+        findCharacterWithSameName &&
+        findCharacterWithSameName.id !== character_id
+      ) {
+        throw new AppError('This character already exists');
+      }
+
+      character.name = name;
     }
 
-    character.name = name;
-    character.description = description;
-    character.age = age;
+    if (description) {
+      character.description = description;
+    }
 
     return this.charactersRepository.save(character);
   }
