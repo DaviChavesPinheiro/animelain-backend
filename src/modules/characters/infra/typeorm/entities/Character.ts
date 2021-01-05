@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import AnimeCharacter from '@modules/animes/infra/typeorm/entities/AnimeCharacter';
 
+// todo: make character name unique (in service too).
 @Entity('characters')
 class Character {
   @PrimaryGeneratedColumn('uuid')

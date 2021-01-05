@@ -16,6 +16,9 @@ import FavoriteUserAnime from '@modules/users/infra/typeorm/entities/FavoriteUse
 import Genre from './Genre';
 import AnimeCharacter from './AnimeCharacter';
 
+// todo: create recommendations route
+// just list some animes based in user favorites
+
 @Entity('animes')
 class Anime {
   @PrimaryGeneratedColumn('uuid')

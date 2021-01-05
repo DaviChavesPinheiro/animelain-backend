@@ -107,6 +107,7 @@ export default class AnimesRepository implements IAnimeRepository {
     await this.ormRepository.delete(id);
   }
 
+  // todo: delete findNews and findInSeason. Create just a "findByDateBeetween(dateA, dateB)"
   public async findNews(): Promise<Anime[]> {
     const today = new Date();
     today.setDate(today.getDate() - 7);

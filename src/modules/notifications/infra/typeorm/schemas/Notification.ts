@@ -7,6 +7,7 @@ import {
   ObjectIdColumn,
 } from 'typeorm';
 
+// todo: Create notifiction list, delete route
 @Entity('notifications')
 class Notification {
   @ObjectIdColumn()
