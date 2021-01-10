@@ -34,7 +34,7 @@ jobs:
           source: ".,!node_modules"
           target: "~/app/animelain-backend-production"
           
-      - name: Install dependencies on digital ocean
+      - name: Run Scripts
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -44,23 +44,7 @@ jobs:
           script: |
             cd ~/app/animelain-backend-production
             yarn
-            
-      - name: Run migration on digital ocean
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_KEY }}  
-          script: |
-            cd ~/app/animelain-backend-production
             ./node_modules/.bin/typeorm migration:run
-      
-      - name: Restar node server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_KEY }}  
-          script: pm2 restart animelain-api
+            pm2 restart animelain-api
+            
+     
