@@ -18,6 +18,20 @@ animesCharactersRouter.get(
   animesCharactersController.index,
 );
 
+// animesCharactersRouter.put(
+//   '/:id',
+//   celebrate({
+//     [Segments.BODY]: Joi.object().keys({
+//       role: Joi.string().lowercase().valid('primary', 'secondary', 'tertiary'),
+//     }),
+//     [Segments.PARAMS]: Joi.object().keys({
+//       id: Joi.string().uuid().required(),
+//     }),
+//   }),
+//   ensureAuthenticated,
+//   animesCharactersCondasdasdastroller.index,
+// );
+
 animesCharactersRouter.post(
   '/:anime_id/:character_id',
   celebrate({

@@ -63,4 +63,14 @@ export default class FakeAnimesCharactersRepository
 
     return animeCharacter;
   }
+
+  public async save(animeCharacter: AnimeCharacter): Promise<AnimeCharacter> {
+    const findIndex = this.animesCharacters.findIndex(
+      findAnimeCharacter => findAnimeCharacter.id === animeCharacter.id,
+    );
+
+    this.animesCharacters[findIndex] = animeCharacter;
+
+    return animeCharacter;
+  }
 }

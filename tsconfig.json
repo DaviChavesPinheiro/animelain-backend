@@ -19,5 +19,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules", "*.js", "**/covarege"]
+  "exclude": ["node_modules", "*.js", "**/covarege", "dist"]
 }

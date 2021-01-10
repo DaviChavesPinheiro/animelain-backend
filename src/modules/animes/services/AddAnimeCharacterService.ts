@@ -49,12 +49,12 @@ export default class AddAnimeCharacterService {
       throw new AppError('This Anime Character already exists');
     }
 
-    const favoriteUserAnime = await this.animesCharactersRepository.create({
+    const animeCharacter = await this.animesCharactersRepository.create({
       anime_id,
       character_id,
       role,
     });
 
-    return favoriteUserAnime;
+    return animeCharacter;
   }
 }

@@ -10,4 +10,5 @@ export default interface IAnimesCharactersRepository {
   findById(id: string): Promise<AnimeCharacter | undefined>;
   create(data: ICreateAnimeCharacterDTO): Promise<AnimeCharacter>;
   deleteById(id: string): Promise<AnimeCharacter>;
+  save(data: AnimeCharacter): Promise<AnimeCharacter>;
 }

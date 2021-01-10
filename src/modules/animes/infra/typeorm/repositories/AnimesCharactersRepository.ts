@@ -58,6 +58,10 @@ class AnimesCharactersRepository implements IAnimesCharactersRepository {
 
     return animeCharacter;
   }
+
+  public async save(data: AnimeCharacter): Promise<AnimeCharacter> {
+    return this.ormRepository.save(data);
+  }
 }
 
 export default AnimesCharactersRepository;
