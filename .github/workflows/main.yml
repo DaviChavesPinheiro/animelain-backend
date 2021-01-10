@@ -44,6 +44,7 @@ jobs:
           script: |
             cd ~/app/animelain-backend-production
             yarn
+            yarn build
             ./node_modules/.bin/typeorm migration:run
             pm2 restart animelain-api
             
