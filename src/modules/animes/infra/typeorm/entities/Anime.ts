@@ -82,7 +82,7 @@ class Anime {
       case 'disk':
         return `${process.env.APP_WEB_API}/files/uploads/${this.profile}`;
       case 's3':
-        return `http://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.profile}`;
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.profile}`;
       default:
         return null;
     }
@@ -98,7 +98,7 @@ class Anime {
       case 'disk':
         return `${process.env.APP_WEB_API}/files/uploads/${this.banner}`;
       case 's3':
-        return `http://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.banner}`;
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.banner}`;
       default:
         return null;
     }
