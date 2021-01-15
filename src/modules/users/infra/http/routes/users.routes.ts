@@ -5,6 +5,7 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import UsersController from '../controllers/UsersController';
 import UsersAvatarController from '../controllers/UsersAvatarController';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import ensureAdmin from '../middlewares/ensureAdmin';
 
 const usersRouter = Router();
 const upload = multer(uploadConfig.multer);
@@ -26,6 +27,7 @@ usersRouter.post(
 usersRouter.patch(
   '/avatar',
   ensureAuthenticated,
+  ensureAdmin,
   upload.single('avatar'),
   usersAvatarController.update,
 );
