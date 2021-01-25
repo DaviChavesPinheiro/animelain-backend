@@ -6,6 +6,7 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 import CreateSessionService from '@modules/users/services/CreateSessionService';
 import ListUserService from '@modules/users/services/ListUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
+import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 import IResolvers from '../../../../../@types/IResolvers';
 import User from '../../typeorm/entities/User';
 
@@ -93,6 +94,26 @@ const resolvers: IResolvers = {
       });
 
       return { user: classToClass(user), token };
+    },
+    sendForgotPasswordEmail: async (_, { data }) => {
+      Joi.object()
+        .options({ stripUnknown: true })
+        .keys({
+          email: Joi.string().max(255).email().trim().lowercase(),
+        })
+        .validate(data);
+
+      const { email } = data;
+
+      const sendForgotPasswordEmailService = container.resolve(
+        SendForgotPasswordEmailService,
+      );
+
+      await sendForgotPasswordEmailService.execute({
+        email,
+      });
+
+      return true;
     },
   },
 };

@@ -2,11 +2,14 @@ directive @auth(
   requiresRoles: [String] = ["admin"],
 ) on FIELD_DEFINITION
 
+input SendForgotPasswordEmailInput {
+  email: String!
+}
+
 input CreateSessionInput {
   email: String!
   password: String!
 }
-
 
 input UpdateUserInput {
   id: String!
@@ -46,4 +49,6 @@ type Mutation {
   updateUser(data: UpdateUserInput!): User!
 
   createSession(data: CreateSessionInput!): Session!
+
+  sendForgotPasswordEmail(data: SendForgotPasswordEmailInput!): Boolean!
 }
