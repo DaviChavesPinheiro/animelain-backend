@@ -29,17 +29,6 @@ describe('CreateAnimeService', () => {
     expect(anime).toHaveProperty('id');
   });
 
-  it('should not be able to create an anime with negative episodes', async () => {
-    await expect(
-      createAnimeService.execute({
-        title: 'Naruto',
-        description: 'Blah blah',
-        episodesAmount: -500,
-        created_by_id: 'some-uuid-id',
-      }),
-    ).rejects.toBeInstanceOf(AppError);
-  });
-
   it('should not be able to create two or more animes with same title', async () => {
     await createAnimeService.execute({
       title: 'Naruto',

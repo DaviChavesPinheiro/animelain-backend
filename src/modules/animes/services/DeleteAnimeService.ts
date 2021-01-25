@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import IAnimesRepository from '../repositories/IAnimesRepository';
+import Anime from '../infra/typeorm/entities/Anime';
 
 interface IRequest {
   id: string;
@@ -14,7 +15,7 @@ class DeleteAnimeService {
     private animesRepository: IAnimesRepository,
   ) {}
 
-  public async execute({ id }: IRequest): Promise<void> {
+  public async execute({ id }: IRequest): Promise<Anime> {
     const anime = await this.animesRepository.findById(id);
 
     if (!anime) {
@@ -22,6 +23,8 @@ class DeleteAnimeService {
     }
 
     await this.animesRepository.deleteById(anime.id);
+
+    return anime;
   }
 }
 

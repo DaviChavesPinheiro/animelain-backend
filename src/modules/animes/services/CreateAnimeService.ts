@@ -27,10 +27,6 @@ export default class CreateAnimeService {
     episodesAmount,
     created_by_id,
   }: IRequest): Promise<Anime> {
-    if (!Number.isInteger(episodesAmount) || Number(episodesAmount) < 0) {
-      throw new AppError('Episodes cannot be negative');
-    }
-
     const findAnimeWithSameTitle = await this.animesRepository.findByTitle(
       title,
     );

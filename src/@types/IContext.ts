@@ -4,5 +4,5 @@ export interface IUserContext {
 }
 
 export default interface IContext {
-  user?: IUserContext;
+  user: IUserContext;
 }
