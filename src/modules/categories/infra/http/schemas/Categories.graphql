@@ -1,0 +1,26 @@
+input UpdateCategoryInput {
+  id: String!
+  name: String
+}
+
+input CreateCategoryInput {
+  name: String!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  created_at: String!
+  updated_at: String!
+}
+
+type Query {
+  categories: [Category]!
+  category(id: String!): Category
+}
+
+type Mutation {
+  createCategory(data: CreateCategoryInput!): Category! @auth(requiresRoles: ["admin"])
+  updateCategory(data: UpdateCategoryInput!): Category! @auth(requiresRoles: ["admin"])
+  deleteCategory(id: String!): Category! @auth(requiresRoles: ["admin"])
+}

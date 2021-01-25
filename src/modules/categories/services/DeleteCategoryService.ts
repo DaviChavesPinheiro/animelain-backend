@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import ICategoriesRepository from '../repositories/ICategoriesRepository';
+import Category from '../infra/typeorm/entities/Category';
 
 interface IRequest {
   category_id: string;
@@ -14,7 +15,7 @@ class DeleteCategoryService {
     private categoriesRepository: ICategoriesRepository,
   ) {}
 
-  public async execute({ category_id }: IRequest): Promise<void> {
+  public async execute({ category_id }: IRequest): Promise<Category> {
     const category = await this.categoriesRepository.findById(category_id);
 
     if (!category) {
@@ -22,6 +23,8 @@ class DeleteCategoryService {
     }
 
     await this.categoriesRepository.deleteById(category.id);
+
+    return category;
   }
 }
 
