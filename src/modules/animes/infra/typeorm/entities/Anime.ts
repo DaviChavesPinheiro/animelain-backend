@@ -10,6 +10,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  BaseEntity,
 } from 'typeorm';
 import RecentUserAnime from '@modules/users/infra/typeorm/entities/RecentUserAnime';
 import FavoriteUserAnime from '@modules/users/infra/typeorm/entities/FavoriteUserAnime';
@@ -20,7 +21,7 @@ import AnimeCharacter from './AnimeCharacter';
 // just list some animes based in user favorites
 
 @Entity('animes')
-class Anime {
+class Anime extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

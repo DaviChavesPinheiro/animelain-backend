@@ -7,11 +7,12 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
+  BaseEntity,
 } from 'typeorm';
 import User from './User';
 
 @Entity('favorite_users_animes')
-class FavoriteUserAnime {
+class FavoriteUserAnime extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -6,10 +6,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  BaseEntity,
 } from 'typeorm';
 
 @Entity('categories')
-class Category {
+class Category extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -7,12 +7,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  BaseEntity,
 } from 'typeorm';
 import AnimeCharacter from '@modules/animes/infra/typeorm/entities/AnimeCharacter';
 
 // todo: make character name unique (in service too).
 @Entity('characters')
-class Character {
+class Character extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -7,11 +7,12 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
+  BaseEntity,
 } from 'typeorm';
 import Anime from './Anime';
 
 @Entity('genres')
-class Genre {
+class Genre extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

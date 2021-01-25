@@ -7,12 +7,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  BaseEntity,
 } from 'typeorm';
 import RecentUserAnime from './RecentUserAnime';
 import FavoriteUserAnime from './FavoriteUserAnime';
 
 @Entity('users')
-class User {
+class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -7,11 +7,12 @@ import {
   Generated,
   ManyToOne,
   JoinColumn,
+  BaseEntity,
 } from 'typeorm';
 import User from './User';
 
 @Entity('user_tokens')
-class UserToken {
+class UserToken extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

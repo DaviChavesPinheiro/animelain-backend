@@ -8,10 +8,11 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
+  BaseEntity,
 } from 'typeorm';
 
 @Entity('animes_characters')
-class AnimeCharacter {
+class AnimeCharacter extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

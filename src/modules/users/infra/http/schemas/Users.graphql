@@ -1,0 +1,36 @@
+directive @auth(
+  requiresRoles: [String] = ["admin"],
+) on FIELD_DEFINITION
+
+input UpdateUserInput {
+  id: String!
+  name: String
+  email: String
+}
+
+type Session {
+  user: User!
+  token: String!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  avatar: String
+  avatar_url: String
+  isAdmin: Boolean!
+  created_at: String!
+  updated_at: String!
+}
+
+type Query {
+  users: [User!]!
+  user(id: String!): User
+}
+
+type Mutation {
+  createUser(email: String!, password: String!): User @auth(requiresRoles: ["admin"])
+  updateUser(data: UpdateUserInput!): User
+  createSession(email: String!, password: String!): Session!
+}

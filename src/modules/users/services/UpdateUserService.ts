@@ -7,15 +7,15 @@ import IUsersRepository from '../repositories/IUsersRepository';
 import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
-  user_id: string;
-  name: string;
-  email: string;
+  id: string;
+  name?: string;
+  email?: string;
   old_password?: string;
   password?: string;
 }
 
 @injectable()
-class UpdateProfileService {
+class UpdateUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -25,26 +25,33 @@ class UpdateProfileService {
   ) {}
 
   public async execute({
-    user_id,
+    id,
     name,
     email,
     old_password,
     password,
   }: IRequest): Promise<User> {
-    const user = await this.usersRepository.findById(user_id);
+    const user = await this.usersRepository.findById(id);
 
     if (!user) {
       throw new AppError('User not found.');
     }
 
-    const userWithUpdatedEmail = await this.usersRepository.findByEmail(email);
-
-    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user_id) {
-      throw new AppError('E-mail already in use.');
+    if (name) {
+      user.name = name;
     }
 
-    user.name = name;
-    user.email = email;
+    if (email) {
+      const userWithUpdatedEmail = await this.usersRepository.findByEmail(
+        email,
+      );
+
+      if (userWithUpdatedEmail && userWithUpdatedEmail.id !== id) {
+        throw new AppError('E-mail already in use.');
+      }
+
+      user.email = email;
+    }
 
     if (password && !old_password) {
       throw new AppError(
@@ -69,4 +76,4 @@ class UpdateProfileService {
   }
 }
 
-export default UpdateProfileService;
+export default UpdateUserService;

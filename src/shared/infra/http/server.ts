@@ -2,18 +2,61 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import '@shared/container';
 
-import express, { Response, Request, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import 'express-async-errors';
-import { errors } from 'celebrate';
 import uploadConfig from '@config/upload';
-import multer from 'multer';
-import MulterError from '@shared/errors/MulterError';
-import AppError from '@shared/errors/AppError';
 
-import rateLimiter from './middlewares/rateLimiter';
-import routes from './routes';
 import '../typeorm';
+import { ApolloServer, AuthenticationError } from 'apollo-server-express';
+import { verify } from 'jsonwebtoken';
+import authConfig from '@config/auth';
+import IContext, { IUserContext } from '../../../@types/IContext';
+import schema from './schemas';
+import rateLimiter from './middlewares/rateLimiter';
+
+interface ITokenPayload {
+  isAdmin: boolean;
+  iat: number;
+  exp: number;
+  sub: string;
+}
+
+const server = new ApolloServer({
+  schema,
+  formatError: error => {
+    console.log(error);
+    return {
+      ...error,
+      extensions: {
+        ...error.extensions,
+        exception: undefined,
+      },
+    };
+  },
+  context: ({ req }) => {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) return {};
+
+    const [, token] = authHeader.split(' ');
+
+    try {
+      const decoded = verify(token, authConfig.jwt.secret);
+      const { isAdmin, sub } = decoded as ITokenPayload;
+      const roles = ['user'];
+      if (isAdmin) roles.push('admin');
+
+      const user: IUserContext = { id: sub, roles };
+
+      const context: IContext = { user };
+
+      return context;
+    } catch (error) {
+      throw new AuthenticationError('Invalid JWT token');
+    }
+  },
+});
 
 const app = express();
 
@@ -21,37 +64,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.tmpFolder));
 app.use(rateLimiter);
-app.use(routes);
 
-app.use(errors());
-app.use(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (error: Error, request: Request, response: Response, _: NextFunction) => {
-    if (error instanceof AppError) {
-      return response.status(error.statusCode).json({
-        status: 'error',
-        message: error.message,
-      });
-    }
-    if (error instanceof MulterError) {
-      return response.status(Number(error.code)).json({
-        status: 'error',
-        message: error.message,
-      });
-    }
-    if (error instanceof multer.MulterError) {
-      return response.status(400).json({
-        status: 'error',
-        message: error.message,
-      });
-    }
-    console.log(error);
-
-    return response.status(500).json({
-      status: 'error',
-      message: 'Internal server error',
-    });
-  },
-);
+server.applyMiddleware({ app });
 
 app.listen(3333, () => console.log('Server Running on port 3333'));
