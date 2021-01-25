@@ -2,10 +2,22 @@ directive @auth(
   requiresRoles: [String] = ["admin"],
 ) on FIELD_DEFINITION
 
+input CreateSessionInput {
+  email: String!
+  password: String!
+}
+
+
 input UpdateUserInput {
   id: String!
   name: String
   email: String
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
 }
 
 type Session {
@@ -30,7 +42,8 @@ type Query {
 }
 
 type Mutation {
-  createUser(email: String!, password: String!): User @auth(requiresRoles: ["admin"])
-  updateUser(data: UpdateUserInput!): User
-  createSession(email: String!, password: String!): Session!
+  createUser(data: CreateUserInput!): User! @auth(requiresRoles: ["admin"])
+  updateUser(data: UpdateUserInput!): User!
+
+  createSession(data: CreateSessionInput!): Session!
 }

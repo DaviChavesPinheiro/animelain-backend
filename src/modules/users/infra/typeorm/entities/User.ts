@@ -39,8 +39,8 @@ class User extends BaseEntity {
   )
   favorite_users_animes: FavoriteUserAnime[];
 
-  @Column()
-  isAdmin: boolean;
+  @Column('boolean')
+  isAdmin = false;
 
   @CreateDateColumn()
   created_at: Date;

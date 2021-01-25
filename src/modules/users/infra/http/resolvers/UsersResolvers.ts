@@ -34,7 +34,7 @@ const resolvers: IResolvers = {
     },
   },
   Mutation: {
-    createUser: async (_, data): Promise<User> => {
+    createUser: async (_, { data }): Promise<User> => {
       Joi.object()
         .options({ stripUnknown: true })
         .keys({
@@ -53,7 +53,7 @@ const resolvers: IResolvers = {
         email,
         password,
       });
-
+      console.log(user);
       return classToClass(user);
     },
     updateUser: async (_, { data }): Promise<User> => {
@@ -74,7 +74,7 @@ const resolvers: IResolvers = {
 
       return classToClass(user);
     },
-    createSession: async (_, data) => {
+    createSession: async (_, { data }) => {
       Joi.object()
         .options({ stripUnknown: true })
         .keys({
