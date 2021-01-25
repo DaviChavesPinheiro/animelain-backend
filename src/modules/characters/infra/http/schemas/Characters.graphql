@@ -1,0 +1,32 @@
+input UpdateCharacterInput {
+  id: String!
+  name: String
+  description: String
+  age: Int
+}
+
+input CreateCharacterInput {
+  name: String!
+  description: String!
+  age: Int!
+}
+
+type Character {
+  id: ID!
+  name: String!
+  description: String
+  age: Int!
+  created_at: String!
+  updated_at: String!
+}
+
+type Query {
+  characters: [Character]!
+  character(id: String!): Character
+}
+
+type Mutation {
+  createCharacter(data: CreateCharacterInput!): Character! @auth(requiresRoles: ["admin"])
+  updateCharacter(data: UpdateCharacterInput!): Character! @auth(requiresRoles: ["admin"])
+  deleteCharacter(id: String!): Character! @auth(requiresRoles: ["admin"])
+}

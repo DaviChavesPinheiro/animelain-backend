@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import ICharactersRepository from '../repositories/ICharactersRepository';
+import Character from '../infra/typeorm/entities/Character';
 
 interface IRequest {
   id: string;
@@ -14,7 +15,7 @@ class DeleteCharacterService {
     private charactersRepository: ICharactersRepository,
   ) {}
 
-  public async execute({ id }: IRequest): Promise<void> {
+  public async execute({ id }: IRequest): Promise<Character> {
     const character = await this.charactersRepository.findById(id);
 
     if (!character) {
@@ -22,6 +23,8 @@ class DeleteCharacterService {
     }
 
     await this.charactersRepository.deleteById(character.id);
+
+    return character;
   }
 }
 
