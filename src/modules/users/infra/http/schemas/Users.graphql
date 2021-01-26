@@ -1,3 +1,5 @@
+# import Anime from '../../../../animes/infra/http/schemas/Animes.graphql';
+
 directive @auth(
   requiresRoles: [String] = ["admin"],
 ) on FIELD_DEFINITION
@@ -28,6 +30,23 @@ input CreateUserInput {
   password: String!
 }
 
+type AnimeEdge {
+  id: String!
+  user_id: String!
+  anime_id: String!
+  node: Anime!
+  created_at: String!
+  updated_at: String!
+}
+
+type AnimeConnection {
+  edges: [AnimeEdge!]!
+}
+
+type Favorites {
+  animes: AnimeConnection!
+}
+
 type Session {
   user: User!
   token: String!
@@ -40,6 +59,7 @@ type User {
   avatar: String
   avatar_url: String
   isAdmin: Boolean!
+  favorites: Favorites!
   created_at: String!
   updated_at: String!
 }

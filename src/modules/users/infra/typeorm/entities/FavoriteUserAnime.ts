@@ -17,10 +17,10 @@ class FavoriteUserAnime extends BaseEntity {
   id: string;
 
   @Column()
-  anime_id?: string;
+  anime_id: string;
 
   @Column()
-  user_id?: string;
+  user_id: string;
 
   @ManyToOne(() => Anime, anime => anime.favorite_users_animes)
   @JoinColumn({ name: 'anime_id' })

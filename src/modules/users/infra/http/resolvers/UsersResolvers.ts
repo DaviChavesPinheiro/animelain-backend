@@ -8,8 +8,11 @@ import ListUserService from '@modules/users/services/ListUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
+import ListFavoriteUserAnimesService from '@modules/users/services/ListFavoriteUserAnimesService';
+import ListAnimesService from '@modules/animes/services/ListAnimeService';
 import IResolvers from '../../../../../@types/IResolvers';
 import User from '../../typeorm/entities/User';
+import FavoriteUserAnime from '../../typeorm/entities/FavoriteUserAnime';
 
 const resolvers: IResolvers = {
   Query: {
@@ -33,6 +36,40 @@ const resolvers: IResolvers = {
       const user = await listUserService.execute({ user_id: id });
 
       return classToClass(user);
+    },
+  },
+  User: {
+    favorites: async (parent: User) => {
+      return parent;
+    },
+  },
+  Favorites: {
+    animes: async (parent: User) => {
+      return parent;
+    },
+  },
+  AnimeConnection: {
+    edges: async (parent: User) => {
+      const listFavoriteUserAnimes = container.resolve(
+        ListFavoriteUserAnimesService,
+      );
+
+      const favorite_users_animes = await listFavoriteUserAnimes.execute({
+        user_id: parent.id,
+      });
+
+      return classToClass(favorite_users_animes);
+    },
+  },
+  AnimeEdge: {
+    node: async (parent: FavoriteUserAnime) => {
+      const listAnimesService = container.resolve(ListAnimesService);
+
+      const anime = await listAnimesService.execute({
+        id: parent.anime_id,
+      });
+
+      return classToClass(anime);
     },
   },
   Mutation: {

@@ -14,15 +14,7 @@ class FavoriteUsersAnimesRepository implements IFavoriteUsersAnimesRepository {
   public async findByUserId(user_id: string): Promise<FavoriteUserAnime[]> {
     const query = this.ormRepository
       .createQueryBuilder('favoriteUserAnime')
-      .where('favoriteUserAnime.user_id = :user_id', { user_id })
-      .leftJoin('favoriteUserAnime.anime', 'anime')
-      .addSelect([
-        'anime.id',
-        'anime.title',
-        'anime.episodesAmount',
-        'anime.profile',
-        'anime.banner',
-      ]);
+      .where('favoriteUserAnime.user_id = :user_id', { user_id });
 
     return query.getMany();
   }
