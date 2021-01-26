@@ -18,6 +18,16 @@ input CreateSessionInput {
   password: String!
 }
 
+input ToggleRecentAnimeInput {
+  user_id: String!
+  anime_id: String!
+}
+
+input ToggleFavoriteAnimeInput {
+  user_id: String!
+  anime_id: String!
+}
+
 input ToggleFavoriteAnimeInput {
   user_id: String!
   anime_id: String!
@@ -97,6 +107,8 @@ type Mutation {
   updateUser(data: UpdateUserInput!): User!
 
   toggleFavoriteAnime(data: ToggleFavoriteAnimeInput!): Boolean!
+
+  toggleRecentAnime(data: ToggleRecentAnimeInput!): Boolean!
 
   createSession(data: CreateSessionInput!): Session!
 
