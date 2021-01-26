@@ -1,6 +1,12 @@
 # import User from '../../../../users/infra/http/schemas/Users.graphql';
 # import Character from '../../../../characters/infra/http/schemas/Characters.graphql';
 # import Category from '../../../../categories/infra/http/schemas/Categories.graphql';
+input AddCharacterAnimeInput {
+  role: String
+  character_id: String!
+  anime_id: String!
+}
+
 input UpdateAnimeInput {
   id: String!
   title: String
@@ -67,4 +73,6 @@ type Mutation {
   createAnime(data: CreateAnimeInput!): Anime! @auth(requiresRoles: ["admin"])
   updateAnime(data: UpdateAnimeInput!): Anime! @auth(requiresRoles: ["admin"])
   deleteAnime(id: String!): Anime! @auth(requiresRoles: ["admin"])
+
+  addCharacterAnime(data: AddCharacterAnimeInput!): CharacterAnimeEdge!
 }

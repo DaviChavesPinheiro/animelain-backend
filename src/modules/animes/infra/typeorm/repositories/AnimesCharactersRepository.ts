@@ -40,15 +40,15 @@ class AnimesCharactersRepository implements IAnimesCharactersRepository {
   public async create({
     anime_id,
     character_id,
+    role,
   }: ICreateAnimeCharacterDTO): Promise<AnimeCharacter> {
     const animeCharacter = this.ormRepository.create({
       anime_id,
       character_id,
+      role,
     });
 
-    await this.ormRepository.save(animeCharacter);
-
-    return animeCharacter;
+    return this.ormRepository.save(animeCharacter);
   }
 
   public async deleteById(id: string): Promise<AnimeCharacter> {

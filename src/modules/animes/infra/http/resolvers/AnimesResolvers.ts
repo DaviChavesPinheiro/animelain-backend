@@ -8,6 +8,7 @@ import ListAnimeCharactersService from '@modules/animes/services/ListAnimeCharac
 import ListCharacterService from '@modules/characters/services/ListCharacterService';
 import ListAnimeGenresService from '@modules/animes/services/ListAnimeGenresService';
 import ListCategoryService from '@modules/categories/services/ListCategoryService';
+import AddAnimeCharacterService from '@modules/animes/services/AddAnimeCharacterService';
 import CreateAnimeService from '../../../services/CreateAnimeService';
 import ListAnimesService from '../../../services/ListAnimesService';
 import ListAnimeService from '../../../services/ListAnimeService';
@@ -173,6 +174,30 @@ const resolvers: IResolvers = {
       });
 
       return classToClass(anime);
+    },
+    addCharacterAnime: async (_, { data }) => {
+      Joi.object()
+        .options({ stripUnknown: true })
+        .keys({
+          role: Joi.string().max(255).trim(),
+          character_id: Joi.string().uuid(),
+          anime_id: Joi.string().uuid(),
+        })
+        .validate(data);
+
+      const { role, character_id, anime_id } = data;
+
+      const addAnimeCharacterService = container.resolve(
+        AddAnimeCharacterService,
+      );
+
+      const characterAnime = await addAnimeCharacterService.execute({
+        role,
+        character_id,
+        anime_id,
+      });
+
+      return classToClass(characterAnime);
     },
   },
 };
