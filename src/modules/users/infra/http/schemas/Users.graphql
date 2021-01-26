@@ -18,6 +18,11 @@ input CreateSessionInput {
   password: String!
 }
 
+input ToggleFavoriteAnimeInput {
+  user_id: String!
+  anime_id: String!
+}
+
 input UpdateUserInput {
   id: String!
   name: String
@@ -90,6 +95,8 @@ type Query {
 type Mutation {
   createUser(data: CreateUserInput!): User! @auth(requiresRoles: ["admin"])
   updateUser(data: UpdateUserInput!): User!
+
+  toggleFavoriteAnime(data: ToggleFavoriteAnimeInput!): Boolean!
 
   createSession(data: CreateSessionInput!): Session!
 

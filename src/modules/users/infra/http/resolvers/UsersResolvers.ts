@@ -11,6 +11,7 @@ import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 import ListFavoriteUserAnimesService from '@modules/users/services/ListFavoriteUserAnimesService';
 import ListAnimesService from '@modules/animes/services/ListAnimeService';
 import ListRecentUserAnimesService from '@modules/users/services/ListRecentUserAnimesService';
+import ToggleFavoriteUserAnimeService from '@modules/users/services/ToggleFavoriteUserAnimeService';
 import IResolvers from '../../../../../@types/IResolvers';
 import User from '../../typeorm/entities/User';
 import FavoriteUserAnime from '../../typeorm/entities/FavoriteUserAnime';
@@ -206,6 +207,28 @@ const resolvers: IResolvers = {
       });
 
       return true;
+    },
+    toggleFavoriteAnime: async (_, { data }) => {
+      Joi.object()
+        .options({ stripUnknown: true })
+        .keys({
+          anime_id: Joi.string().uuid(),
+          user_id: Joi.string().uuid(),
+        })
+        .validate(data);
+
+      const { anime_id, user_id } = data;
+
+      const toggleFavoriteUserAnimeService = container.resolve(
+        ToggleFavoriteUserAnimeService,
+      );
+
+      const isFavorited = await toggleFavoriteUserAnimeService.execute({
+        anime_id,
+        user_id,
+      });
+
+      return isFavorited;
     },
   },
 };
