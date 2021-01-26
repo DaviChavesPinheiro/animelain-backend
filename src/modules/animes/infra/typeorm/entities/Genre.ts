@@ -20,10 +20,10 @@ class Genre extends BaseEntity {
   score: number;
 
   @Column()
-  anime_id?: string;
+  anime_id: string;
 
   @Column()
-  category_id?: string;
+  category_id: string;
 
   @ManyToOne(() => Anime, anime => anime.genres)
   @JoinColumn({ name: 'anime_id' })

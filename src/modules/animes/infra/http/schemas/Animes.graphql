@@ -1,5 +1,6 @@
 # import User from '../../../../users/infra/http/schemas/Users.graphql';
 # import Character from '../../../../characters/infra/http/schemas/Characters.graphql';
+# import Category from '../../../../categories/infra/http/schemas/Categories.graphql';
 input UpdateAnimeInput {
   id: String!
   title: String
@@ -23,8 +24,22 @@ type CharacterAnimeEdge {
   updated_at: String!
 }
 
+type GenreAnimeEdge {
+  id: String!
+  score: Int
+  category_id: String!
+  anime_id: String!
+  node: Category!
+  created_at: String!
+  updated_at: String!
+}
+
 type CharacterAnimeConnection {
   edges: [CharacterAnimeEdge!]!
+}
+
+type GenreAnimeConnection {
+  edges: [GenreAnimeEdge!]!
 }
 
 type Anime {
@@ -38,6 +53,7 @@ type Anime {
   banner_url: String
   createdBy: User
   characters: CharacterAnimeConnection!
+  genres: GenreAnimeConnection!
   created_at: String!
   updated_at: String!
 }

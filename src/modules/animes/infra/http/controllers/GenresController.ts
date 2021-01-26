@@ -1,5 +1,5 @@
 import AddGenreService from '@modules/animes/services/AddGenreService';
-import ListGenresService from '@modules/animes/services/ListGenresService';
+import ListGenresService from '@modules/animes/services/ListAnimeGenresService';
 import RemoveGenreService from '@modules/animes/services/RemoveGenreService';
 import { classToClass } from 'class-transformer';
 import { Response, Request } from 'express';

@@ -3,7 +3,7 @@ import AppError from '@shared/errors/AppError';
 import FakeAnimesRepository from '../repositories/fakes/FakeAnimesRepository';
 import FakeGenresRepository from '../repositories/fakes/FakeGenresRepository';
 import IGenresRepository from '../repositories/IGenresRepository';
-import ListGenresService from './ListGenresService';
+import ListGenresService from './ListAnimeGenresService';
 
 let fakeAnimesRepository: IAnimeRepository;
 let fakeGenresRepository: IGenresRepository;

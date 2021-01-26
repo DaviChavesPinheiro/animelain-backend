@@ -9,7 +9,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class ListGenresService {
+export default class ListAnimeGenresService {
   constructor(
     @inject('AnimesRepository')
     private animeRepository: IAnimeRepository,

@@ -17,17 +17,7 @@ export default class AnimesRepository implements IAnimeRepository {
     { search, categories }: IFindAnimeDTO,
     { page }: IFindAnimeOptionsDTO = {},
   ): Promise<Anime[]> {
-    let query = this.ormRepository
-      .createQueryBuilder('anime')
-      .select([
-        'anime.id',
-        'anime.title',
-        'anime.episodesAmount',
-        'anime.authors',
-        'anime.created_by_id',
-        'anime.profile',
-        'anime.banner',
-      ]);
+    let query = this.ormRepository.createQueryBuilder('anime');
 
     if (search) {
       query = query.where('anime.title ILIKE :search', {
@@ -35,19 +25,7 @@ export default class AnimesRepository implements IAnimeRepository {
       });
     }
 
-    if (categories?.length) {
-      query = query
-        .leftJoin('anime.genres', 'genre')
-        .leftJoin('genre.category', 'category')
-        .andWhere('category.id IN (:...categoriesIds)', {
-          categoriesIds: categories,
-        });
-    }
-
-    return query
-      .take(25)
-      .skip(((page || 1) - 1) * 25)
-      .getMany();
+    return query.getMany();
   }
 
   public async findByTitle(title: string): Promise<Anime | undefined> {
@@ -77,24 +55,7 @@ export default class AnimesRepository implements IAnimeRepository {
   public async findById(id: string): Promise<Anime | undefined> {
     const query = this.ormRepository
       .createQueryBuilder('anime')
-      .where('anime.id = :id', { id })
-      .leftJoin('anime.genres', 'genre')
-      .addSelect(['genre.id', 'genre.score'])
-      .leftJoin('genre.category', 'category')
-      .addSelect(['category.id', 'category.name'])
-      .leftJoin('anime.animes_characters', 'anime_character')
-      .addSelect([
-        'anime_character.id',
-        'anime_character.character_id',
-        'anime_character.role',
-      ])
-      .leftJoin('anime_character.character', 'character')
-      .addSelect([
-        'character.id',
-        'character.name',
-        'character.profile',
-        'character.banner',
-      ]);
+      .where('anime.id = :id', { id });
 
     return query.getOne();
   }

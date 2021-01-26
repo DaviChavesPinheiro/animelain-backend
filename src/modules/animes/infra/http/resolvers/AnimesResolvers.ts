@@ -6,6 +6,8 @@ import UpdateAnimeService from '@modules/animes/services/UpdateAnimeService';
 import { classToClass } from 'class-transformer';
 import ListAnimeCharactersService from '@modules/animes/services/ListAnimeCharactersService';
 import ListCharacterService from '@modules/characters/services/ListCharacterService';
+import ListAnimeGenresService from '@modules/animes/services/ListAnimeGenresService';
+import ListCategoryService from '@modules/categories/services/ListCategoryService';
 import CreateAnimeService from '../../../services/CreateAnimeService';
 import ListAnimesService from '../../../services/ListAnimesService';
 import ListAnimeService from '../../../services/ListAnimeService';
@@ -13,6 +15,7 @@ import Anime from '../../typeorm/entities/Anime';
 import ListUserService from '../../../../users/services/ListUserService';
 import IResolvers from '../../../../../@types/IResolvers';
 import AnimeCharacter from '../../typeorm/entities/AnimeCharacter';
+import Genre from '../../typeorm/entities/Genre';
 
 const resolvers: IResolvers = {
   Query: {
@@ -55,6 +58,9 @@ const resolvers: IResolvers = {
     characters: async (parent: Anime) => {
       return parent;
     },
+    genres: async (parent: Anime) => {
+      return parent;
+    },
   },
   CharacterAnimeConnection: {
     edges: async (parent: Anime) => {
@@ -69,6 +75,17 @@ const resolvers: IResolvers = {
       return classToClass(anime_characters);
     },
   },
+  GenreAnimeConnection: {
+    edges: async (parent: Anime) => {
+      const listAnimeGenresService = container.resolve(ListAnimeGenresService);
+
+      const anime_genres = await listAnimeGenresService.execute({
+        anime_id: parent.id,
+      });
+
+      return classToClass(anime_genres);
+    },
+  },
   CharacterAnimeEdge: {
     node: async (parent: AnimeCharacter) => {
       const listCharacterService = container.resolve(ListCharacterService);
@@ -78,6 +95,17 @@ const resolvers: IResolvers = {
       });
 
       return classToClass(character);
+    },
+  },
+  GenreAnimeEdge: {
+    node: async (parent: Genre) => {
+      const listCategoryService = container.resolve(ListCategoryService);
+
+      const category = await listCategoryService.execute({
+        id: parent.category_id,
+      });
+
+      return classToClass(category);
     },
   },
   Mutation: {
