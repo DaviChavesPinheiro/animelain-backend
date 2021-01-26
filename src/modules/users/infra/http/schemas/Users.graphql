@@ -30,7 +30,7 @@ input CreateUserInput {
   password: String!
 }
 
-type AnimeEdge {
+type FavoriteAnimeEdge {
   id: String!
   user_id: String!
   anime_id: String!
@@ -39,12 +39,29 @@ type AnimeEdge {
   updated_at: String!
 }
 
-type AnimeConnection {
-  edges: [AnimeEdge!]!
+type RecentAnimeEdge {
+  id: String!
+  user_id: String!
+  anime_id: String!
+  node: Anime!
+  created_at: String!
+  updated_at: String!
+}
+
+type FavoriteAnimeConnection {
+  edges: [FavoriteAnimeEdge!]!
+}
+
+type RecentAnimeConnection {
+  edges: [RecentAnimeEdge!]!
 }
 
 type Favorites {
-  animes: AnimeConnection!
+  animes: FavoriteAnimeConnection!
+}
+
+type Recents {
+  animes: RecentAnimeConnection!
 }
 
 type Session {
@@ -60,6 +77,7 @@ type User {
   avatar_url: String
   isAdmin: Boolean!
   favorites: Favorites!
+  recents: Recents!
   created_at: String!
   updated_at: String!
 }

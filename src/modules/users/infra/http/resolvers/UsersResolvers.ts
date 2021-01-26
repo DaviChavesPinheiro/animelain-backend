@@ -10,9 +10,11 @@ import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPa
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 import ListFavoriteUserAnimesService from '@modules/users/services/ListFavoriteUserAnimesService';
 import ListAnimesService from '@modules/animes/services/ListAnimeService';
+import ListRecentUserAnimesService from '@modules/users/services/ListRecentUserAnimesService';
 import IResolvers from '../../../../../@types/IResolvers';
 import User from '../../typeorm/entities/User';
 import FavoriteUserAnime from '../../typeorm/entities/FavoriteUserAnime';
+import RecentUserAnime from '../../typeorm/entities/RecentUserAnime';
 
 const resolvers: IResolvers = {
   Query: {
@@ -42,13 +44,21 @@ const resolvers: IResolvers = {
     favorites: async (parent: User) => {
       return parent;
     },
+    recents: async (parent: User) => {
+      return parent;
+    },
   },
   Favorites: {
     animes: async (parent: User) => {
       return parent;
     },
   },
-  AnimeConnection: {
+  Recents: {
+    animes: async (parent: User) => {
+      return parent;
+    },
+  },
+  FavoriteAnimeConnection: {
     edges: async (parent: User) => {
       const listFavoriteUserAnimes = container.resolve(
         ListFavoriteUserAnimesService,
@@ -61,8 +71,32 @@ const resolvers: IResolvers = {
       return classToClass(favorite_users_animes);
     },
   },
-  AnimeEdge: {
+  RecentAnimeConnection: {
+    edges: async (parent: User) => {
+      const listRecentUserAnimesService = container.resolve(
+        ListRecentUserAnimesService,
+      );
+
+      const recent_users_animes = await listRecentUserAnimesService.execute({
+        user_id: parent.id,
+      });
+
+      return classToClass(recent_users_animes);
+    },
+  },
+  FavoriteAnimeEdge: {
     node: async (parent: FavoriteUserAnime) => {
+      const listAnimesService = container.resolve(ListAnimesService);
+
+      const anime = await listAnimesService.execute({
+        id: parent.anime_id,
+      });
+
+      return classToClass(anime);
+    },
+  },
+  RecentAnimeEdge: {
+    node: async (parent: RecentUserAnime) => {
       const listAnimesService = container.resolve(ListAnimesService);
 
       const anime = await listAnimesService.execute({
