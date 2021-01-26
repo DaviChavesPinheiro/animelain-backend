@@ -1,6 +1,6 @@
-import AddGenreService from '@modules/animes/services/AddGenreService';
+import AddGenreService from '@modules/animes/services/AddGenreAnimeService';
 import ListGenresService from '@modules/animes/services/ListAnimeGenresService';
-import RemoveGenreService from '@modules/animes/services/RemoveGenreService';
+import RemoveGenreService from '@modules/animes/services/RemoveGenreAnimeService';
 import { classToClass } from 'class-transformer';
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';

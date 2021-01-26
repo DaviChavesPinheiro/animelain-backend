@@ -53,12 +53,8 @@ class GenresRepository implements IGenresRepository {
     return genre;
   }
 
-  public async deleteById(id: string): Promise<Genre> {
-    const entityToRemove = await this.ormRepository.findOneOrFail(id);
-
-    const genre = await this.ormRepository.remove(entityToRemove);
-
-    return genre;
+  public async deleteById(id: string): Promise<void> {
+    await this.ormRepository.delete(id);
   }
 }
 

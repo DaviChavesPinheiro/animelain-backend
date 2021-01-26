@@ -9,5 +9,5 @@ export default interface IGenresRepository {
   ): Promise<Genre | undefined>;
   findById(id: string): Promise<Genre | undefined>;
   create(data: ICreateGenreDTO): Promise<Genre>;
-  deleteById(id: string): Promise<Genre>;
+  deleteById(id: string): Promise<void>;
 }

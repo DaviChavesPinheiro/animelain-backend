@@ -8,8 +8,10 @@ import ListAnimeCharactersService from '@modules/animes/services/ListAnimeCharac
 import ListCharacterService from '@modules/characters/services/ListCharacterService';
 import ListAnimeGenresService from '@modules/animes/services/ListAnimeGenresService';
 import ListCategoryService from '@modules/categories/services/ListCategoryService';
-import AddAnimeCharacterService from '@modules/animes/services/AddAnimeCharacterService';
+import AddAnimeCharacterService from '@modules/animes/services/AddCharacterAnimeService';
+import AddGenreAnimeService from '@modules/animes/services/AddGenreAnimeService';
 import RemoveAnimeCharacterService from '@modules/animes/services/RemoveAnimeCharacterService';
+import RemoveGenreAnimeService from '@modules/animes/services/RemoveGenreAnimeService';
 import CreateAnimeService from '../../../services/CreateAnimeService';
 import ListAnimesService from '../../../services/ListAnimesService';
 import ListAnimeService from '../../../services/ListAnimeService';
@@ -221,6 +223,50 @@ const resolvers: IResolvers = {
       });
 
       return classToClass(characterAnime);
+    },
+    addGenreAnime: async (_, { data }) => {
+      Joi.object()
+        .options({ stripUnknown: true })
+        .keys({
+          score: Joi.number().positive().integer(),
+          category_id: Joi.string().uuid(),
+          anime_id: Joi.string().uuid(),
+        })
+        .validate(data);
+
+      const { score, category_id, anime_id } = data;
+
+      const addGenreAnimeService = container.resolve(AddGenreAnimeService);
+
+      const genreAnime = await addGenreAnimeService.execute({
+        score,
+        category_id,
+        anime_id,
+      });
+
+      return classToClass(genreAnime);
+    },
+    removeGenreAnime: async (_, { data }) => {
+      Joi.object()
+        .options({ stripUnknown: true })
+        .keys({
+          category_id: Joi.string().uuid(),
+          anime_id: Joi.string().uuid(),
+        })
+        .validate(data);
+
+      const { category_id, anime_id } = data;
+
+      const removeGenreAnimeService = container.resolve(
+        RemoveGenreAnimeService,
+      );
+
+      const genreAnime = await removeGenreAnimeService.execute({
+        category_id,
+        anime_id,
+      });
+
+      return classToClass(genreAnime);
     },
   },
 };

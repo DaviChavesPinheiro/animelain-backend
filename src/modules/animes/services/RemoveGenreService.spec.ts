@@ -5,7 +5,7 @@ import ICategoriesRepository from '@modules/categories/repositories/ICategoriesR
 import AppError from '@shared/errors/AppError';
 import FakeGenresRepository from '../repositories/fakes/FakeGenresRepository';
 import IGenresRepository from '../repositories/IGenresRepository';
-import RemoveGenreService from './RemoveGenreService';
+import RemoveGenreService from './RemoveGenreAnimeService';
 
 let fakeCategoriesRepository: ICategoriesRepository;
 let fakeAnimesRepository: IAnimeRepository;

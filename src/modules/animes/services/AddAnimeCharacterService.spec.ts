@@ -5,7 +5,7 @@ import ICharactersRepository from '@modules/characters/repositories/ICharactersR
 import AppError from '@shared/errors/AppError';
 import FakeAnimesCharactersRepository from '../repositories/fakes/FakeAnimesCharactersRepository';
 import IAnimesCharactersRepository from '../repositories/IAnimesCharactersRepository';
-import AddAnimeCharacterService from './AddAnimeCharacterService';
+import AddAnimeCharacterService from './AddCharacterAnimeService';
 
 let fakeCharactersRepository: ICharactersRepository;
 let fakeAnimesRepository: IAnimeRepository;

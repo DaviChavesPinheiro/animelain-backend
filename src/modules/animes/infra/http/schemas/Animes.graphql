@@ -1,6 +1,17 @@
 # import User from '../../../../users/infra/http/schemas/Users.graphql';
 # import Character from '../../../../characters/infra/http/schemas/Characters.graphql';
 # import Category from '../../../../categories/infra/http/schemas/Categories.graphql';
+input RemoveGenreAnimeInput {
+  category_id: String!
+  anime_id: String!
+}
+
+input AddGenreAnimeInput {
+  score: Int
+  category_id: String!
+  anime_id: String!
+}
+
 input RemoveCharacterAnimeInput {
   character_id: String!
   anime_id: String!
@@ -81,4 +92,8 @@ type Mutation {
 
   addCharacterAnime(data: AddCharacterAnimeInput!): CharacterAnimeEdge!
   removeCharacterAnime(data: RemoveCharacterAnimeInput!): CharacterAnimeEdge!
+
+  addGenreAnime(data: AddGenreAnimeInput!): GenreAnimeEdge!
+  removeGenreAnime(data: RemoveGenreAnimeInput!): GenreAnimeEdge!
 }
+

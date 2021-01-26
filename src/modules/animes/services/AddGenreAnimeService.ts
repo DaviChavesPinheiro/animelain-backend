@@ -8,10 +8,11 @@ import IGenresRepository from '../repositories/IGenresRepository';
 interface IRequest {
   anime_id: string;
   category_id: string;
+  score: number;
 }
 
 @injectable()
-export default class RemoveGenreService {
+export default class AddGenreAnimeService {
   constructor(
     @inject('AnimesRepository')
     private animesRepository: IAnimeRepository,
@@ -23,7 +24,11 @@ export default class RemoveGenreService {
     private genresRepository: IGenresRepository,
   ) {}
 
-  public async execute({ category_id, anime_id }: IRequest): Promise<Genre> {
+  public async execute({
+    category_id,
+    anime_id,
+    score,
+  }: IRequest): Promise<Genre> {
     const category = await this.categoriesRepository.findById(category_id);
 
     if (!category) {
@@ -40,13 +45,15 @@ export default class RemoveGenreService {
       { anime_id, category_id },
     );
 
-    if (!checkIfGenreAlreadyExist) {
-      throw new AppError('This Genre already does not exists');
+    if (checkIfGenreAlreadyExist) {
+      throw new AppError('This Genre already exists');
     }
 
-    const genre = await this.genresRepository.deleteById(
-      checkIfGenreAlreadyExist.id,
-    );
+    const genre = await this.genresRepository.create({
+      anime_id,
+      category_id,
+      score,
+    });
 
     return genre;
   }
