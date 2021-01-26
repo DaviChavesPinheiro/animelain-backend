@@ -47,10 +47,10 @@ export default class RemoveAnimeCharacterService {
       throw new AppError('This Anime Character does not already exists');
     }
 
-    const favoriteUserAnime = await this.animesCharactersRepository.deleteById(
+    await this.animesCharactersRepository.deleteById(
       checkIfAnimeCharacterAlreadyExist.id,
     );
 
-    return favoriteUserAnime;
+    return checkIfAnimeCharacterAlreadyExist;
   }
 }

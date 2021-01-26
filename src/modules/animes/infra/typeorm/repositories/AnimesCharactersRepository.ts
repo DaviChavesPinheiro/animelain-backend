@@ -51,12 +51,8 @@ class AnimesCharactersRepository implements IAnimesCharactersRepository {
     return this.ormRepository.save(animeCharacter);
   }
 
-  public async deleteById(id: string): Promise<AnimeCharacter> {
-    const entityToRemove = await this.ormRepository.findOneOrFail(id);
-
-    const animeCharacter = await this.ormRepository.remove(entityToRemove);
-
-    return animeCharacter;
+  public async deleteById(id: string): Promise<void> {
+    await this.ormRepository.delete(id);
   }
 
   public async save(data: AnimeCharacter): Promise<AnimeCharacter> {
