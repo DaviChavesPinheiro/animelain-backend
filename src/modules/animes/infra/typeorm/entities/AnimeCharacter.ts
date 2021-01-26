@@ -20,10 +20,10 @@ class AnimeCharacter extends BaseEntity {
   role?: string;
 
   @Column()
-  anime_id?: string;
+  anime_id: string;
 
   @Column()
-  character_id?: string;
+  character_id: string;
 
   @ManyToOne(() => Anime, anime => anime.animes_characters)
   @JoinColumn({ name: 'anime_id' })

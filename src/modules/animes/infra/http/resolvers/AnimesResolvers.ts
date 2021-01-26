@@ -4,12 +4,15 @@ import Joi from 'joi';
 import DeleteAnimeService from '@modules/animes/services/DeleteAnimeService';
 import UpdateAnimeService from '@modules/animes/services/UpdateAnimeService';
 import { classToClass } from 'class-transformer';
+import ListAnimeCharactersService from '@modules/animes/services/ListAnimeCharactersService';
+import ListCharacterService from '@modules/characters/services/ListCharacterService';
 import CreateAnimeService from '../../../services/CreateAnimeService';
 import ListAnimesService from '../../../services/ListAnimesService';
 import ListAnimeService from '../../../services/ListAnimeService';
 import Anime from '../../typeorm/entities/Anime';
 import ListUserService from '../../../../users/services/ListUserService';
 import IResolvers from '../../../../../@types/IResolvers';
+import AnimeCharacter from '../../typeorm/entities/AnimeCharacter';
 
 const resolvers: IResolvers = {
   Query: {
@@ -48,6 +51,33 @@ const resolvers: IResolvers = {
         return classToClass(user);
       }
       return null;
+    },
+    characters: async (parent: Anime) => {
+      return parent;
+    },
+  },
+  CharacterAnimeConnection: {
+    edges: async (parent: Anime) => {
+      const listAnimeCharactersService = container.resolve(
+        ListAnimeCharactersService,
+      );
+
+      const anime_characters = await listAnimeCharactersService.execute({
+        anime_id: parent.id,
+      });
+
+      return classToClass(anime_characters);
+    },
+  },
+  CharacterAnimeEdge: {
+    node: async (parent: AnimeCharacter) => {
+      const listCharacterService = container.resolve(ListCharacterService);
+
+      const character = await listCharacterService.execute({
+        id: parent.character_id,
+      });
+
+      return classToClass(character);
     },
   },
   Mutation: {

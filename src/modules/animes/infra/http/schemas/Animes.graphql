@@ -1,4 +1,5 @@
 # import User from '../../../../users/infra/http/schemas/Users.graphql';
+# import Character from '../../../../characters/infra/http/schemas/Characters.graphql';
 input UpdateAnimeInput {
   id: String!
   title: String
@@ -12,12 +13,31 @@ input CreateAnimeInput {
   episodesAmount: Int!
 }
 
+type CharacterAnimeEdge {
+  id: String!
+  role: String
+  character_id: String!
+  anime_id: String!
+  node: Character!
+  created_at: String!
+  updated_at: String!
+}
+
+type CharacterAnimeConnection {
+  edges: [CharacterAnimeEdge!]!
+}
+
 type Anime {
   id: ID!
   title: String!
   description: String
   episodesAmount: Int!
+  profile: String
+  banner: String
+  profile_url: String
+  banner_url: String
   createdBy: User
+  characters: CharacterAnimeConnection!
   created_at: String!
   updated_at: String!
 }
