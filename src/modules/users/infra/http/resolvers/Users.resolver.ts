@@ -4,14 +4,14 @@ import { container } from 'tsyringe';
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
-import CreateSessionService from '@modules/users/services/CreateSessionService';
+import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
+import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 import User from '../../typeorm/entities/User';
 import {
-  CreateSessionInput,
   CreateUserInput,
+  ResetPasswordInput,
   UpdateUserInput,
 } from '../schemas/Users.schema';
-import Session from '../schemas/Session.schema';
 
 @Resolver(User)
 class UsersResolver {
@@ -60,18 +60,31 @@ class UsersResolver {
     return classToClass(user);
   }
 
-  @Mutation(() => Session)
-  async createSession(@Arg('data') data: CreateSessionInput): Promise<Session> {
-    const { email, password } = data;
+  @Mutation(() => Boolean)
+  async sendForgotPasswordEmail(@Arg('email') email: string): Promise<boolean> {
+    const sendForgotPasswordEmailService = container.resolve(
+      SendForgotPasswordEmailService,
+    );
 
-    const createSessionService = container.resolve(CreateSessionService);
-
-    const { user, token } = await createSessionService.execute({
+    await sendForgotPasswordEmailService.execute({
       email,
-      password,
     });
 
-    return { user: classToClass(user), token };
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async resetPassword(@Arg('data') data: ResetPasswordInput): Promise<boolean> {
+    const { password, token } = data;
+
+    const resetPasswordService = container.resolve(ResetPasswordService);
+
+    await resetPasswordService.execute({
+      password,
+      token,
+    });
+
+    return true;
   }
 }
 

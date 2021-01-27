@@ -1,8 +1,9 @@
-import { ObjectType, Field } from 'type-graphql';
+import { MaxLength, IsEmail } from 'class-validator';
+import { ObjectType, Field, InputType } from 'type-graphql';
 import User from '../../typeorm/entities/User';
 
 @ObjectType()
-class Session {
+export default class Session {
   @Field(() => User)
   user: User;
 
@@ -10,4 +11,14 @@ class Session {
   token: string;
 }
 
-export default Session;
+@InputType()
+export class CreateSessionInput {
+  @Field(() => String)
+  @MaxLength(255)
+  @IsEmail()
+  email: string;
+
+  @Field(() => String)
+  @MaxLength(255)
+  password: string;
+}

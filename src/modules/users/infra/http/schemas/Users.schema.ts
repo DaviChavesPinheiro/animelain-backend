@@ -35,11 +35,10 @@ export class UpdateUserInput {
 }
 
 @InputType()
-export class CreateSessionInput {
+export class ResetPasswordInput {
   @Field(() => String)
-  @MaxLength(255)
-  @IsEmail()
-  email: string;
+  @IsUUID()
+  token: string;
 
   @Field(() => String)
   @MaxLength(255)
