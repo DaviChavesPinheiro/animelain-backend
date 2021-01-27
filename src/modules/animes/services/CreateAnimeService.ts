@@ -8,7 +8,7 @@ interface IRequest {
   title: string;
   description: string;
   episodesAmount: number;
-  created_by_id: string;
+  createdById: string;
 }
 
 @injectable()
@@ -25,7 +25,7 @@ export default class CreateAnimeService {
     title,
     description,
     episodesAmount,
-    created_by_id,
+    createdById,
   }: IRequest): Promise<Anime> {
     const findAnimeWithSameTitle = await this.animesRepository.findByTitle(
       title,
@@ -41,7 +41,7 @@ export default class CreateAnimeService {
       title,
       description,
       episodesAmount,
-      created_by_id,
+      createdById,
     });
 
     return anime;

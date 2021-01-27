@@ -6,8 +6,8 @@ import AnimeCharacter from '../infra/typeorm/entities/AnimeCharacter';
 import IAnimesCharactersRepository from '../repositories/IAnimesCharactersRepository';
 
 interface IRequest {
-  anime_id: string;
-  character_id: string;
+  animeId: string;
+  characterId: string;
 }
 
 @injectable()
@@ -24,23 +24,23 @@ export default class RemoveAnimeCharacterService {
   ) {}
 
   public async execute({
-    character_id,
-    anime_id,
+    characterId,
+    animeId,
   }: IRequest): Promise<AnimeCharacter> {
-    const character = await this.charactersRepository.findById(character_id);
+    const character = await this.charactersRepository.findById(characterId);
 
     if (!character) {
       throw new AppError('Character does not exist');
     }
 
-    const anime = await this.animesRepository.findById(anime_id);
+    const anime = await this.animesRepository.findById(animeId);
 
     if (!anime) {
       throw new AppError('Anime does not exist');
     }
 
     const checkIfAnimeCharacterAlreadyExist = await this.animesCharactersRepository.findByAnimeIdAndCharacterId(
-      { anime_id, character_id },
+      { animeId, characterId },
     );
 
     if (!checkIfAnimeCharacterAlreadyExist) {

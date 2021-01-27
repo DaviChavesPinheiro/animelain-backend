@@ -1,6 +1,6 @@
 import ICreateGenreDTO from '../dtos/ICreateGenreDTO';
 import IFindByIdGenreDTO from '../dtos/IFindByIdGenreDTO';
-import Genre from '../infra/typeorm/entities/Genre';
+import Genre from '../infra/typeorm/entities/AnimeGenre';
 
 export default interface IGenresRepository {
   findByAnimeId(id: string): Promise<Genre[]>;

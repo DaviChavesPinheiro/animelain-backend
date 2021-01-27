@@ -22,7 +22,7 @@ export default class CategoryController {
     const updateCategoryService = container.resolve(UpdateCategoryService);
 
     const category = await updateCategoryService.execute({
-      category_id: id,
+      categoryId: id,
       name,
     });
 

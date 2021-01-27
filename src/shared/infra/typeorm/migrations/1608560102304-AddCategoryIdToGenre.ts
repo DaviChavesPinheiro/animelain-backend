@@ -11,7 +11,7 @@ export default class AddCategoryIdToGenre1608560102304
     await queryRunner.addColumn(
       'genres',
       new TableColumn({
-        name: 'category_id',
+        name: 'categoryId',
         type: 'uuid',
         isNullable: true,
       }),
@@ -21,7 +21,7 @@ export default class AddCategoryIdToGenre1608560102304
       'genres',
       new TableForeignKey({
         name: 'GenresCategories',
-        columnNames: ['category_id'],
+        columnNames: ['categoryId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'categories',
         onDelete: 'SET NULL',
@@ -32,6 +32,6 @@ export default class AddCategoryIdToGenre1608560102304
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey('genres', 'GenresCategories');
 
-    await queryRunner.dropColumn('genres', 'category_id');
+    await queryRunner.dropColumn('genres', 'categoryId');
   }
 }

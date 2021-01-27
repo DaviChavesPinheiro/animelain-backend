@@ -1,5 +1,3 @@
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-import { classToClass } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
 import Anime from '../infra/typeorm/entities/Anime';
 import IAnimeRepository from '../repositories/IAnimesRepository';
@@ -9,22 +7,10 @@ export default class ListSeasonAnimesService {
   constructor(
     @inject('AnimesRepository')
     private animesRepository: IAnimeRepository,
-
-    @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute(): Promise<Anime[]> {
-    const cacheKey = `animes`;
-
-    // let animes = await this.cacheProvider.recover<Anime[]>(cacheKey);
-    let animes;
-
-    if (!animes) {
-      animes = await this.animesRepository.findInSeason();
-
-      await this.cacheProvider.save(cacheKey, classToClass(animes));
-    }
+    const animes = await this.animesRepository.findInSeason();
 
     return animes;
   }

@@ -39,7 +39,7 @@ export default class CreateCharacters1608584504080
             isNullable: true,
           },
           {
-            name: 'created_at',
+            name: 'createdAt',
             type: 'timestamp',
             default: 'now()',
           },

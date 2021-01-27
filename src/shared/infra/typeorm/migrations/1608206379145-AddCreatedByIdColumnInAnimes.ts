@@ -11,7 +11,7 @@ export default class AddCreatedByIdColumnInAnimes1608206379145
     await queryRunner.addColumn(
       'animes',
       new TableColumn({
-        name: 'created_by_id',
+        name: 'createdById',
         type: 'uuid',
         isNullable: true,
       }),
@@ -21,7 +21,7 @@ export default class AddCreatedByIdColumnInAnimes1608206379145
       'animes',
       new TableForeignKey({
         name: 'CreatedById',
-        columnNames: ['created_by_id'],
+        columnNames: ['createdById'],
         referencedTableName: 'users',
         referencedColumnNames: ['id'],
         onDelete: 'SET NULL',
@@ -33,6 +33,6 @@ export default class AddCreatedByIdColumnInAnimes1608206379145
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey('animes', 'CreatedById');
 
-    await queryRunner.dropColumn('animes', 'created_by_id');
+    await queryRunner.dropColumn('animes', 'createdById');
   }
 }

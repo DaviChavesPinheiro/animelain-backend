@@ -20,18 +20,18 @@ class UserToken extends BaseEntity {
   @Generated('uuid')
   token: string;
 
-  @Column()
-  user_id?: string;
+  @Column('uuid')
+  userId: string;
 
-  @ManyToOne(() => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }
 
 export default UserToken;

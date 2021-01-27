@@ -29,7 +29,7 @@ export default class AnimesController {
       title,
       description,
       episodesAmount,
-      created_by_id: id,
+      createdById: id,
     });
 
     return response.json(classToClass(anime));

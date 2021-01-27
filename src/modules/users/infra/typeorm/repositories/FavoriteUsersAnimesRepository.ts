@@ -11,21 +11,21 @@ class FavoriteUsersAnimesRepository implements IFavoriteUsersAnimesRepository {
     this.ormRepository = getRepository(FavoriteUserAnime);
   }
 
-  public async findByUserId(user_id: string): Promise<FavoriteUserAnime[]> {
+  public async findByUserId(userId: string): Promise<FavoriteUserAnime[]> {
     const query = this.ormRepository
       .createQueryBuilder('favoriteUserAnime')
-      .where('favoriteUserAnime.user_id = :user_id', { user_id });
+      .where('favoriteUserAnime.userId = :userId', { userId });
 
     return query.getMany();
   }
 
   public async findByUserIdAndAnimeId({
-    user_id,
-    anime_id,
+    userId,
+    animeId,
   }: IFindByIdFavoriteUserAnimeDTO): Promise<FavoriteUserAnime | undefined> {
     const favoriteUserAnime = await this.ormRepository.findOne({
-      user_id,
-      anime_id,
+      userId,
+      animeId,
     });
 
     return favoriteUserAnime;
@@ -38,10 +38,10 @@ class FavoriteUsersAnimesRepository implements IFavoriteUsersAnimesRepository {
   }
 
   public async create({
-    user_id,
-    anime_id,
+    userId,
+    animeId,
   }: ICreateFavoriteUserAnimeDTO): Promise<FavoriteUserAnime> {
-    const favoriteUserAnime = this.ormRepository.create({ user_id, anime_id });
+    const favoriteUserAnime = this.ormRepository.create({ userId, animeId });
 
     await this.ormRepository.save(favoriteUserAnime);
 

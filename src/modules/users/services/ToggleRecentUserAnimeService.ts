@@ -5,8 +5,8 @@ import IRecentUsersAnimesRepository from '../repositories/IRecentUsersAnimesRepo
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
-  user_id: string;
-  anime_id: string;
+  userId: string;
+  animeId: string;
 }
 
 @injectable()
@@ -22,21 +22,21 @@ export default class ToggleRecentUserAnimeService {
     private recentUsersAnimesRepository: IRecentUsersAnimesRepository,
   ) {}
 
-  public async execute({ user_id, anime_id }: IRequest): Promise<boolean> {
-    const user = await this.usersRepository.findById(user_id);
+  public async execute({ userId, animeId }: IRequest): Promise<boolean> {
+    const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       throw new AppError('User does not exist');
     }
 
-    const anime = await this.animesRepository.findById(anime_id);
+    const anime = await this.animesRepository.findById(animeId);
 
     if (!anime) {
       throw new AppError('Anime does not exist');
     }
 
     const recentUserAnime = await this.recentUsersAnimesRepository.findByUserIdAndAnimeId(
-      { anime_id, user_id },
+      { animeId, userId },
     );
 
     if (recentUserAnime) {
@@ -46,8 +46,8 @@ export default class ToggleRecentUserAnimeService {
     }
 
     await this.recentUsersAnimesRepository.create({
-      anime_id,
-      user_id,
+      animeId,
+      userId,
     });
 
     return true;

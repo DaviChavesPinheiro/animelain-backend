@@ -5,7 +5,7 @@ import IAnimesCharactersRepository from '../repositories/IAnimesCharactersReposi
 import IAnimeRepository from '../repositories/IAnimesRepository';
 
 interface IRequest {
-  anime_id: string;
+  animeId: string;
 }
 
 @injectable()
@@ -18,13 +18,13 @@ export default class ListAnimeCharactersService {
     private animesCharactersRepository: IAnimesCharactersRepository,
   ) {}
 
-  public async execute({ anime_id }: IRequest): Promise<AnimeCharacter[]> {
-    const anime = await this.animeRepository.findById(anime_id);
+  public async execute({ animeId }: IRequest): Promise<AnimeCharacter[]> {
+    const anime = await this.animeRepository.findById(animeId);
 
     if (!anime) {
       throw new AppError('Anime does not exist');
     }
 
-    return this.animesCharactersRepository.findByAnimeId(anime_id);
+    return this.animesCharactersRepository.findByAnimeId(animeId);
   }
 }

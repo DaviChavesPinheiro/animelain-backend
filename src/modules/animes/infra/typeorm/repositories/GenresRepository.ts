@@ -2,7 +2,7 @@ import ICreateGenreDTO from '@modules/animes/dtos/ICreateGenreDTO';
 import IFindByIdGenreDTO from '@modules/animes/dtos/IFindByIdGenreDTO';
 import IGenresRepository from '@modules/animes/repositories/IGenresRepository';
 import { Repository, getRepository } from 'typeorm';
-import Genre from '../entities/Genre';
+import Genre from '../entities/AnimeGenre';
 
 class GenresRepository implements IGenresRepository {
   private ormRepository: Repository<Genre>;
@@ -11,21 +11,21 @@ class GenresRepository implements IGenresRepository {
     this.ormRepository = getRepository(Genre);
   }
 
-  public async findByAnimeId(anime_id: string): Promise<Genre[]> {
+  public async findByAnimeId(animeId: string): Promise<Genre[]> {
     const genres = await this.ormRepository.find({
-      anime_id,
+      animeId,
     });
 
     return genres;
   }
 
   public async findByAnimeIdAndCategoryId({
-    anime_id,
-    category_id,
+    animeId,
+    categoryId,
   }: IFindByIdGenreDTO): Promise<Genre | undefined> {
     const genre = await this.ormRepository.findOne({
-      anime_id,
-      category_id,
+      animeId,
+      categoryId,
     });
 
     return genre;
@@ -38,13 +38,13 @@ class GenresRepository implements IGenresRepository {
   }
 
   public async create({
-    anime_id,
-    category_id,
+    animeId,
+    categoryId,
     score,
   }: ICreateGenreDTO): Promise<Genre> {
     const genre = this.ormRepository.create({
-      anime_id,
-      category_id,
+      animeId,
+      categoryId,
       score,
     });
 

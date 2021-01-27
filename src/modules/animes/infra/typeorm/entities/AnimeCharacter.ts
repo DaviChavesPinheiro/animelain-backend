@@ -16,28 +16,28 @@ class AnimeCharacter extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('varchar', { nullable: true })
   role?: string;
 
-  @Column()
-  anime_id: string;
+  @Column('uuid')
+  animeId: string;
 
-  @Column()
-  character_id: string;
+  @Column('uuid')
+  characterId: string;
 
-  @ManyToOne(() => Anime, anime => anime.animes_characters)
-  @JoinColumn({ name: 'anime_id' })
+  @ManyToOne(() => Anime, anime => anime.animesCharacters)
+  @JoinColumn({ name: 'animeId' })
   anime: Anime;
 
-  @ManyToOne(() => Character, character => character.animes_characters)
-  @JoinColumn({ name: 'character_id' })
+  @ManyToOne(() => Character, character => character.animesCharacters)
+  @JoinColumn({ name: 'characterId' })
   character: Character;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }
 
 export default AnimeCharacter;

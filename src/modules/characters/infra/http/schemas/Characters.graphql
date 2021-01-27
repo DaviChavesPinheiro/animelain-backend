@@ -7,17 +7,21 @@ input UpdateCharacterInput {
 
 input CreateCharacterInput {
   name: String!
-  description: String!
-  age: Int!
+  description: String
+  age: Int
 }
 
 type Character {
   id: ID!
   name: String!
   description: String
-  age: Int!
-  created_at: String!
-  updated_at: String!
+  age: Int
+  profile: String
+  banner: String
+  profileUrl: String
+  bannerUrl: String
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {

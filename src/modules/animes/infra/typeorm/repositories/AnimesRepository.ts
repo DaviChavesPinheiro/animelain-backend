@@ -38,13 +38,13 @@ export default class AnimesRepository implements IAnimeRepository {
     title,
     description,
     episodesAmount,
-    created_by_id,
+    createdById,
   }: ICreateAnimeDTO): Promise<Anime> {
     const anime = this.ormRepository.create({
       title,
       description,
       episodesAmount,
-      created_by_id,
+      createdById,
     });
 
     await this.ormRepository.save(anime);
@@ -75,7 +75,7 @@ export default class AnimesRepository implements IAnimeRepository {
 
     const query = this.ormRepository
       .createQueryBuilder('anime')
-      .where('anime.created_at > :week_ago', {
+      .where('anime.createdAt > :week_ago', {
         week_ago: today.toLocaleString(),
       });
 
@@ -97,7 +97,7 @@ export default class AnimesRepository implements IAnimeRepository {
 
     const query = this.ormRepository
       .createQueryBuilder('anime')
-      .where('anime.created_at > :currentSeasonStart', {
+      .where('anime.createdAt > :currentSeasonStart', {
         currentSeasonStart: currentSeasonStart.toLocaleString(),
       });
 

@@ -20,17 +20,17 @@ export default class CreateRelationAnimesCharacters1608594459451
             isNullable: true,
           },
           {
-            name: 'anime_id',
+            name: 'animeId',
             type: 'uuid',
             isNullable: true,
           },
           {
-            name: 'character_id',
+            name: 'characterId',
             type: 'uuid',
             isNullable: true,
           },
           {
-            name: 'created_at',
+            name: 'createdAt',
             type: 'timestamp',
             default: 'now()',
           },
@@ -42,16 +42,16 @@ export default class CreateRelationAnimesCharacters1608594459451
         ],
         foreignKeys: [
           {
-            name: 'animes_characters_to_anime_id',
-            columnNames: ['anime_id'],
+            name: 'animes_characters_to_animeId',
+            columnNames: ['animeId'],
             referencedColumnNames: ['id'],
             referencedTableName: 'animes',
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
           },
           {
-            name: 'animes_characters_to_character_id',
-            columnNames: ['character_id'],
+            name: 'animes_characters_to_characterId',
+            columnNames: ['characterId'],
             referencedColumnNames: ['id'],
             referencedTableName: 'characters',
             onDelete: 'CASCADE',

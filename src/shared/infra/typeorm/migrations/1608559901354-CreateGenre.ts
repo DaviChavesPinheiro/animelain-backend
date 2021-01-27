@@ -18,7 +18,7 @@ export default class CreateGenre1608559901354 implements MigrationInterface {
             type: 'smallint',
           },
           {
-            name: 'created_at',
+            name: 'createdAt',
             type: 'timestamp',
             default: 'now()',
           },

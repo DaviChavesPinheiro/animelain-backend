@@ -37,7 +37,7 @@ const resolvers: IResolvers = {
 
       const listUserService = container.resolve(ListUserService);
 
-      const user = await listUserService.execute({ user_id: id });
+      const user = await listUserService.execute({ userId: id });
 
       return classToClass(user);
     },
@@ -67,7 +67,7 @@ const resolvers: IResolvers = {
       );
 
       const favorite_users_animes = await listFavoriteUserAnimes.execute({
-        user_id: parent.id,
+        userId: parent.id,
       });
 
       return classToClass(favorite_users_animes);
@@ -80,7 +80,7 @@ const resolvers: IResolvers = {
       );
 
       const recent_users_animes = await listRecentUserAnimesService.execute({
-        user_id: parent.id,
+        userId: parent.id,
       });
 
       return classToClass(recent_users_animes);
@@ -91,7 +91,7 @@ const resolvers: IResolvers = {
       const listAnimesService = container.resolve(ListAnimesService);
 
       const anime = await listAnimesService.execute({
-        id: parent.anime_id,
+        id: parent.animeId,
       });
 
       return classToClass(anime);
@@ -102,7 +102,7 @@ const resolvers: IResolvers = {
       const listAnimesService = container.resolve(ListAnimesService);
 
       const anime = await listAnimesService.execute({
-        id: parent.anime_id,
+        id: parent.animeId,
       });
 
       return classToClass(anime);
@@ -213,20 +213,20 @@ const resolvers: IResolvers = {
       Joi.object()
         .options({ stripUnknown: true })
         .keys({
-          anime_id: Joi.string().uuid(),
-          user_id: Joi.string().uuid(),
+          animeId: Joi.string().uuid(),
+          userId: Joi.string().uuid(),
         })
         .validate(data);
 
-      const { anime_id, user_id } = data;
+      const { animeId, userId } = data;
 
       const toggleFavoriteUserAnimeService = container.resolve(
         ToggleFavoriteUserAnimeService,
       );
 
       const isFavorited = await toggleFavoriteUserAnimeService.execute({
-        anime_id,
-        user_id,
+        animeId,
+        userId,
       });
 
       return isFavorited;
@@ -235,20 +235,20 @@ const resolvers: IResolvers = {
       Joi.object()
         .options({ stripUnknown: true })
         .keys({
-          anime_id: Joi.string().uuid(),
-          user_id: Joi.string().uuid(),
+          animeId: Joi.string().uuid(),
+          userId: Joi.string().uuid(),
         })
         .validate(data);
 
-      const { anime_id, user_id } = data;
+      const { animeId, userId } = data;
 
       const toggleRecentUserAnimeService = container.resolve(
         ToggleRecentUserAnimeService,
       );
 
       const isRecented = await toggleRecentUserAnimeService.execute({
-        anime_id,
-        user_id,
+        animeId,
+        userId,
       });
 
       return isRecented;

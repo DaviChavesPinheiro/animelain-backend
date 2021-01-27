@@ -11,21 +11,21 @@ class AnimesCharactersRepository implements IAnimesCharactersRepository {
     this.ormRepository = getRepository(AnimeCharacter);
   }
 
-  public async findByAnimeId(anime_id: string): Promise<AnimeCharacter[]> {
+  public async findByAnimeId(animeId: string): Promise<AnimeCharacter[]> {
     const animeCharacters = await this.ormRepository.find({
-      anime_id,
+      animeId,
     });
 
     return animeCharacters;
   }
 
   public async findByAnimeIdAndCharacterId({
-    anime_id,
-    character_id,
+    animeId,
+    characterId,
   }: IFindByIdAnimeCharacterDTO): Promise<AnimeCharacter | undefined> {
     const animeCharacter = await this.ormRepository.findOne({
-      anime_id,
-      character_id,
+      animeId,
+      characterId,
     });
 
     return animeCharacter;
@@ -38,13 +38,13 @@ class AnimesCharactersRepository implements IAnimesCharactersRepository {
   }
 
   public async create({
-    anime_id,
-    character_id,
+    animeId,
+    characterId,
     role,
   }: ICreateAnimeCharacterDTO): Promise<AnimeCharacter> {
     const animeCharacter = this.ormRepository.create({
-      anime_id,
-      character_id,
+      animeId,
+      characterId,
       role,
     });
 

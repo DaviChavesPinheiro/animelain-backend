@@ -17,38 +17,38 @@ class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('varchar', { unique: true })
   name: string;
 
-  @Column()
+  @Column('varchar', { unique: true })
   email: string;
 
-  @Column()
+  @Column('varchar')
   @Exclude()
   password: string;
 
-  @Column()
+  @Column('varchar', { nullable: true })
   avatar?: string;
 
   @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.user)
-  recent_users_animes: RecentUserAnime[];
+  recentUsersAnimes: RecentUserAnime[];
 
   @OneToMany(
     () => FavoriteUserAnime,
     favoriteUserAnime => favoriteUserAnime.user,
   )
-  favorite_users_animes: FavoriteUserAnime[];
+  favoriteUsersAnimes: FavoriteUserAnime[];
 
-  @Column('boolean')
+  @Column('boolean', { default: false })
   isAdmin = false;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 
-  @Expose({ name: 'avatar_url' })
+  @Expose({ name: 'avatarurl' })
   getAvatarUrl(): string | null {
     if (!this.avatar) {
       return null;

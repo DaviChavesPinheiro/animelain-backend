@@ -5,7 +5,7 @@ import IAnimeRepository from '../repositories/IAnimesRepository';
 import Anime from '../infra/typeorm/entities/Anime';
 
 interface IRequest {
-  anime_id: string;
+  animeId: string;
   avatarFilename: string;
 }
 
@@ -19,8 +19,8 @@ class UpdateAnimeProfileService {
     private storageProvider: IStorageProvider,
   ) {}
 
-  public async execute({ anime_id, avatarFilename }: IRequest): Promise<Anime> {
-    const anime = await this.animesRepository.findById(anime_id);
+  public async execute({ animeId, avatarFilename }: IRequest): Promise<Anime> {
+    const anime = await this.animesRepository.findById(animeId);
 
     if (!anime) {
       throw new AppError('This anime does not exist', 401);

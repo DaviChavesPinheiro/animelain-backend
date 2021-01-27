@@ -11,21 +11,21 @@ class RecentUsersAnimesRepository implements IRecentUsersAnimesRepository {
     this.ormRepository = getRepository(RecentUserAnime);
   }
 
-  public async findByUserId(user_id: string): Promise<RecentUserAnime[]> {
+  public async findByUserId(userId: string): Promise<RecentUserAnime[]> {
     const query = this.ormRepository
       .createQueryBuilder('recentUserAnime')
-      .where('recentUserAnime.user_id = :user_id', { user_id });
+      .where('recentUserAnime.userId = :userId', { userId });
 
     return query.getMany();
   }
 
   public async findByUserIdAndAnimeId({
-    user_id,
-    anime_id,
+    userId,
+    animeId,
   }: IFindByIdRecentUserAnimeDTO): Promise<RecentUserAnime | undefined> {
     const recentUserAnime = await this.ormRepository.findOne({
-      user_id,
-      anime_id,
+      userId,
+      animeId,
     });
 
     return recentUserAnime;
@@ -38,10 +38,10 @@ class RecentUsersAnimesRepository implements IRecentUsersAnimesRepository {
   }
 
   public async create({
-    user_id,
-    anime_id,
+    userId,
+    animeId,
   }: ICreateRecentUserAnimeDTO): Promise<RecentUserAnime> {
-    const recentUserAnime = this.ormRepository.create({ user_id, anime_id });
+    const recentUserAnime = this.ormRepository.create({ userId, animeId });
 
     await this.ormRepository.save(recentUserAnime);
 

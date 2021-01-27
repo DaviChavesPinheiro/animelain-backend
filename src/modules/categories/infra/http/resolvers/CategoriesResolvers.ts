@@ -68,7 +68,7 @@ const resolvers: IResolvers = {
       const updateCategoryService = container.resolve(UpdateCategoryService);
 
       const category = await updateCategoryService.execute({
-        category_id: id,
+        categoryId: id,
         name,
       });
 
@@ -87,7 +87,7 @@ const resolvers: IResolvers = {
       const deleteCategoryService = container.resolve(DeleteCategoryService);
 
       const category = await deleteCategoryService.execute({
-        category_id: id,
+        categoryId: id,
       });
 
       return classToClass(category);

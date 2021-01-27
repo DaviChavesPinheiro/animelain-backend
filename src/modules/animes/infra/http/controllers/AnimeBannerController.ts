@@ -13,7 +13,7 @@ export default class AnimeBannerController {
     );
 
     const anime = await updateAnimeBannerService.execute({
-      anime_id: id,
+      animeId: id,
       avatarFilename: file.filename,
     });
 

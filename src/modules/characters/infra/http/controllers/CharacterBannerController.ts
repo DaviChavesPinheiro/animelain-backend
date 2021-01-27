@@ -13,7 +13,7 @@ export default class CharacterBannerController {
     );
 
     const character = await updateCharacterBannerService.execute({
-      character_id: id,
+      characterId: id,
       avatarFilename: file.filename,
     });
 

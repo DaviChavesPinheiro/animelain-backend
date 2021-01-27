@@ -1,5 +1,5 @@
 export default interface ICreateAnimeCharacterDTO {
-  anime_id: string;
-  character_id: string;
+  animeId: string;
+  characterId: string;
   role?: string;
 }

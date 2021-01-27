@@ -27,7 +27,7 @@ export default class CreateAnimes1608203873161 implements MigrationInterface {
             type: 'smallint',
           },
           {
-            name: 'created_at',
+            name: 'createdAt',
             type: 'timestamp',
             default: 'now()',
           },

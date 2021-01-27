@@ -23,7 +23,7 @@ class Notification {
   read: boolean;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
   updated_at: Date;

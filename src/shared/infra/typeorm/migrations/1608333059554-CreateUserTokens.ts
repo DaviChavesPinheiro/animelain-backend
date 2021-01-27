@@ -21,11 +21,11 @@ export default class CreateUserTokens1608333059554
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'user_id',
+            name: 'userId',
             type: 'uuid',
           },
           {
-            name: 'created_at',
+            name: 'createdAt',
             type: 'timestamp',
             default: 'now()',
           },
@@ -40,7 +40,7 @@ export default class CreateUserTokens1608333059554
             name: 'TokenUser',
             referencedTableName: 'users',
             referencedColumnNames: ['id'],
-            columnNames: ['user_id'],
+            columnNames: ['userId'],
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
           },

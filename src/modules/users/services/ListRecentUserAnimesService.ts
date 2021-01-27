@@ -5,7 +5,7 @@ import IRecentUsersAnimesRepository from '../repositories/IRecentUsersAnimesRepo
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
-  user_id: string;
+  userId: string;
 }
 
 @injectable()
@@ -18,13 +18,13 @@ export default class ListRecentUserAnimesService {
     private recentUsersAnimesRepository: IRecentUsersAnimesRepository,
   ) {}
 
-  public async execute({ user_id }: IRequest): Promise<RecentUserAnime[]> {
-    const user = await this.usersRepository.findById(user_id);
+  public async execute({ userId }: IRequest): Promise<RecentUserAnime[]> {
+    const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       throw new AppError('User does not exist');
     }
 
-    return this.recentUsersAnimesRepository.findByUserId(user_id);
+    return this.recentUsersAnimesRepository.findByUserId(userId);
   }
 }

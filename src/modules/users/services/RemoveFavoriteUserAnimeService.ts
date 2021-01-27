@@ -6,8 +6,8 @@ import IFavoriteUsersAnimesRepository from '../repositories/IFavoriteUsersAnimes
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
-  user_id: string;
-  anime_id: string;
+  userId: string;
+  animeId: string;
 }
 
 @injectable()
@@ -24,23 +24,23 @@ export default class RemoveFavoriteUserAnimeService {
   ) {}
 
   public async execute({
-    user_id,
-    anime_id,
+    userId,
+    animeId,
   }: IRequest): Promise<FavoriteUserAnime> {
-    const user = await this.usersRepository.findById(user_id);
+    const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       throw new AppError('User does not exist');
     }
 
-    const anime = await this.animesRepository.findById(anime_id);
+    const anime = await this.animesRepository.findById(animeId);
 
     if (!anime) {
       throw new AppError('Anime does not exist');
     }
 
     const checkIfFavoriteUserAnimeAlreadyExist = await this.favoriteUsersAnimesRepository.findByUserIdAndAnimeId(
-      { anime_id, user_id },
+      { animeId, userId },
     );
 
     if (!checkIfFavoriteUserAnimeAlreadyExist) {

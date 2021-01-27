@@ -17,12 +17,12 @@ export default class CharacterController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { name, description, age } = request.body;
-    const { id: character_id } = request.params;
+    const { id: characterId } = request.params;
 
     const updateCharacterService = container.resolve(UpdateCharacterService);
 
     const character = await updateCharacterService.execute({
-      character_id,
+      characterId,
       name,
       description,
       age,

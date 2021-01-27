@@ -2,12 +2,12 @@ import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import Genre from '../infra/typeorm/entities/Genre';
+import Genre from '../infra/typeorm/entities/AnimeGenre';
 import IGenresRepository from '../repositories/IGenresRepository';
 
 interface IRequest {
-  anime_id: string;
-  category_id: string;
+  animeId: string;
+  categoryId: string;
 }
 
 @injectable()
@@ -23,21 +23,21 @@ export default class RemoveGenreAnimeService {
     private genresRepository: IGenresRepository,
   ) {}
 
-  public async execute({ category_id, anime_id }: IRequest): Promise<Genre> {
-    const category = await this.categoriesRepository.findById(category_id);
+  public async execute({ categoryId, animeId }: IRequest): Promise<Genre> {
+    const category = await this.categoriesRepository.findById(categoryId);
 
     if (!category) {
       throw new AppError('Category does not exist');
     }
 
-    const anime = await this.animesRepository.findById(anime_id);
+    const anime = await this.animesRepository.findById(animeId);
 
     if (!anime) {
       throw new AppError('Anime does not exist');
     }
 
     const checkIfGenreAlreadyExist = await this.genresRepository.findByAnimeIdAndCategoryId(
-      { anime_id, category_id },
+      { animeId, categoryId },
     );
 
     if (!checkIfGenreAlreadyExist) {

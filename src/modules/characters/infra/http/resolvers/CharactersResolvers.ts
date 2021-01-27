@@ -74,7 +74,7 @@ const resolvers: IResolvers = {
       const updateCharacterService = container.resolve(UpdateCharacterService);
 
       const character = await updateCharacterService.execute({
-        character_id: id,
+        characterId: id,
         name,
         description,
         age,

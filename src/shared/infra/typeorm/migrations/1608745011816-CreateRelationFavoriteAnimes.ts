@@ -15,17 +15,17 @@ export default class CreateRelationFavoriteAnimes1608745011816
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'anime_id',
+            name: 'animeId',
             type: 'uuid',
             isNullable: true,
           },
           {
-            name: 'user_id',
+            name: 'userId',
             type: 'uuid',
             isNullable: true,
           },
           {
-            name: 'created_at',
+            name: 'createdAt',
             type: 'timestamp',
             default: 'now()',
           },
@@ -37,16 +37,16 @@ export default class CreateRelationFavoriteAnimes1608745011816
         ],
         foreignKeys: [
           {
-            name: 'favorite_users_animes_to_anime_id',
-            columnNames: ['anime_id'],
+            name: 'favorite_users_animes_to_animeId',
+            columnNames: ['animeId'],
             referencedColumnNames: ['id'],
             referencedTableName: 'animes',
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
           },
           {
-            name: 'favorite_users_animes_to_user_id',
-            columnNames: ['user_id'],
+            name: 'favorite_users_animes_to_userId',
+            columnNames: ['userId'],
             referencedColumnNames: ['id'],
             referencedTableName: 'users',
             onDelete: 'CASCADE',

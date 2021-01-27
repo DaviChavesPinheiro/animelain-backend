@@ -9,7 +9,7 @@ export default class ApplyCascadeOnDeleteOnUpdateInGenres1609071907470
       'genres',
       new TableForeignKey({
         name: 'GenresCategories',
-        columnNames: ['category_id'],
+        columnNames: ['categoryId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'categories',
         onDelete: 'CASCADE',
@@ -23,7 +23,7 @@ export default class ApplyCascadeOnDeleteOnUpdateInGenres1609071907470
       'genres',
       new TableForeignKey({
         name: 'GenresAnimes',
-        columnNames: ['anime_id'],
+        columnNames: ['animeId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'animes',
         onDelete: 'CASCADE',
@@ -39,7 +39,7 @@ export default class ApplyCascadeOnDeleteOnUpdateInGenres1609071907470
       'genres',
       new TableForeignKey({
         name: 'GenresAnimes',
-        columnNames: ['anime_id'],
+        columnNames: ['animeId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'animes',
         onDelete: 'SET NULL',
@@ -52,7 +52,7 @@ export default class ApplyCascadeOnDeleteOnUpdateInGenres1609071907470
       'genres',
       new TableForeignKey({
         name: 'GenresCategories',
-        columnNames: ['category_id'],
+        columnNames: ['categoryId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'categories',
         onDelete: 'SET NULL',

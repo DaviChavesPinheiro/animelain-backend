@@ -7,25 +7,25 @@ import { container } from 'tsyringe';
 
 export default class GenresController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const { id: anime_id } = request.params;
+    const { id: animeId } = request.params;
     const listGenresService = container.resolve(ListGenresService);
 
     const genres = await listGenresService.execute({
-      anime_id,
+      animeId,
     });
 
     return response.json(classToClass(genres));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { anime_id, category_id } = request.params;
+    const { animeId, categoryId } = request.params;
     const { score } = request.body;
 
     const addGenreService = container.resolve(AddGenreService);
 
     const genre = await addGenreService.execute({
-      anime_id,
-      category_id,
+      animeId,
+      categoryId,
       score: Number(score),
     });
 
@@ -33,13 +33,13 @@ export default class GenresController {
   }
 
   public async remove(request: Request, response: Response): Promise<Response> {
-    const { anime_id, category_id } = request.params;
+    const { animeId, categoryId } = request.params;
 
     const removeGenreService = container.resolve(RemoveGenreService);
 
     const genre = await removeGenreService.execute({
-      anime_id,
-      category_id,
+      animeId,
+      categoryId,
     });
 
     return response.json(classToClass(genre));

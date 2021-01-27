@@ -17,31 +17,31 @@ class Character extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('varchar', { unique: true })
   name: string;
 
-  @Column()
+  @Column('text', { nullable: true })
   description?: string;
 
-  @Column()
+  @Column('integer', { nullable: true })
   age?: number;
 
-  @Column()
+  @Column('varchar', { nullable: true })
   profile?: string;
 
-  @Column()
+  @Column('varchar', { nullable: true })
   banner?: string;
 
   @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.character)
-  animes_characters: AnimeCharacter[];
+  animesCharacters: AnimeCharacter[];
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 
-  @Expose({ name: 'profile_url' })
+  @Expose({ name: 'profileUrl' })
   getProfileUrl(): string | null {
     if (!this.profile) {
       return null;
@@ -57,7 +57,7 @@ class Character extends BaseEntity {
     }
   }
 
-  @Expose({ name: 'banner_url' })
+  @Expose({ name: 'bannerUrl' })
   getBannerUrl(): string | null {
     if (!this.banner) {
       return null;

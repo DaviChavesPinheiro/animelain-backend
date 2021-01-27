@@ -13,7 +13,7 @@ export default class CharacterProfileController {
     );
 
     const character = await updateCharacterProfileService.execute({
-      character_id: id,
+      characterId: id,
       avatarFilename: file.filename,
     });
 

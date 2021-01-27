@@ -34,7 +34,7 @@ export default class CategoriesController {
     const deleteCategoryService = container.resolve(DeleteCategoryService);
 
     await deleteCategoryService.execute({
-      category_id: id,
+      categoryId: id,
     });
 
     return response.status(204).json();

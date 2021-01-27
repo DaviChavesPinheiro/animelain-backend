@@ -11,7 +11,7 @@ export default class AddAnimeIdToGenre1608560092342
     await queryRunner.addColumn(
       'genres',
       new TableColumn({
-        name: 'anime_id',
+        name: 'animeId',
         type: 'uuid',
         isNullable: true,
       }),
@@ -21,7 +21,7 @@ export default class AddAnimeIdToGenre1608560092342
       'genres',
       new TableForeignKey({
         name: 'GenresAnimes',
-        columnNames: ['anime_id'],
+        columnNames: ['animeId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'animes',
         onDelete: 'SET NULL',
@@ -32,6 +32,6 @@ export default class AddAnimeIdToGenre1608560092342
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey('genres', 'GenresAnimes');
 
-    await queryRunner.dropColumn('genres', 'anime_id');
+    await queryRunner.dropColumn('genres', 'animeId');
   }
 }

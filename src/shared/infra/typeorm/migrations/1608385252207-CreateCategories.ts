@@ -19,7 +19,7 @@ export default class CreateCategories1608385252207
             type: 'varchar',
           },
           {
-            name: 'created_at',
+            name: 'createdAt',
             type: 'timestamp',
             default: 'now()',
           },

@@ -13,7 +13,7 @@ export default class AnimeProfileController {
     );
 
     const anime = await updateAnimeProfileService.execute({
-      anime_id: id,
+      animeId: id,
       avatarFilename: file.filename,
     });
 

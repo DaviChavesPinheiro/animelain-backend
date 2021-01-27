@@ -19,7 +19,7 @@ import Anime from '../../typeorm/entities/Anime';
 import ListUserService from '../../../../users/services/ListUserService';
 import IResolvers from '../../../../../@types/IResolvers';
 import AnimeCharacter from '../../typeorm/entities/AnimeCharacter';
-import Genre from '../../typeorm/entities/Genre';
+import Genre from '../../typeorm/entities/AnimeGenre';
 
 const resolvers: IResolvers = {
   Query: {
@@ -50,9 +50,9 @@ const resolvers: IResolvers = {
     createdBy: async (parent: Anime) => {
       const listUserService = container.resolve(ListUserService);
 
-      if (parent.created_by_id) {
+      if (parent.createdById) {
         const user = await listUserService.execute({
-          user_id: parent.created_by_id,
+          userId: parent.createdById,
         });
 
         return classToClass(user);
@@ -73,7 +73,7 @@ const resolvers: IResolvers = {
       );
 
       const anime_characters = await listAnimeCharactersService.execute({
-        anime_id: parent.id,
+        animeId: parent.id,
       });
 
       return classToClass(anime_characters);
@@ -84,7 +84,7 @@ const resolvers: IResolvers = {
       const listAnimeGenresService = container.resolve(ListAnimeGenresService);
 
       const anime_genres = await listAnimeGenresService.execute({
-        anime_id: parent.id,
+        animeId: parent.id,
       });
 
       return classToClass(anime_genres);
@@ -95,7 +95,7 @@ const resolvers: IResolvers = {
       const listCharacterService = container.resolve(ListCharacterService);
 
       const character = await listCharacterService.execute({
-        id: parent.character_id,
+        id: parent.characterId,
       });
 
       return classToClass(character);
@@ -106,7 +106,7 @@ const resolvers: IResolvers = {
       const listCategoryService = container.resolve(ListCategoryService);
 
       const category = await listCategoryService.execute({
-        id: parent.category_id,
+        id: parent.categoryId,
       });
 
       return classToClass(category);
@@ -131,7 +131,7 @@ const resolvers: IResolvers = {
         title,
         description,
         episodesAmount,
-        created_by_id: context.user.id,
+        createdById: context.user.id,
       });
 
       return classToClass(anime);
@@ -152,7 +152,7 @@ const resolvers: IResolvers = {
       const updateAnimeService = container.resolve(UpdateAnimeService);
 
       const anime = await updateAnimeService.execute({
-        anime_id: id,
+        animeId: id,
         title,
         description,
         episodesAmount,
@@ -183,12 +183,12 @@ const resolvers: IResolvers = {
         .options({ stripUnknown: true })
         .keys({
           role: Joi.string().max(255).trim(),
-          character_id: Joi.string().uuid(),
-          anime_id: Joi.string().uuid(),
+          characterId: Joi.string().uuid(),
+          animeId: Joi.string().uuid(),
         })
         .validate(data);
 
-      const { role, character_id, anime_id } = data;
+      const { role, characterId, animeId } = data;
 
       const addAnimeCharacterService = container.resolve(
         AddAnimeCharacterService,
@@ -196,8 +196,8 @@ const resolvers: IResolvers = {
 
       const characterAnime = await addAnimeCharacterService.execute({
         role,
-        character_id,
-        anime_id,
+        characterId,
+        animeId,
       });
 
       return classToClass(characterAnime);
@@ -206,20 +206,20 @@ const resolvers: IResolvers = {
       Joi.object()
         .options({ stripUnknown: true })
         .keys({
-          character_id: Joi.string().uuid(),
-          anime_id: Joi.string().uuid(),
+          characterId: Joi.string().uuid(),
+          animeId: Joi.string().uuid(),
         })
         .validate(data);
 
-      const { character_id, anime_id } = data;
+      const { characterId, animeId } = data;
 
       const removeAnimeCharacterService = container.resolve(
         RemoveAnimeCharacterService,
       );
 
       const characterAnime = await removeAnimeCharacterService.execute({
-        character_id,
-        anime_id,
+        characterId,
+        animeId,
       });
 
       return classToClass(characterAnime);
@@ -229,19 +229,19 @@ const resolvers: IResolvers = {
         .options({ stripUnknown: true })
         .keys({
           score: Joi.number().positive().integer(),
-          category_id: Joi.string().uuid(),
-          anime_id: Joi.string().uuid(),
+          categoryId: Joi.string().uuid(),
+          animeId: Joi.string().uuid(),
         })
         .validate(data);
 
-      const { score, category_id, anime_id } = data;
+      const { score, categoryId, animeId } = data;
 
       const addGenreAnimeService = container.resolve(AddGenreAnimeService);
 
       const genreAnime = await addGenreAnimeService.execute({
         score,
-        category_id,
-        anime_id,
+        categoryId,
+        animeId,
       });
 
       return classToClass(genreAnime);
@@ -250,20 +250,20 @@ const resolvers: IResolvers = {
       Joi.object()
         .options({ stripUnknown: true })
         .keys({
-          category_id: Joi.string().uuid(),
-          anime_id: Joi.string().uuid(),
+          categoryId: Joi.string().uuid(),
+          animeId: Joi.string().uuid(),
         })
         .validate(data);
 
-      const { category_id, anime_id } = data;
+      const { categoryId, animeId } = data;
 
       const removeGenreAnimeService = container.resolve(
         RemoveGenreAnimeService,
       );
 
       const genreAnime = await removeGenreAnimeService.execute({
-        category_id,
-        anime_id,
+        categoryId,
+        animeId,
       });
 
       return classToClass(genreAnime);

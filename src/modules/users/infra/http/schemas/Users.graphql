@@ -19,18 +19,18 @@ input CreateSessionInput {
 }
 
 input ToggleRecentAnimeInput {
-  user_id: String!
-  anime_id: String!
+  userId: String!
+  animeId: String!
 }
 
 input ToggleFavoriteAnimeInput {
-  user_id: String!
-  anime_id: String!
+  userId: String!
+  animeId: String!
 }
 
 input ToggleFavoriteAnimeInput {
-  user_id: String!
-  anime_id: String!
+  userId: String!
+  animeId: String!
 }
 
 input UpdateUserInput {
@@ -47,20 +47,20 @@ input CreateUserInput {
 
 type FavoriteAnimeEdge {
   id: String!
-  user_id: String!
-  anime_id: String!
+  userId: String!
+  animeId: String!
   node: Anime!
-  created_at: String!
-  updated_at: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type RecentAnimeEdge {
   id: String!
-  user_id: String!
-  anime_id: String!
+  userId: String!
+  animeId: String!
   node: Anime!
-  created_at: String!
-  updated_at: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type FavoriteAnimeConnection {
@@ -89,12 +89,12 @@ type User {
   name: String!
   email: String!
   avatar: String
-  avatar_url: String
+  avatarUrl: String
   isAdmin: Boolean!
   favorites: Favorites!
   recents: Recents!
-  created_at: String!
-  updated_at: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {

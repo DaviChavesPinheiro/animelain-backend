@@ -2,25 +2,25 @@
 # import Character from '../../../../characters/infra/http/schemas/Characters.graphql';
 # import Category from '../../../../categories/infra/http/schemas/Categories.graphql';
 input RemoveGenreAnimeInput {
-  category_id: String!
-  anime_id: String!
+  categoryId: String!
+  animeId: String!
 }
 
 input AddGenreAnimeInput {
   score: Int
-  category_id: String!
-  anime_id: String!
+  categoryId: String!
+  animeId: String!
 }
 
 input RemoveCharacterAnimeInput {
-  character_id: String!
-  anime_id: String!
+  characterId: String!
+  animeId: String!
 }
 
 input AddCharacterAnimeInput {
   role: String
-  character_id: String!
-  anime_id: String!
+  characterId: String!
+  animeId: String!
 }
 
 input UpdateAnimeInput {
@@ -39,21 +39,21 @@ input CreateAnimeInput {
 type CharacterAnimeEdge {
   id: String!
   role: String
-  character_id: String!
-  anime_id: String!
+  characterId: String!
+  animeId: String!
   node: Character!
-  created_at: String!
-  updated_at: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type GenreAnimeEdge {
   id: String!
   score: Int
-  category_id: String!
-  anime_id: String!
+  categoryId: String!
+  animeId: String!
   node: Category!
-  created_at: String!
-  updated_at: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type CharacterAnimeConnection {
@@ -68,16 +68,16 @@ type Anime {
   id: ID!
   title: String!
   description: String
-  episodesAmount: Int!
+  episodesAmount: Int
   profile: String
   banner: String
-  profile_url: String
-  banner_url: String
+  profileUrl: String
+  bannerUrl: String
   createdBy: User
   characters: CharacterAnimeConnection!
   genres: GenreAnimeConnection!
-  created_at: String!
-  updated_at: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {

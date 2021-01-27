@@ -5,7 +5,7 @@ import Category from '../infra/typeorm/entities/Category';
 import ICategoriesRepository from '../repositories/ICategoriesRepository';
 
 interface IRequest {
-  category_id: string;
+  categoryId: string;
   name: string;
 }
 
@@ -16,8 +16,8 @@ class UpdateCategoryService {
     private categoriesRepository: ICategoriesRepository,
   ) {}
 
-  public async execute({ category_id, name }: IRequest): Promise<Category> {
-    const category = await this.categoriesRepository.findById(category_id);
+  public async execute({ categoryId, name }: IRequest): Promise<Category> {
+    const category = await this.categoriesRepository.findById(categoryId);
 
     if (!category) {
       throw new AppError('Category not found.');
@@ -29,7 +29,7 @@ class UpdateCategoryService {
 
     if (
       findCategoryWithSameName &&
-      findCategoryWithSameName.id !== category_id
+      findCategoryWithSameName.id !== categoryId
     ) {
       throw new AppError('This category already exists');
     }

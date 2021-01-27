@@ -16,25 +16,25 @@ class RecentUserAnime extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  anime_id: string;
+  @Column('uuid')
+  animeId: string;
 
-  @Column()
-  user_id: string;
+  @Column('uuid')
+  userId: string;
 
-  @ManyToOne(() => Anime, anime => anime.recent_users_animes)
-  @JoinColumn({ name: 'anime_id' })
+  @ManyToOne(() => Anime, anime => anime.recentUsersAnimes)
+  @JoinColumn({ name: 'animeId' })
   anime: Anime;
 
-  @ManyToOne(() => User, user => user.recent_users_animes)
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, user => user.recentUsersAnimes)
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }
 
 export default RecentUserAnime;

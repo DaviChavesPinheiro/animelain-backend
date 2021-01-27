@@ -1,4 +1,4 @@
-import Genre from '@modules/animes/infra/typeorm/entities/Genre';
+import Genre from '@modules/animes/infra/typeorm/entities/AnimeGenre';
 import {
   Entity,
   Column,
@@ -14,17 +14,17 @@ class Category extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('varchar', { unique: true })
   name: string;
 
   @OneToMany(() => Genre, genre => genre.category)
   genres: Genre[];
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }
 
 export default Category;

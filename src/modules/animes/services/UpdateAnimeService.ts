@@ -6,7 +6,7 @@ import IAnimeRepository from '../repositories/IAnimesRepository';
 import Anime from '../infra/typeorm/entities/Anime';
 
 interface IRequest {
-  anime_id: string;
+  animeId: string;
   title?: string;
   description?: string;
   episodesAmount?: number;
@@ -23,12 +23,12 @@ class UpdateAnimeService {
   ) {}
 
   public async execute({
-    anime_id,
+    animeId,
     title,
     description,
     episodesAmount,
   }: IRequest): Promise<Anime> {
-    const anime = await this.animesRepository.findById(anime_id);
+    const anime = await this.animesRepository.findById(animeId);
 
     if (!anime) {
       throw new AppError('Anime not found.');
@@ -47,7 +47,7 @@ class UpdateAnimeService {
         title,
       );
 
-      if (findAnimeWithSameTitle && findAnimeWithSameTitle.id !== anime_id) {
+      if (findAnimeWithSameTitle && findAnimeWithSameTitle.id !== animeId) {
         throw new AppError('This anime already exists');
       }
 
@@ -58,9 +58,9 @@ class UpdateAnimeService {
       anime.description = description;
     }
 
-    if (anime.created_by_id) {
+    if (anime.createdById) {
       await this.notificationsRepository.create({
-        target_id: anime.created_by_id,
+        target_id: anime.createdById,
         content: `O anime ${anime.title} foi atualizado.`,
       });
     }

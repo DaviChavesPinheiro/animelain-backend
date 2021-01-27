@@ -5,7 +5,7 @@ import ICharactersRepository from '../repositories/ICharactersRepository';
 import Character from '../infra/typeorm/entities/Character';
 
 interface IRequest {
-  character_id: string;
+  characterId: string;
   avatarFilename: string;
 }
 
@@ -19,10 +19,10 @@ class UpdateCharacterBannerService {
   ) {}
 
   public async execute({
-    character_id,
+    characterId,
     avatarFilename,
   }: IRequest): Promise<Character> {
-    const character = await this.charactersRepository.findById(character_id);
+    const character = await this.charactersRepository.findById(characterId);
 
     if (!character) {
       throw new AppError('This character does not exist', 401);

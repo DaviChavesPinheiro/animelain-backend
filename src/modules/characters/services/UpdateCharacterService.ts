@@ -5,7 +5,7 @@ import Character from '../infra/typeorm/entities/Character';
 import ICharactersRepository from '../repositories/ICharactersRepository';
 
 interface IRequest {
-  character_id: string;
+  characterId: string;
   name?: string;
   description?: string;
   age?: number;
@@ -19,12 +19,12 @@ class UpdateCharacterService {
   ) {}
 
   public async execute({
-    character_id,
+    characterId,
     name,
     description,
     age,
   }: IRequest): Promise<Character> {
-    const character = await this.charactersRepository.findById(character_id);
+    const character = await this.charactersRepository.findById(characterId);
 
     if (!character) {
       throw new AppError('Character not found.');
@@ -45,7 +45,7 @@ class UpdateCharacterService {
 
       if (
         findCharacterWithSameName &&
-        findCharacterWithSameName.id !== character_id
+        findCharacterWithSameName.id !== characterId
       ) {
         throw new AppError('This character already exists');
       }

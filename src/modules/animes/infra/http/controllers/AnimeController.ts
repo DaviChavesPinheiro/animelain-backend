@@ -7,11 +7,11 @@ import { container } from 'tsyringe';
 export default class AnimesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    const { id: user_id } = request.user;
+    const { id: userId } = request.user;
 
     const listAnimeService = container.resolve(ListAnimeService);
 
-    const anime = await listAnimeService.execute({ id, user_id });
+    const anime = await listAnimeService.execute({ id, userId });
 
     return response.json(classToClass(anime));
   }
@@ -23,7 +23,7 @@ export default class AnimesController {
     const updateProfileService = container.resolve(UpdateProfileService);
 
     const anime = await updateProfileService.execute({
-      anime_id: id,
+      animeId: id,
       title,
       description,
       episodesAmount,

@@ -14,7 +14,7 @@ import {
 } from 'typeorm';
 import RecentUserAnime from '@modules/users/infra/typeorm/entities/RecentUserAnime';
 import FavoriteUserAnime from '@modules/users/infra/typeorm/entities/FavoriteUserAnime';
-import Genre from './Genre';
+import AnimeGenre from './AnimeGenre';
 import AnimeCharacter from './AnimeCharacter';
 
 // todo: create recommendations route
@@ -25,55 +25,53 @@ class Anime extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('varchar', { length: 255, unique: true })
   title: string;
 
-  @Column()
+  @Column('text', { nullable: true })
   description?: string;
 
-  @Column()
-  episodesAmount: number;
+  @Column('integer', { nullable: true })
+  episodesAmount?: number;
 
-  @Column()
-  authors?: string;
+  @Column('simple-array', { array: true, nullable: true })
+  authors?: string[];
 
-  @Column()
-  created_by_id?: string;
+  @Column('uuid', { nullable: true })
+  createdById?: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'created_by_id' })
-  created_by: User;
+  @JoinColumn({ name: 'createdById' })
+  createdBy?: User;
 
-  @Column()
+  @Column('varchar', { nullable: true })
   profile?: string;
 
-  @Column()
+  @Column('varchar', { nullable: true })
   banner?: string;
 
-  @OneToMany(() => Genre, genre => genre.anime)
-  genres: Genre[];
+  @OneToMany(() => AnimeGenre, genre => genre.anime)
+  genres: AnimeGenre[];
 
   @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.anime)
-  recent_users_animes: RecentUserAnime[];
+  recentUsersAnimes: RecentUserAnime[];
 
   @OneToMany(
     () => FavoriteUserAnime,
     favoriteUserAnime => favoriteUserAnime.anime,
   )
-  favorite_users_animes: FavoriteUserAnime[];
+  favoriteUsersAnimes: FavoriteUserAnime[];
 
   @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.anime)
-  animes_characters: AnimeCharacter[];
+  animesCharacters: AnimeCharacter[];
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 
-  isFavorited?: boolean;
-
-  @Expose({ name: 'profile_url' })
+  @Expose({ name: 'profileUrl' })
   getProfileUrl(): string | null {
     if (!this.profile) {
       return null;
@@ -89,7 +87,7 @@ class Anime extends BaseEntity {
     }
   }
 
-  @Expose({ name: 'banner_url' })
+  @Expose({ name: 'bannerUrl' })
   getBannerUrl(): string | null {
     if (!this.banner) {
       return null;

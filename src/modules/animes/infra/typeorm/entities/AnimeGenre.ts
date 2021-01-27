@@ -11,33 +11,33 @@ import {
 } from 'typeorm';
 import Anime from './Anime';
 
-@Entity('genres')
-class Genre extends BaseEntity {
+@Entity('animes_genres')
+class AnimeGenre extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  score: number;
+  @Column('integer', { nullable: true })
+  score?: number;
 
-  @Column()
-  anime_id: string;
+  @Column('uuid')
+  animeId: string;
 
-  @Column()
-  category_id: string;
+  @Column('uuid')
+  categoryId: string;
 
   @ManyToOne(() => Anime, anime => anime.genres)
-  @JoinColumn({ name: 'anime_id' })
+  @JoinColumn({ name: 'animeId' })
   anime: Anime;
 
   @ManyToOne(() => Category, category => category.genres)
-  @JoinColumn({ name: 'category_id' })
+  @JoinColumn({ name: 'categoryId' })
   category: Category;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }
 
-export default Genre;
+export default AnimeGenre;
