@@ -33,3 +33,15 @@ export class UpdateUserInput {
   @IsEmail()
   email?: string;
 }
+
+@InputType()
+export class CreateSessionInput {
+  @Field(() => String)
+  @MaxLength(255)
+  @IsEmail()
+  email: string;
+
+  @Field(() => String)
+  @MaxLength(255)
+  password: string;
+}

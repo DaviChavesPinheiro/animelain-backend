@@ -4,8 +4,14 @@ import { container } from 'tsyringe';
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
+import CreateSessionService from '@modules/users/services/CreateSessionService';
 import User from '../../typeorm/entities/User';
-import { CreateUserInput, UpdateUserInput } from '../schemas/Users.schema';
+import {
+  CreateSessionInput,
+  CreateUserInput,
+  UpdateUserInput,
+} from '../schemas/Users.schema';
+import Session from '../schemas/Session.schema';
 
 @Resolver(User)
 class UsersResolver {
@@ -52,6 +58,20 @@ class UsersResolver {
     });
 
     return classToClass(user);
+  }
+
+  @Mutation(() => Session)
+  async createSession(@Arg('data') data: CreateSessionInput): Promise<Session> {
+    const { email, password } = data;
+
+    const createSessionService = container.resolve(CreateSessionService);
+
+    const { user, token } = await createSessionService.execute({
+      email,
+      password,
+    });
+
+    return { user: classToClass(user), token };
   }
 }
 
