@@ -2,10 +2,20 @@ import ListAnimesService from '@modules/animes/services/ListAnimesService';
 import ListAnimeService from '@modules/animes/services/ListAnimeService';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from 'type-graphql';
 import CreateAnimeService from '@modules/animes/services/CreateAnimeService';
 import UpdateAnimeService from '@modules/animes/services/UpdateAnimeService';
 import DeleteAnimeService from '@modules/animes/services/DeleteAnimeService';
+import ListUserService from '@modules/users/services/ListUserService';
+import User from '@modules/users/infra/typeorm/entities/User';
 import IContext from '../../../../../@types/IContext';
 import Anime from '../../typeorm/entities/Anime';
 import { CreateAnimeInput, UpdateAnimeInput } from '../schemas/Animes.schema';
@@ -70,6 +80,20 @@ class AnimesResolver {
     const anime = await deleteAnimeService.execute({ id });
 
     return classToClass(anime);
+  }
+
+  @FieldResolver({ nullable: true })
+  async createdBy(@Root() anime: Anime): Promise<User | null> {
+    const listUserService = container.resolve(ListUserService);
+
+    if (anime.createdById) {
+      const user = await listUserService.execute({
+        userId: anime.createdById,
+      });
+
+      return classToClass(user);
+    }
+    return null;
   }
 }
 

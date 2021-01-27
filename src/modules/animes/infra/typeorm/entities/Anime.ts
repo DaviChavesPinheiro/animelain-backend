@@ -44,9 +44,11 @@ class Anime extends BaseEntity {
   @Column('simple-array', { array: true, nullable: true })
   authors?: string[];
 
+  @Field(() => String, { nullable: true })
   @Column('uuid', { nullable: true })
   createdById?: string;
 
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User)
   @JoinColumn({ name: 'createdById' })
   createdBy?: User;

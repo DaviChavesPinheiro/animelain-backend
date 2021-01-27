@@ -9,24 +9,31 @@ import {
   OneToMany,
   BaseEntity,
 } from 'typeorm';
+import { Field, ID, ObjectType } from 'type-graphql';
 import RecentUserAnime from './RecentUserAnime';
 import FavoriteUserAnime from './FavoriteUserAnime';
 
+@ObjectType()
 @Entity('users')
 class User extends BaseEntity {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Field(() => String)
   @Column('varchar', { unique: true })
   name: string;
 
+  @Field(() => String)
   @Column('varchar', { unique: true })
   email: string;
 
+  @Field(() => String)
   @Column('varchar')
   @Exclude()
   password: string;
 
+  @Field(() => String, { nullable: true })
   @Column('varchar', { nullable: true })
   avatar?: string;
 
@@ -42,13 +49,16 @@ class User extends BaseEntity {
   @Column('boolean', { default: false })
   isAdmin = false;
 
+  @Field(() => String)
   @CreateDateColumn()
   createdAt: Date;
 
+  @Field(() => String)
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Expose({ name: 'avatarurl' })
+  @Field(() => String, { nullable: true })
+  @Expose({ name: 'avatarUrl' })
   getAvatarUrl(): string | null {
     if (!this.avatar) {
       return null;
