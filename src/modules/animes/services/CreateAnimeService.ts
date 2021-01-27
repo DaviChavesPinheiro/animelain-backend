@@ -6,8 +6,8 @@ import IAnimeRepository from '../repositories/IAnimesRepository';
 
 interface IRequest {
   title: string;
-  description: string;
-  episodesAmount: number;
+  description?: string;
+  episodesAmount?: number;
   createdById: string;
 }
 

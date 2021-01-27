@@ -6,3 +6,5 @@ tmp/*
 **/covarege/*
 
 ormconfig.json
+
+schema.gql

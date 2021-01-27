@@ -23,6 +23,7 @@
         "prettier"
     ],
     "rules": {
+      "max-classes-per-file": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "no-useless-constructor":"off",
       "camelcase": "off",

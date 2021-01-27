@@ -14,26 +14,33 @@ import {
 } from 'typeorm';
 import RecentUserAnime from '@modules/users/infra/typeorm/entities/RecentUserAnime';
 import FavoriteUserAnime from '@modules/users/infra/typeorm/entities/FavoriteUserAnime';
+import { Field, ID, Int, ObjectType } from 'type-graphql';
 import AnimeGenre from './AnimeGenre';
 import AnimeCharacter from './AnimeCharacter';
 
 // todo: create recommendations route
 // just list some animes based in user favorites
 
+@ObjectType()
 @Entity('animes')
 class Anime extends BaseEntity {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Field(() => String)
   @Column('varchar', { length: 255, unique: true })
   title: string;
 
+  @Field(() => String, { nullable: true })
   @Column('text', { nullable: true })
   description?: string;
 
+  @Field(() => Int, { nullable: true })
   @Column('integer', { nullable: true })
   episodesAmount?: number;
 
+  @Field(() => [String], { nullable: true })
   @Column('simple-array', { array: true, nullable: true })
   authors?: string[];
 
@@ -44,9 +51,11 @@ class Anime extends BaseEntity {
   @JoinColumn({ name: 'createdById' })
   createdBy?: User;
 
+  @Field(() => String, { nullable: true })
   @Column('varchar', { nullable: true })
   profile?: string;
 
+  @Field(() => String, { nullable: true })
   @Column('varchar', { nullable: true })
   banner?: string;
 
@@ -65,9 +74,11 @@ class Anime extends BaseEntity {
   @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.anime)
   animesCharacters: AnimeCharacter[];
 
+  @Field(() => String)
   @CreateDateColumn()
   createdAt: Date;
 
+  @Field(() => String)
   @UpdateDateColumn()
   updatedAt: Date;
 
