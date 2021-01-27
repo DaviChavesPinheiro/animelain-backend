@@ -18,7 +18,7 @@ input RemoveCharacterAnimeInput {
 }
 
 input AddCharacterAnimeInput {
-  role: String
+  role: CharacterAnimeRoles
   characterId: String!
   animeId: String!
 }
@@ -32,13 +32,19 @@ input UpdateAnimeInput {
 
 input CreateAnimeInput {
   title: String!
-  description: String!
-  episodesAmount: Int!
+  description: String
+  episodesAmount: Int
+}
+
+enum CharacterAnimeRoles {
+  MAIN,
+  SUPPORTING,
+  BACKGROUND
 }
 
 type CharacterAnimeEdge {
   id: String!
-  role: String
+  role: CharacterAnimeRoles
   characterId: String!
   animeId: String!
   node: Character!

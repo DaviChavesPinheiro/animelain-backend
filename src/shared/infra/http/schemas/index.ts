@@ -2,7 +2,7 @@ import { makeExecutableSchema } from 'apollo-server-express';
 import { loadFilesSync, mergeTypeDefs } from 'graphql-tools';
 import mergeResolvers from 'lodash.merge';
 
-const typesArray = loadFilesSync('src/**/*.graphql', {
+const typesArray = loadFilesSync('src/**/schemas/*.graphql', {
   recursive: true,
 });
 

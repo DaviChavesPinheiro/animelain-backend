@@ -182,7 +182,7 @@ const resolvers: IResolvers = {
       Joi.object()
         .options({ stripUnknown: true })
         .keys({
-          role: Joi.string().max(255).trim(),
+          role: Joi.string(),
           characterId: Joi.string().uuid(),
           animeId: Joi.string().uuid(),
         })
