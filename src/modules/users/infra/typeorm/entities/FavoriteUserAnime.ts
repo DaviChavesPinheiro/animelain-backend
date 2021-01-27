@@ -22,11 +22,17 @@ class FavoriteUserAnime extends BaseEntity {
   @Column('uuid')
   userId: string;
 
-  @ManyToOne(() => Anime, anime => anime.favoriteUsersAnimes)
+  @ManyToOne(() => Anime, anime => anime.favoriteUsersAnimes, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'animeId' })
   anime: Anime;
 
-  @ManyToOne(() => User, user => user.favoriteUsersAnimes)
+  @ManyToOne(() => User, user => user.favoriteUsersAnimes, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'userId' })
   user: User;
 

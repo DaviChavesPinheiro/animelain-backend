@@ -25,11 +25,17 @@ class AnimeCharacter extends BaseEntity {
   @Column('uuid')
   characterId: string;
 
-  @ManyToOne(() => Anime, anime => anime.animesCharacters)
+  @ManyToOne(() => Anime, anime => anime.animesCharacters, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'animeId' })
   anime: Anime;
 
-  @ManyToOne(() => Character, character => character.animesCharacters)
+  @ManyToOne(() => Character, character => character.animesCharacters, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'characterId' })
   character: Character;
 
