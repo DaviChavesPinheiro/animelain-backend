@@ -15,15 +15,16 @@ import {
 import RecentUserAnime from '@modules/users/infra/typeorm/entities/RecentUserAnime';
 import FavoriteUserAnime from '@modules/users/infra/typeorm/entities/FavoriteUserAnime';
 import { Field, ID, Int, ObjectType } from 'type-graphql';
+import INode from '@shared/infra/http/schemas/Nodes.schema';
 import AnimeGenre from './AnimeGenre';
 import AnimeCharacter from './AnimeCharacter';
 
 // todo: create recommendations route
 // just list some animes based in user favorites
 
-@ObjectType()
+@ObjectType({ implements: [INode] })
 @Entity('animes')
-class Anime extends BaseEntity {
+class Anime extends BaseEntity implements INode {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;

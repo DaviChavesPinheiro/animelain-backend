@@ -1,4 +1,6 @@
 import Anime from '@modules/animes/infra/typeorm/entities/Anime';
+import IEdge from '@shared/infra/http/schemas/Edges.schema';
+import { Field, ID, ObjectType } from 'type-graphql';
 import {
   Entity,
   Column,
@@ -11,14 +13,18 @@ import {
 } from 'typeorm';
 import User from './User';
 
+@ObjectType({ implements: [IEdge] })
 @Entity('favorite_users_animes')
-class FavoriteUserAnime extends BaseEntity {
+class FavoriteUserAnime extends BaseEntity implements IEdge {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Field(() => String)
   @Column('uuid')
   animeId: string;
 
+  @Field(() => String)
   @Column('uuid')
   userId: string;
 
@@ -36,9 +42,14 @@ class FavoriteUserAnime extends BaseEntity {
   @JoinColumn({ name: 'userId' })
   user: User;
 
+  @Field(() => Anime)
+  node: Anime;
+
+  @Field(() => String)
   @CreateDateColumn()
   createdAt: Date;
 
+  @Field(() => String)
   @UpdateDateColumn()
   updatedAt: Date;
 }

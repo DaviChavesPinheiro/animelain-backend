@@ -1,15 +1,24 @@
 import ListUserService from '@modules/users/services/ListUserService';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from 'type-graphql';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
+import ToggleFavoriteUserAnimeService from '@modules/users/services/ToggleFavoriteUserAnimeService';
 import User from '../../typeorm/entities/User';
 import {
   CreateUserInput,
   ResetPasswordInput,
+  ToggleFavoriteAnimeInput,
   UpdateUserInput,
 } from '../schemas/Users.schema';
 
@@ -85,6 +94,29 @@ class UsersResolver {
     });
 
     return true;
+  }
+
+  @Mutation(() => Boolean)
+  async toggleFavoriteAnime(
+    @Arg('data') data: ToggleFavoriteAnimeInput,
+  ): Promise<boolean> {
+    const { animeId, userId } = data;
+
+    const toggleFavoriteUserAnimeService = container.resolve(
+      ToggleFavoriteUserAnimeService,
+    );
+
+    const isFavorited = await toggleFavoriteUserAnimeService.execute({
+      animeId,
+      userId,
+    });
+
+    return isFavorited;
+  }
+
+  @FieldResolver()
+  async favorites(@Root() user: User): Promise<User> {
+    return user;
   }
 }
 

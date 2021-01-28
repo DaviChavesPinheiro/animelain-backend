@@ -44,3 +44,14 @@ export class ResetPasswordInput {
   @MaxLength(255)
   password: string;
 }
+
+@InputType()
+export class ToggleFavoriteAnimeInput {
+  @Field(() => String)
+  @IsUUID()
+  animeId: string;
+
+  @Field(() => String)
+  @IsUUID()
+  userId: string;
+}

@@ -1,5 +1,6 @@
 import uploadConfig from '@config/upload';
 import { Exclude, Expose } from 'class-transformer';
+import INode from '@shared/infra/http/schemas/Nodes.schema';
 import {
   Entity,
   Column,
@@ -12,10 +13,11 @@ import {
 import { Field, ID, ObjectType } from 'type-graphql';
 import RecentUserAnime from './RecentUserAnime';
 import FavoriteUserAnime from './FavoriteUserAnime';
+import Favorites from '../../http/schemas/Favorites.schema';
 
-@ObjectType()
+@ObjectType({ implements: [INode] })
 @Entity('users')
-class User extends BaseEntity {
+class User extends BaseEntity implements INode {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -48,6 +50,9 @@ class User extends BaseEntity {
 
   @Column('boolean', { default: false })
   isAdmin = false;
+
+  @Field(() => Favorites)
+  favorites: Favorites;
 
   @Field(() => String)
   @CreateDateColumn()

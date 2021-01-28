@@ -9,7 +9,7 @@ import UpdateUserService from '@modules/users/services/UpdateUserService';
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 import ListFavoriteUserAnimesService from '@modules/users/services/ListFavoriteUserAnimesService';
-import ListAnimesService from '@modules/animes/services/ListAnimeService';
+import ListAnimeService from '@modules/animes/services/ListAnimeService';
 import ListRecentUserAnimesService from '@modules/users/services/ListRecentUserAnimesService';
 import ToggleFavoriteUserAnimeService from '@modules/users/services/ToggleFavoriteUserAnimeService';
 import ToggleRecentUserAnimeService from '@modules/users/services/ToggleRecentUserAnimeService';
@@ -88,7 +88,7 @@ const resolvers: IResolvers = {
   },
   FavoriteAnimeEdge: {
     node: async (parent: FavoriteUserAnime) => {
-      const listAnimesService = container.resolve(ListAnimesService);
+      const listAnimesService = container.resolve(ListAnimeService);
 
       const anime = await listAnimesService.execute({
         id: parent.animeId,
@@ -99,7 +99,7 @@ const resolvers: IResolvers = {
   },
   RecentAnimeEdge: {
     node: async (parent: RecentUserAnime) => {
-      const listAnimesService = container.resolve(ListAnimesService);
+      const listAnimesService = container.resolve(ListAnimeService);
 
       const anime = await listAnimesService.execute({
         id: parent.animeId,
