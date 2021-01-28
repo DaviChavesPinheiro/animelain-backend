@@ -138,6 +138,11 @@ class UsersResolver {
   async favorites(@Root() user: User): Promise<User> {
     return user;
   }
+
+  @FieldResolver()
+  async recents(@Root() user: User): Promise<User> {
+    return user;
+  }
 }
 
 export default UsersResolver;

@@ -14,6 +14,7 @@ import { Field, ID, ObjectType } from 'type-graphql';
 import RecentUserAnime from './RecentUserAnime';
 import FavoriteUserAnime from './FavoriteUserAnime';
 import Favorites from '../../http/schemas/Favorites.schema';
+import Recents from '../../http/schemas/Recents.schema';
 
 @ObjectType({ implements: [INode] })
 @Entity('users')
@@ -53,6 +54,9 @@ class User extends BaseEntity implements INode {
 
   @Field(() => Favorites)
   favorites: Favorites;
+
+  @Field(() => Recents)
+  recents: Recents;
 
   @Field(() => String)
   @CreateDateColumn()
