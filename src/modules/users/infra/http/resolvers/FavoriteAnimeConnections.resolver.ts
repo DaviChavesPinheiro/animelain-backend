@@ -18,8 +18,6 @@ class FavoriteAnimeConnectionsResolver {
       userId: user.id,
     });
 
-    console.log(favoriteUsersAnimes);
-
     return classToClass(favoriteUsersAnimes);
   }
 }

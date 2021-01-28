@@ -55,3 +55,14 @@ export class ToggleFavoriteAnimeInput {
   @IsUUID()
   userId: string;
 }
+
+@InputType()
+export class ToggleRecentAnimeInput {
+  @Field(() => String)
+  @IsUUID()
+  animeId: string;
+
+  @Field(() => String)
+  @IsUUID()
+  userId: string;
+}

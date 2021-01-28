@@ -14,11 +14,13 @@ import UpdateUserService from '@modules/users/services/UpdateUserService';
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 import ToggleFavoriteUserAnimeService from '@modules/users/services/ToggleFavoriteUserAnimeService';
+import ToggleRecentUserAnimeService from '@modules/users/services/ToggleRecentUserAnimeService';
 import User from '../../typeorm/entities/User';
 import {
   CreateUserInput,
   ResetPasswordInput,
   ToggleFavoriteAnimeInput,
+  ToggleRecentAnimeInput,
   UpdateUserInput,
 } from '../schemas/Users.schema';
 
@@ -112,6 +114,24 @@ class UsersResolver {
     });
 
     return isFavorited;
+  }
+
+  @Mutation(() => Boolean)
+  async toggleRecentAnime(
+    @Arg('data') data: ToggleRecentAnimeInput,
+  ): Promise<boolean> {
+    const { animeId, userId } = data;
+
+    const toggleRecentUserAnimeService = container.resolve(
+      ToggleRecentUserAnimeService,
+    );
+
+    const isRecented = await toggleRecentUserAnimeService.execute({
+      animeId,
+      userId,
+    });
+
+    return isRecented;
   }
 
   @FieldResolver()
