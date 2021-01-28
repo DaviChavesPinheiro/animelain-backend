@@ -1,4 +1,5 @@
 import Category from '@modules/categories/infra/typeorm/entities/Category';
+import { Field, ID, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
   Column,
@@ -11,17 +12,22 @@ import {
 } from 'typeorm';
 import Anime from './Anime';
 
+@ObjectType()
 @Entity('animes_genres')
 class AnimeGenre extends BaseEntity {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('integer', { nullable: true })
-  score?: number;
+  @Field(() => Int)
+  @Column('integer')
+  score: number;
 
+  @Field(() => String)
   @Column('uuid')
   animeId: string;
 
+  @Field(() => String)
   @Column('uuid')
   categoryId: string;
 
@@ -33,9 +39,11 @@ class AnimeGenre extends BaseEntity {
   @JoinColumn({ name: 'categoryId' })
   category: Category;
 
+  @Field(() => String)
   @CreateDateColumn()
   createdAt: Date;
 
+  @Field(() => String)
   @UpdateDateColumn()
   updatedAt: Date;
 }

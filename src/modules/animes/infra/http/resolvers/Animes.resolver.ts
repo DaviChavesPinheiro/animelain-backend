@@ -18,15 +18,20 @@ import ListUserService from '@modules/users/services/ListUserService';
 import User from '@modules/users/infra/typeorm/entities/User';
 import AddAnimeCharacterService from '@modules/animes/services/AddAnimeCharacterService';
 import RemoveAnimeCharacterService from '@modules/animes/services/RemoveAnimeCharacterService';
+import AddAnimeGenreService from '@modules/animes/services/AddAnimeGenreService';
+import RemoveAnimeGenreService from '@modules/animes/services/RemoveAnimeGenreService';
 import IContext from '../../../../../@types/IContext';
 import Anime from '../../typeorm/entities/Anime';
 import {
   AddAnimeCharacterInput,
+  AddAnimeGenreInput,
   CreateAnimeInput,
   RemoveAnimeCharacterInput,
+  RemoveAnimeGenreInput,
   UpdateAnimeInput,
 } from '../schemas/Animes.schema';
 import AnimeCharacter from '../../typeorm/entities/AnimeCharacter';
+import AnimeGenre from '../../typeorm/entities/AnimeGenre';
 
 @Resolver(Anime)
 class AnimesResolver {
@@ -125,6 +130,39 @@ class AnimesResolver {
     });
 
     return classToClass(animeCharacter);
+  }
+
+  @Mutation(() => AnimeGenre)
+  async addAnimeGenre(
+    @Arg('data') data: AddAnimeGenreInput,
+  ): Promise<AnimeGenre> {
+    const { score, animeId, categoryId } = data;
+
+    const addAnimeGenreService = container.resolve(AddAnimeGenreService);
+
+    const animeGenre = await addAnimeGenreService.execute({
+      score,
+      animeId,
+      categoryId,
+    });
+
+    return classToClass(animeGenre);
+  }
+
+  @Mutation(() => AnimeGenre)
+  async removeAnimeGenre(
+    @Arg('data') data: RemoveAnimeGenreInput,
+  ): Promise<AnimeGenre> {
+    const { animeId, categoryId } = data;
+
+    const removeAnimeGenreService = container.resolve(RemoveAnimeGenreService);
+
+    const animeGenre = await removeAnimeGenreService.execute({
+      animeId,
+      categoryId,
+    });
+
+    return classToClass(animeGenre);
   }
 
   @FieldResolver({ nullable: true })

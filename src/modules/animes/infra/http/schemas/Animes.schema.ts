@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { IsPositive, IsUUID, MaxLength } from 'class-validator';
+import { IsPositive, IsUUID, Max, MaxLength, Min } from 'class-validator';
 import { Field, ID, InputType, Int } from 'type-graphql';
 import { CharacterRole } from '../../typeorm/entities/AnimeCharacter';
 
@@ -56,6 +56,33 @@ export class RemoveAnimeCharacterInput {
   @Field(() => String)
   @IsUUID()
   characterId: string;
+
+  @Field(() => String)
+  @IsUUID()
+  animeId: string;
+}
+
+@InputType()
+export class AddAnimeGenreInput {
+  @Field(() => Int)
+  @Min(1)
+  @Max(3)
+  score: number;
+
+  @Field(() => String)
+  @IsUUID()
+  categoryId: string;
+
+  @Field(() => String)
+  @IsUUID()
+  animeId: string;
+}
+
+@InputType()
+export class RemoveAnimeGenreInput {
+  @Field(() => String)
+  @IsUUID()
+  categoryId: string;
 
   @Field(() => String)
   @IsUUID()

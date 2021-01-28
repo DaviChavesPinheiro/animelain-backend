@@ -9,9 +9,9 @@ import ListCharacterService from '@modules/characters/services/ListCharacterServ
 import ListAnimeGenresService from '@modules/animes/services/ListAnimeGenresService';
 import ListCategoryService from '@modules/categories/services/ListCategoryService';
 import AddAnimeCharacterService from '@modules/animes/services/AddAnimeCharacterService';
-import AddGenreAnimeService from '@modules/animes/services/AddGenreAnimeService';
+import AddGenreAnimeService from '@modules/animes/services/AddAnimeGenreService';
 import RemoveAnimeCharacterService from '@modules/animes/services/RemoveAnimeCharacterService';
-import RemoveGenreAnimeService from '@modules/animes/services/RemoveGenreAnimeService';
+import RemoveGenreAnimeService from '@modules/animes/services/RemoveAnimeGenreService';
 import CreateAnimeService from '../../../services/CreateAnimeService';
 import ListAnimesService from '../../../services/ListAnimesService';
 import ListAnimeService from '../../../services/ListAnimeService';
