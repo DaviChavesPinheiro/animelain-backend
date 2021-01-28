@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { IsPositive, IsUUID, MaxLength } from 'class-validator';
 import { Field, ID, InputType, Int } from 'type-graphql';
+import { CharacterRole } from '../../typeorm/entities/AnimeCharacter';
 
 @InputType()
 export class CreateAnimeInput {
@@ -34,4 +35,29 @@ export class UpdateAnimeInput {
   @Field(() => Int, { nullable: true })
   @IsPositive()
   episodesAmount?: number;
+}
+
+@InputType()
+export class AddAnimeCharacterInput {
+  @Field(() => CharacterRole)
+  role: CharacterRole;
+
+  @Field(() => String)
+  @IsUUID()
+  characterId: string;
+
+  @Field(() => String)
+  @IsUUID()
+  animeId: string;
+}
+
+@InputType()
+export class RemoveAnimeCharacterInput {
+  @Field(() => String)
+  @IsUUID()
+  characterId: string;
+
+  @Field(() => String)
+  @IsUUID()
+  animeId: string;
 }

@@ -1,4 +1,4 @@
-import AddAnimeCharacterService from '@modules/animes/services/AddCharacterAnimeService';
+import AddAnimeCharacterService from '@modules/animes/services/AddAnimeCharacterService';
 import ListAnimeCharactersService from '@modules/animes/services/ListAnimeCharactersService';
 import RemoveAnimeCharacterService from '@modules/animes/services/RemoveAnimeCharacterService';
 import { classToClass } from 'class-transformer';

@@ -16,9 +16,17 @@ import UpdateAnimeService from '@modules/animes/services/UpdateAnimeService';
 import DeleteAnimeService from '@modules/animes/services/DeleteAnimeService';
 import ListUserService from '@modules/users/services/ListUserService';
 import User from '@modules/users/infra/typeorm/entities/User';
+import AddAnimeCharacterService from '@modules/animes/services/AddAnimeCharacterService';
+import RemoveAnimeCharacterService from '@modules/animes/services/RemoveAnimeCharacterService';
 import IContext from '../../../../../@types/IContext';
 import Anime from '../../typeorm/entities/Anime';
-import { CreateAnimeInput, UpdateAnimeInput } from '../schemas/Animes.schema';
+import {
+  AddAnimeCharacterInput,
+  CreateAnimeInput,
+  RemoveAnimeCharacterInput,
+  UpdateAnimeInput,
+} from '../schemas/Animes.schema';
+import AnimeCharacter from '../../typeorm/entities/AnimeCharacter';
 
 @Resolver(Anime)
 class AnimesResolver {
@@ -80,6 +88,43 @@ class AnimesResolver {
     const anime = await deleteAnimeService.execute({ id });
 
     return classToClass(anime);
+  }
+
+  @Mutation(() => AnimeCharacter)
+  async addAnimeCharacter(
+    @Arg('data') data: AddAnimeCharacterInput,
+  ): Promise<AnimeCharacter> {
+    const { role, animeId, characterId } = data;
+
+    const addAnimeCharacterService = container.resolve(
+      AddAnimeCharacterService,
+    );
+
+    const animeCharacter = await addAnimeCharacterService.execute({
+      role,
+      animeId,
+      characterId,
+    });
+
+    return classToClass(animeCharacter);
+  }
+
+  @Mutation(() => AnimeCharacter)
+  async removeAnimeCharacter(
+    @Arg('data') data: RemoveAnimeCharacterInput,
+  ): Promise<AnimeCharacter> {
+    const { animeId, characterId } = data;
+
+    const removeAnimeCharacterService = container.resolve(
+      RemoveAnimeCharacterService,
+    );
+
+    const animeCharacter = await removeAnimeCharacterService.execute({
+      animeId,
+      characterId,
+    });
+
+    return classToClass(animeCharacter);
   }
 
   @FieldResolver({ nullable: true })
