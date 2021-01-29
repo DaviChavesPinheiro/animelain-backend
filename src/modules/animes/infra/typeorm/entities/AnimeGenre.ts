@@ -1,4 +1,5 @@
 import Category from '@modules/categories/infra/typeorm/entities/Category';
+import IEdge from '@shared/infra/http/schemas/Edges.schema';
 import { Field, ID, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
@@ -12,9 +13,9 @@ import {
 } from 'typeorm';
 import Anime from './Anime';
 
-@ObjectType()
+@ObjectType({ implements: [IEdge] })
 @Entity('animes_genres')
-class AnimeGenre extends BaseEntity {
+class AnimeGenre extends BaseEntity implements IEdge {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -31,13 +32,16 @@ class AnimeGenre extends BaseEntity {
   @Column('uuid')
   categoryId: string;
 
-  @ManyToOne(() => Anime, anime => anime.genres)
+  @ManyToOne(() => Anime, anime => anime.animesGenres)
   @JoinColumn({ name: 'animeId' })
   anime: Anime;
 
   @ManyToOne(() => Category, category => category.genres)
   @JoinColumn({ name: 'categoryId' })
   category: Category;
+
+  @Field(() => Category)
+  node: Category;
 
   @Field(() => String)
   @CreateDateColumn()

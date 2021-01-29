@@ -183,6 +183,11 @@ class AnimesResolver {
   async characters(@Root() anime: Anime): Promise<Anime> {
     return anime;
   }
+
+  @FieldResolver()
+  async genres(@Root() anime: Anime): Promise<Anime> {
+    return anime;
+  }
 }
 
 export default AnimesResolver;

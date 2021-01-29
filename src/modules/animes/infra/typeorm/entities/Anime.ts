@@ -19,6 +19,7 @@ import INode from '@shared/infra/http/schemas/Nodes.schema';
 import AnimeGenre from './AnimeGenre';
 import AnimeCharacter from './AnimeCharacter';
 import CharacterConnection from '../../http/schemas/CharacterConnections.schema';
+import GenreConnection from '../../http/schemas/GenreConnections.schema';
 
 // todo: create recommendations route
 // just list some animes based in user favorites
@@ -63,9 +64,6 @@ class Anime extends BaseEntity implements INode {
   @Column('varchar', { nullable: true })
   banner?: string;
 
-  @OneToMany(() => AnimeGenre, genre => genre.anime)
-  genres: AnimeGenre[];
-
   @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.anime)
   recentUsersAnimes: RecentUserAnime[];
 
@@ -75,8 +73,14 @@ class Anime extends BaseEntity implements INode {
   )
   favoriteUsersAnimes: FavoriteUserAnime[];
 
+  @OneToMany(() => AnimeGenre, animeGenre => animeGenre.anime)
+  animesGenres: AnimeGenre[];
+
   @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.anime)
   animesCharacters: AnimeCharacter[];
+
+  @Field(() => GenreConnection)
+  genres: GenreConnection;
 
   @Field(() => CharacterConnection)
   characters: CharacterConnection;
