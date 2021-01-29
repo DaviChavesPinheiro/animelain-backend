@@ -6,7 +6,7 @@ import ICategoriesRepository from '../repositories/ICategoriesRepository';
 
 interface IRequest {
   categoryId: string;
-  name: string;
+  name?: string;
 }
 
 @injectable()
@@ -23,18 +23,20 @@ class UpdateCategoryService {
       throw new AppError('Category not found.');
     }
 
-    const findCategoryWithSameName = await this.categoriesRepository.findByName(
-      name,
-    );
+    if (name) {
+      const findCategoryWithSameName = await this.categoriesRepository.findByName(
+        name,
+      );
 
-    if (
-      findCategoryWithSameName &&
-      findCategoryWithSameName.id !== categoryId
-    ) {
-      throw new AppError('This category already exists');
+      if (
+        findCategoryWithSameName &&
+        findCategoryWithSameName.id !== categoryId
+      ) {
+        throw new AppError('This category already exists');
+      }
+
+      category.name = name;
     }
-
-    category.name = name;
 
     return this.categoriesRepository.save(category);
   }
