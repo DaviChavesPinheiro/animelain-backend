@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import Anime from '@modules/animes/infra/typeorm/entities/Anime';
 import Character from '@modules/characters/infra/typeorm/entities/Character';
+import IEdge from '@shared/infra/http/schemas/Edges.schema';
 import { Field, ID, ObjectType, registerEnumType } from 'type-graphql';
 import {
   Entity,
@@ -23,9 +24,9 @@ registerEnumType(CharacterRole, {
   name: 'CharacterRole',
 });
 
-@ObjectType()
+@ObjectType({ implements: [IEdge] })
 @Entity('animes_characters')
-export default class AnimeCharacter extends BaseEntity {
+export default class AnimeCharacter extends BaseEntity implements IEdge {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -55,6 +56,9 @@ export default class AnimeCharacter extends BaseEntity {
   })
   @JoinColumn({ name: 'characterId' })
   character: Character;
+
+  @Field(() => Character)
+  node: Character;
 
   @Field(() => String)
   @CreateDateColumn()

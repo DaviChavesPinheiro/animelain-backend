@@ -18,6 +18,7 @@ import { Field, ID, Int, ObjectType } from 'type-graphql';
 import INode from '@shared/infra/http/schemas/Nodes.schema';
 import AnimeGenre from './AnimeGenre';
 import AnimeCharacter from './AnimeCharacter';
+import CharacterConnection from '../../http/schemas/CharacterConnections.schema';
 
 // todo: create recommendations route
 // just list some animes based in user favorites
@@ -77,6 +78,9 @@ class Anime extends BaseEntity implements INode {
   @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.anime)
   animesCharacters: AnimeCharacter[];
 
+  @Field(() => CharacterConnection)
+  characters: CharacterConnection;
+
   @Field(() => String)
   @CreateDateColumn()
   createdAt: Date;
@@ -85,6 +89,7 @@ class Anime extends BaseEntity implements INode {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Field(() => String, { nullable: true, name: 'profileUrl' })
   @Expose({ name: 'profileUrl' })
   getProfileUrl(): string | null {
     if (!this.profile) {
@@ -101,6 +106,7 @@ class Anime extends BaseEntity implements INode {
     }
   }
 
+  @Field(() => String, { nullable: true, name: 'bannerUrl' })
   @Expose({ name: 'bannerUrl' })
   getBannerUrl(): string | null {
     if (!this.banner) {

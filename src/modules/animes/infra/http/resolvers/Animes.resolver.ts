@@ -178,6 +178,11 @@ class AnimesResolver {
     }
     return null;
   }
+
+  @FieldResolver()
+  async characters(@Root() anime: Anime): Promise<Anime> {
+    return anime;
+  }
 }
 
 export default AnimesResolver;

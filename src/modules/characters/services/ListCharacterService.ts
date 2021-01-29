@@ -8,7 +8,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class ListAnimesService {
+export default class ListCharacterService {
   constructor(
     @inject('CharactersRepository')
     private charactersRepository: ICharactersRepository,

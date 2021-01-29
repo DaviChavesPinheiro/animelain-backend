@@ -10,37 +10,48 @@ import {
   BaseEntity,
 } from 'typeorm';
 import AnimeCharacter from '@modules/animes/infra/typeorm/entities/AnimeCharacter';
+import INode from '@shared/infra/http/schemas/Nodes.schema';
+import { Field, ID, Int, ObjectType } from 'type-graphql';
 
-// todo: make character name unique (in service too).
+@ObjectType({ implements: [INode] })
 @Entity('characters')
-class Character extends BaseEntity {
+class Character extends BaseEntity implements INode {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Field(() => String)
   @Column('varchar', { unique: true })
   name: string;
 
+  @Field(() => String, { nullable: true })
   @Column('text', { nullable: true })
   description?: string;
 
+  @Field(() => Int, { nullable: true })
   @Column('integer', { nullable: true })
   age?: number;
 
+  @Field(() => String, { nullable: true })
   @Column('varchar', { nullable: true })
   profile?: string;
 
+  @Field(() => String, { nullable: true })
   @Column('varchar', { nullable: true })
   banner?: string;
 
   @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.character)
   animesCharacters: AnimeCharacter[];
 
+  @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt: Date;
 
+  @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Field(() => String, { nullable: true, name: 'profileUrl' })
   @Expose({ name: 'profileUrl' })
   getProfileUrl(): string | null {
     if (!this.profile) {
@@ -57,6 +68,7 @@ class Character extends BaseEntity {
     }
   }
 
+  @Field(() => String, { nullable: true, name: 'bannerUrl' })
   @Expose({ name: 'bannerUrl' })
   getBannerUrl(): string | null {
     if (!this.banner) {
