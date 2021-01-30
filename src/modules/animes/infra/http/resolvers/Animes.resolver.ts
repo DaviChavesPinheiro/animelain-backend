@@ -18,20 +18,20 @@ import ListUserService from '@modules/users/services/ListUserService';
 import User from '@modules/users/infra/typeorm/entities/User';
 import AddAnimeCharacterService from '@modules/animes/services/AddAnimeCharacterService';
 import RemoveAnimeCharacterService from '@modules/animes/services/RemoveAnimeCharacterService';
-import AddAnimeGenreService from '@modules/animes/services/AddAnimeGenreService';
-import RemoveAnimeGenreService from '@modules/animes/services/RemoveAnimeGenreService';
+import AddAnimeCategoryService from '@modules/animes/services/AddAnimeCategoryService';
+import RemoveAnimeCategoryService from '@modules/animes/services/RemoveAnimeCategoryService';
 import IContext from '../../../../../@types/IContext';
 import Anime from '../../typeorm/entities/Anime';
 import {
   AddAnimeCharacterInput,
-  AddAnimeGenreInput,
+  AddAnimeCategoryInput,
   CreateAnimeInput,
   RemoveAnimeCharacterInput,
-  RemoveAnimeGenreInput,
+  RemoveAnimeCategoryInput,
   UpdateAnimeInput,
 } from '../schemas/Animes.schema';
 import AnimeCharacter from '../../typeorm/entities/AnimeCharacter';
-import AnimeGenre from '../../typeorm/entities/AnimeGenre';
+import AnimeCategory from '../../typeorm/entities/AnimeCategory';
 
 @Resolver(Anime)
 class AnimesResolver {
@@ -132,37 +132,39 @@ class AnimesResolver {
     return classToClass(animeCharacter);
   }
 
-  @Mutation(() => AnimeGenre)
-  async addAnimeGenre(
-    @Arg('data') data: AddAnimeGenreInput,
-  ): Promise<AnimeGenre> {
+  @Mutation(() => AnimeCategory)
+  async addAnimeCategory(
+    @Arg('data') data: AddAnimeCategoryInput,
+  ): Promise<AnimeCategory> {
     const { score, animeId, categoryId } = data;
 
-    const addAnimeGenreService = container.resolve(AddAnimeGenreService);
+    const addAnimeCategoryService = container.resolve(AddAnimeCategoryService);
 
-    const animeGenre = await addAnimeGenreService.execute({
+    const animeCategory = await addAnimeCategoryService.execute({
       score,
       animeId,
       categoryId,
     });
 
-    return classToClass(animeGenre);
+    return classToClass(animeCategory);
   }
 
-  @Mutation(() => AnimeGenre)
-  async removeAnimeGenre(
-    @Arg('data') data: RemoveAnimeGenreInput,
-  ): Promise<AnimeGenre> {
+  @Mutation(() => AnimeCategory)
+  async removeAnimeCategory(
+    @Arg('data') data: RemoveAnimeCategoryInput,
+  ): Promise<AnimeCategory> {
     const { animeId, categoryId } = data;
 
-    const removeAnimeGenreService = container.resolve(RemoveAnimeGenreService);
+    const removeAnimeCategoryService = container.resolve(
+      RemoveAnimeCategoryService,
+    );
 
-    const animeGenre = await removeAnimeGenreService.execute({
+    const animeCategory = await removeAnimeCategoryService.execute({
       animeId,
       categoryId,
     });
 
-    return classToClass(animeGenre);
+    return classToClass(animeCategory);
   }
 
   @FieldResolver({ nullable: true })
@@ -185,7 +187,7 @@ class AnimesResolver {
   }
 
   @FieldResolver()
-  async genres(@Root() anime: Anime): Promise<Anime> {
+  async categories(@Root() anime: Anime): Promise<Anime> {
     return anime;
   }
 }

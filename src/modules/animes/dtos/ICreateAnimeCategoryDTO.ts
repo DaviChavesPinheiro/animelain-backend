@@ -1,4 +1,4 @@
-export default interface ICreateAnimeCharacterDTO {
+export default interface ICreateAnimeCategoryDTO {
   animeId: string;
   categoryId: string;
   score: number;

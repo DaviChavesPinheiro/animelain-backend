@@ -30,8 +30,8 @@ import IFavoriteUsersAnimesRepository from '@modules/users/repositories/IFavorit
 import AnimesCharactersRepository from '@modules/animes/infra/typeorm/repositories/AnimesCharactersRepository';
 import IAnimesCharactersRepository from '@modules/animes/repositories/IAnimesCharactersRepository';
 
-import GenresRepository from '@modules/animes/infra/typeorm/repositories/GenresRepository';
-import IGenresRepository from '@modules/animes/repositories/IGenresRepository';
+import AnimesCategoriesRepository from '@modules/animes/infra/typeorm/repositories/AnimesCategoriesRepository';
+import IAnimesCategoriesRepository from '@modules/animes/repositories/IAnimesCategoriesRepository';
 
 container.registerSingleton<IAnimeRepository>(
   'AnimesRepository',
@@ -78,7 +78,7 @@ container.registerSingleton<IAnimesCharactersRepository>(
   AnimesCharactersRepository,
 );
 
-container.registerSingleton<IGenresRepository>(
-  'GenresRepository',
-  GenresRepository,
+container.registerSingleton<IAnimesCategoriesRepository>(
+  'AnimesCategoriesRepository',
+  AnimesCategoriesRepository,
 );

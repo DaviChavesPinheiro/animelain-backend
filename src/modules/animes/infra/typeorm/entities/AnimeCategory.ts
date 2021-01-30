@@ -14,8 +14,8 @@ import {
 import Anime from './Anime';
 
 @ObjectType({ implements: [IEdge] })
-@Entity('animes_genres')
-class AnimeGenre extends BaseEntity implements IEdge {
+@Entity('animes_categories')
+class AnimeCategory extends BaseEntity implements IEdge {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -32,11 +32,11 @@ class AnimeGenre extends BaseEntity implements IEdge {
   @Column('uuid')
   categoryId: string;
 
-  @ManyToOne(() => Anime, anime => anime.animesGenres)
+  @ManyToOne(() => Anime, anime => anime.animesCategories)
   @JoinColumn({ name: 'animeId' })
   anime: Anime;
 
-  @ManyToOne(() => Category, category => category.genres)
+  @ManyToOne(() => Category, category => category.animesCategories)
   @JoinColumn({ name: 'categoryId' })
   category: Category;
 
@@ -52,4 +52,4 @@ class AnimeGenre extends BaseEntity implements IEdge {
   updatedAt: Date;
 }
 
-export default AnimeGenre;
+export default AnimeCategory;

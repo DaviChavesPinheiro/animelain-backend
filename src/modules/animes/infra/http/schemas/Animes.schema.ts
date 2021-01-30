@@ -63,7 +63,7 @@ export class RemoveAnimeCharacterInput {
 }
 
 @InputType()
-export class AddAnimeGenreInput {
+export class AddAnimeCategoryInput {
   @Field(() => Int)
   @Min(1)
   @Max(3)
@@ -79,7 +79,7 @@ export class AddAnimeGenreInput {
 }
 
 @InputType()
-export class RemoveAnimeGenreInput {
+export class RemoveAnimeCategoryInput {
   @Field(() => String)
   @IsUUID()
   categoryId: string;

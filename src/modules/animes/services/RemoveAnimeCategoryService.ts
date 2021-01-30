@@ -2,8 +2,8 @@ import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import Genre from '../infra/typeorm/entities/AnimeGenre';
-import IGenresRepository from '../repositories/IGenresRepository';
+import AnimeCategory from '../infra/typeorm/entities/AnimeCategory';
+import IAnimesCategoriesRepository from '../repositories/IAnimesCategoriesRepository';
 
 interface IRequest {
   animeId: string;
@@ -11,7 +11,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class RemoveAnimeGenreService {
+export default class RemoveAnimeAnimeCategoryService {
   constructor(
     @inject('AnimesRepository')
     private animesRepository: IAnimeRepository,
@@ -19,11 +19,14 @@ export default class RemoveAnimeGenreService {
     @inject('CategoriesRepository')
     private categoriesRepository: ICategoriesRepository,
 
-    @inject('GenresRepository')
-    private genresRepository: IGenresRepository,
+    @inject('AnimesCategoriesRepository')
+    private animesCategoriesRepository: IAnimesCategoriesRepository,
   ) {}
 
-  public async execute({ categoryId, animeId }: IRequest): Promise<Genre> {
+  public async execute({
+    categoryId,
+    animeId,
+  }: IRequest): Promise<AnimeCategory> {
     const category = await this.categoriesRepository.findById(categoryId);
 
     if (!category) {
@@ -36,16 +39,18 @@ export default class RemoveAnimeGenreService {
       throw new AppError('Anime does not exist');
     }
 
-    const checkIfGenreAlreadyExist = await this.genresRepository.findByAnimeIdAndCategoryId(
+    const checkIfAnimeCategoryAlreadyExist = await this.animesCategoriesRepository.findByAnimeIdAndCategoryId(
       { animeId, categoryId },
     );
 
-    if (!checkIfGenreAlreadyExist) {
-      throw new AppError('This Genre already does not exists');
+    if (!checkIfAnimeCategoryAlreadyExist) {
+      throw new AppError('This AnimeCategory already does not exists');
     }
 
-    await this.genresRepository.deleteById(checkIfGenreAlreadyExist.id);
+    await this.animesCategoriesRepository.deleteById(
+      checkIfAnimeCategoryAlreadyExist.id,
+    );
 
-    return checkIfGenreAlreadyExist;
+    return checkIfAnimeCategoryAlreadyExist;
   }
 }

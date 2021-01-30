@@ -2,8 +2,8 @@ import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import Genre from '../infra/typeorm/entities/AnimeGenre';
-import IGenresRepository from '../repositories/IGenresRepository';
+import AnimeCategory from '../infra/typeorm/entities/AnimeCategory';
+import IAnimesCategoriesRepository from '../repositories/IAnimesCategoriesRepository';
 
 interface IRequest {
   animeId: string;
@@ -12,7 +12,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class AddAnimeGenreService {
+export default class AddAnimeAnimeCategoryService {
   constructor(
     @inject('AnimesRepository')
     private animesRepository: IAnimeRepository,
@@ -20,15 +20,15 @@ export default class AddAnimeGenreService {
     @inject('CategoriesRepository')
     private categoriesRepository: ICategoriesRepository,
 
-    @inject('GenresRepository')
-    private genresRepository: IGenresRepository,
+    @inject('AnimesCategoriesRepository')
+    private animesCategoriesRepository: IAnimesCategoriesRepository,
   ) {}
 
   public async execute({
     categoryId,
     animeId,
     score,
-  }: IRequest): Promise<Genre> {
+  }: IRequest): Promise<AnimeCategory> {
     const category = await this.categoriesRepository.findById(categoryId);
 
     if (!category) {
@@ -41,20 +41,20 @@ export default class AddAnimeGenreService {
       throw new AppError('Anime does not exist');
     }
 
-    const checkIfGenreAlreadyExist = await this.genresRepository.findByAnimeIdAndCategoryId(
+    const checkIfAnimeCategoryAlreadyExist = await this.animesCategoriesRepository.findByAnimeIdAndCategoryId(
       { animeId, categoryId },
     );
 
-    if (checkIfGenreAlreadyExist) {
-      throw new AppError('This Genre already exists');
+    if (checkIfAnimeCategoryAlreadyExist) {
+      throw new AppError('This AnimeCategory already exists');
     }
 
-    const genre = await this.genresRepository.create({
+    const animeCategory = await this.animesCategoriesRepository.create({
       animeId,
       categoryId,
       score,
     });
 
-    return genre;
+    return animeCategory;
   }
 }

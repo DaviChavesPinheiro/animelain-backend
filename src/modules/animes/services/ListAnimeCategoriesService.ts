@@ -1,7 +1,7 @@
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import Genre from '../infra/typeorm/entities/AnimeGenre';
-import IGenresRepository from '../repositories/IGenresRepository';
+import AnimeCategory from '../infra/typeorm/entities/AnimeCategory';
+import IAnimesCategoriesRepository from '../repositories/IAnimesCategoriesRepository';
 import IAnimeRepository from '../repositories/IAnimesRepository';
 
 interface IRequest {
@@ -9,22 +9,22 @@ interface IRequest {
 }
 
 @injectable()
-export default class ListAnimeGenresService {
+export default class ListAnimeCategoriesService {
   constructor(
     @inject('AnimesRepository')
     private animeRepository: IAnimeRepository,
 
-    @inject('GenresRepository')
-    private genresRepository: IGenresRepository,
+    @inject('AnimesCategoriesRepository')
+    private animesCategoriesRepository: IAnimesCategoriesRepository,
   ) {}
 
-  public async execute({ animeId }: IRequest): Promise<Genre[]> {
+  public async execute({ animeId }: IRequest): Promise<AnimeCategory[]> {
     const anime = await this.animeRepository.findById(animeId);
 
     if (!anime) {
       throw new AppError('Anime does not exist');
     }
 
-    return this.genresRepository.findByAnimeId(animeId);
+    return this.animesCategoriesRepository.findByAnimeId(animeId);
   }
 }

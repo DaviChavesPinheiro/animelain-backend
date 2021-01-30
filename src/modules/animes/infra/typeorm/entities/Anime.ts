@@ -16,10 +16,10 @@ import RecentUserAnime from '@modules/users/infra/typeorm/entities/RecentUserAni
 import FavoriteUserAnime from '@modules/users/infra/typeorm/entities/FavoriteUserAnime';
 import { Field, ID, Int, ObjectType } from 'type-graphql';
 import INode from '@shared/infra/http/schemas/Nodes.schema';
-import AnimeGenre from './AnimeGenre';
+import AnimeCategory from './AnimeCategory';
 import AnimeCharacter from './AnimeCharacter';
 import CharacterConnection from '../../http/schemas/CharacterConnections.schema';
-import GenreConnection from '../../http/schemas/GenreConnections.schema';
+import CategoryConnection from '../../http/schemas/CategoryConnections.schema';
 
 // todo: create recommendations route
 // just list some animes based in user favorites
@@ -73,14 +73,14 @@ class Anime extends BaseEntity implements INode {
   )
   favoriteUsersAnimes: FavoriteUserAnime[];
 
-  @OneToMany(() => AnimeGenre, animeGenre => animeGenre.anime)
-  animesGenres: AnimeGenre[];
+  @OneToMany(() => AnimeCategory, animeCategory => animeCategory.anime)
+  animesCategories: AnimeCategory[];
 
   @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.anime)
   animesCharacters: AnimeCharacter[];
 
-  @Field(() => GenreConnection)
-  genres: GenreConnection;
+  @Field(() => CategoryConnection)
+  categories: CategoryConnection;
 
   @Field(() => CharacterConnection)
   characters: CharacterConnection;

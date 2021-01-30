@@ -3,20 +3,20 @@ import ListCategoryService from '@modules/categories/services/ListCategoryServic
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
 import { FieldResolver, Resolver, Root } from 'type-graphql';
-import AnimeGenre from '../../typeorm/entities/AnimeGenre';
+import AnimeCategory from '../../typeorm/entities/AnimeCategory';
 
-@Resolver(AnimeGenre)
-class AnimeGenreResolver {
+@Resolver(AnimeCategory)
+class AnimeCategoryResolver {
   @FieldResolver()
-  async node(@Root() animeGenre: AnimeGenre): Promise<Category> {
+  async node(@Root() animeCategory: AnimeCategory): Promise<Category> {
     const listCategoryService = container.resolve(ListCategoryService);
 
     const category = (await listCategoryService.execute({
-      id: animeGenre.categoryId,
+      id: animeCategory.categoryId,
     })) as Category;
 
     return classToClass(category);
   }
 }
 
-export default AnimeGenreResolver;
+export default AnimeCategoryResolver;
