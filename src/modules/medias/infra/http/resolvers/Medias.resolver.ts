@@ -56,11 +56,12 @@ class MediasResolver {
     @Arg('data') data: CreateMediaInput,
     @Ctx() context: IContext,
   ): Promise<Media> {
-    const { title, description, episodesAmount } = data;
+    const { type, title, description, episodesAmount } = data;
 
     const createMediaService = container.resolve(CreateMediaService);
 
     const media = await createMediaService.execute({
+      type,
       title,
       description,
       episodesAmount,
@@ -72,12 +73,13 @@ class MediasResolver {
 
   @Mutation(() => Media)
   async updateMedia(@Arg('data') data: UpdateMediaInput): Promise<Media> {
-    const { id, title, description, episodesAmount } = data;
+    const { id, type, title, description, episodesAmount } = data;
 
     const updateMediaService = container.resolve(UpdateMediaService);
 
     const media = await updateMediaService.execute({
-      mediaId: id,
+      id,
+      type,
       title,
       description,
       episodesAmount,

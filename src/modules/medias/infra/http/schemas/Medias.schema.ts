@@ -1,10 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 import { IsPositive, IsUUID, Max, MaxLength, Min } from 'class-validator';
 import { Field, ID, InputType, Int } from 'type-graphql';
+import { MediaType } from '../../typeorm/entities/Media';
 import { CharacterRole } from '../../typeorm/entities/MediaCharacter';
 
 @InputType()
 export class CreateMediaInput {
+  @Field(() => MediaType)
+  type: MediaType;
+
   @Field(() => String)
   @MaxLength(255)
   title: string;
@@ -23,6 +27,9 @@ export class UpdateMediaInput {
   @Field(() => ID)
   @IsUUID()
   id: string;
+
+  @Field(() => MediaType, { nullable: true })
+  type?: MediaType;
 
   @Field(() => String, { nullable: true })
   @MaxLength(255)

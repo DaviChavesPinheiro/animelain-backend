@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import User from '@modules/users/infra/typeorm/entities/User';
 import uploadConfig from '@config/upload';
 import { Expose } from 'class-transformer';
@@ -14,15 +15,21 @@ import {
 } from 'typeorm';
 import RecentUserMedia from '@modules/users/infra/typeorm/entities/RecentUserMedia';
 import FavoriteUserMedia from '@modules/users/infra/typeorm/entities/FavoriteUserMedia';
-import { Field, ID, Int, ObjectType } from 'type-graphql';
+import { Field, ID, Int, ObjectType, registerEnumType } from 'type-graphql';
 import INode from '@shared/infra/http/schemas/Nodes.schema';
 import MediaCategory from './MediaCategory';
 import MediaCharacter from './MediaCharacter';
 import CharacterConnection from '../../http/schemas/CharacterConnections.schema';
 import CategoryConnection from '../../http/schemas/CategoryConnections.schema';
 
-// todo: create recommendations route
-// just list some medias based in user favorites
+export enum MediaType {
+  ANIME = 'ANIME',
+  MANGA = 'MANGA',
+}
+
+registerEnumType(MediaType, {
+  name: 'MediaType',
+});
 
 @ObjectType({ implements: [INode] })
 @Entity('medias')
@@ -30,6 +37,10 @@ class Media extends BaseEntity implements INode {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Field(() => MediaType)
+  @Column('varchar')
+  type: MediaType;
 
   @Field(() => String)
   @Column('varchar', { length: 255, unique: true })

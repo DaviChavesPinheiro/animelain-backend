@@ -35,12 +35,14 @@ export default class MediasRepository implements IMediaRepository {
   }
 
   public async create({
+    type,
     title,
     description,
     episodesAmount,
     createdById,
   }: ICreateMediaDTO): Promise<Media> {
     const media = this.ormRepository.create({
+      type,
       title,
       description,
       episodesAmount,

@@ -3,10 +3,11 @@ import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import IMediaRepository from '../repositories/IMediasRepository';
-import Media from '../infra/typeorm/entities/Media';
+import Media, { MediaType } from '../infra/typeorm/entities/Media';
 
 interface IRequest {
-  mediaId: string;
+  id: string;
+  type?: MediaType;
   title?: string;
   description?: string;
   episodesAmount?: number;
@@ -23,15 +24,36 @@ class UpdateMediaService {
   ) {}
 
   public async execute({
-    mediaId,
+    id,
+    type,
     title,
     description,
     episodesAmount,
   }: IRequest): Promise<Media> {
-    const media = await this.mediasRepository.findById(mediaId);
+    const media = await this.mediasRepository.findById(id);
 
     if (!media) {
       throw new AppError('Media not found.');
+    }
+
+    if (type) {
+      if (!Object.values(MediaType).includes(type)) {
+        throw new AppError('This type does not exist');
+      }
+
+      media.type = type;
+    }
+
+    if (title) {
+      const findMediaWithSameTitle = await this.mediasRepository.findByTitle(
+        title,
+      );
+
+      if (findMediaWithSameTitle && findMediaWithSameTitle.id !== id) {
+        throw new AppError('This media already exists');
+      }
+
+      media.title = title;
     }
 
     if (episodesAmount) {
@@ -40,18 +62,6 @@ class UpdateMediaService {
       }
 
       media.episodesAmount = episodesAmount;
-    }
-
-    if (title) {
-      const findMediaWithSameTitle = await this.mediasRepository.findByTitle(
-        title,
-      );
-
-      if (findMediaWithSameTitle && findMediaWithSameTitle.id !== mediaId) {
-        throw new AppError('This media already exists');
-      }
-
-      media.title = title;
     }
 
     if (description) {
