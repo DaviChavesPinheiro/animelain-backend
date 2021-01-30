@@ -1,4 +1,3 @@
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import Media, { MediaType } from '../infra/typeorm/entities/Media';
