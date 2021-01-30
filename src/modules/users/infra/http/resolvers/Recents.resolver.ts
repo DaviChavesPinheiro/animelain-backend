@@ -5,7 +5,7 @@ import Recents from '../schemas/Recents.schema';
 @Resolver(Recents)
 class RecentsResolver {
   @FieldResolver()
-  async animes(@Root() user: User): Promise<User> {
+  async medias(@Root() user: User): Promise<User> {
     return user;
   }
 }

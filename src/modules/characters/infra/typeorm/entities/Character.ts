@@ -9,7 +9,7 @@ import {
   OneToMany,
   BaseEntity,
 } from 'typeorm';
-import AnimeCharacter from '@modules/animes/infra/typeorm/entities/AnimeCharacter';
+import MediaCharacter from '@modules/medias/infra/typeorm/entities/MediaCharacter';
 import INode from '@shared/infra/http/schemas/Nodes.schema';
 import { Field, ID, Int, ObjectType } from 'type-graphql';
 
@@ -40,8 +40,8 @@ class Character extends BaseEntity implements INode {
   @Column('varchar', { nullable: true })
   banner?: string;
 
-  @OneToMany(() => AnimeCharacter, animeCharacter => animeCharacter.character)
-  animesCharacters: AnimeCharacter[];
+  @OneToMany(() => MediaCharacter, mediaCharacter => mediaCharacter.character)
+  mediasCharacters: MediaCharacter[];
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()

@@ -5,7 +5,7 @@ import Favorites from '../schemas/Favorites.schema';
 @Resolver(Favorites)
 class FavoritesResolver {
   @FieldResolver()
-  async animes(@Root() user: User): Promise<User> {
+  async medias(@Root() user: User): Promise<User> {
     return user;
   }
 }

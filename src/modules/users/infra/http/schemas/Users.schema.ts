@@ -46,10 +46,10 @@ export class ResetPasswordInput {
 }
 
 @InputType()
-export class ToggleFavoriteAnimeInput {
+export class ToggleFavoriteMediaInput {
   @Field(() => String)
   @IsUUID()
-  animeId: string;
+  mediaId: string;
 
   @Field(() => String)
   @IsUUID()
@@ -57,10 +57,10 @@ export class ToggleFavoriteAnimeInput {
 }
 
 @InputType()
-export class ToggleRecentAnimeInput {
+export class ToggleRecentMediaInput {
   @Field(() => String)
   @IsUUID()
-  animeId: string;
+  mediaId: string;
 
   @Field(() => String)
   @IsUUID()

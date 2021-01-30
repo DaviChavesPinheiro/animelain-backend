@@ -3,8 +3,8 @@ import { container } from 'tsyringe';
 import '@modules/users/providers';
 import '@shared/container/providers';
 
-import AnimesRepository from '@modules/animes/infra/typeorm/repositories/AnimesRepository';
-import IAnimeRepository from '@modules/animes/repositories/IAnimesRepository';
+import MediasRepository from '@modules/medias/infra/typeorm/repositories/MediasRepository';
+import IMediaRepository from '@modules/medias/repositories/IMediasRepository';
 
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -21,21 +21,21 @@ import ICharactersRepository from '@modules/characters/repositories/ICharactersR
 import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 
-import RecentUsersAnimesRepository from '@modules/users/infra/typeorm/repositories/RecentUsersAnimesRepository';
-import IRecentUsersAnimesRepository from '@modules/users/repositories/IRecentUsersAnimesRepository';
+import RecentUsersMediasRepository from '@modules/users/infra/typeorm/repositories/RecentUsersMediasRepository';
+import IRecentUsersMediasRepository from '@modules/users/repositories/IRecentUsersMediasRepository';
 
-import FavoriteUsersAnimesRepository from '@modules/users/infra/typeorm/repositories/FavoriteUsersAnimesRepository';
-import IFavoriteUsersAnimesRepository from '@modules/users/repositories/IFavoriteUsersAnimesRepository';
+import FavoriteUsersMediasRepository from '@modules/users/infra/typeorm/repositories/FavoriteUsersMediasRepository';
+import IFavoriteUsersMediasRepository from '@modules/users/repositories/IFavoriteUsersMediasRepository';
 
-import AnimesCharactersRepository from '@modules/animes/infra/typeorm/repositories/AnimesCharactersRepository';
-import IAnimesCharactersRepository from '@modules/animes/repositories/IAnimesCharactersRepository';
+import MediasCharactersRepository from '@modules/medias/infra/typeorm/repositories/MediasCharactersRepository';
+import IMediasCharactersRepository from '@modules/medias/repositories/IMediasCharactersRepository';
 
-import AnimesCategoriesRepository from '@modules/animes/infra/typeorm/repositories/AnimesCategoriesRepository';
-import IAnimesCategoriesRepository from '@modules/animes/repositories/IAnimesCategoriesRepository';
+import MediasCategoriesRepository from '@modules/medias/infra/typeorm/repositories/MediasCategoriesRepository';
+import IMediasCategoriesRepository from '@modules/medias/repositories/IMediasCategoriesRepository';
 
-container.registerSingleton<IAnimeRepository>(
-  'AnimesRepository',
-  AnimesRepository,
+container.registerSingleton<IMediaRepository>(
+  'MediasRepository',
+  MediasRepository,
 );
 
 container.registerSingleton<IUsersRepository>(
@@ -63,22 +63,22 @@ container.registerSingleton<INotificationsRepository>(
   NotificationsRepository,
 );
 
-container.registerSingleton<IRecentUsersAnimesRepository>(
-  'RecentUsersAnimesRepository',
-  RecentUsersAnimesRepository,
+container.registerSingleton<IRecentUsersMediasRepository>(
+  'RecentUsersMediasRepository',
+  RecentUsersMediasRepository,
 );
 
-container.registerSingleton<IFavoriteUsersAnimesRepository>(
-  'FavoriteUsersAnimesRepository',
-  FavoriteUsersAnimesRepository,
+container.registerSingleton<IFavoriteUsersMediasRepository>(
+  'FavoriteUsersMediasRepository',
+  FavoriteUsersMediasRepository,
 );
 
-container.registerSingleton<IAnimesCharactersRepository>(
-  'AnimesCharactersRepository',
-  AnimesCharactersRepository,
+container.registerSingleton<IMediasCharactersRepository>(
+  'MediasCharactersRepository',
+  MediasCharactersRepository,
 );
 
-container.registerSingleton<IAnimesCategoriesRepository>(
-  'AnimesCategoriesRepository',
-  AnimesCategoriesRepository,
+container.registerSingleton<IMediasCategoriesRepository>(
+  'MediasCategoriesRepository',
+  MediasCategoriesRepository,
 );

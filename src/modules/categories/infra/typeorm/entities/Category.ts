@@ -1,4 +1,4 @@
-import AnimeCategory from '@modules/animes/infra/typeorm/entities/AnimeCategory';
+import MediaCategory from '@modules/medias/infra/typeorm/entities/MediaCategory';
 import INode from '@shared/infra/http/schemas/Nodes.schema';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
@@ -22,8 +22,8 @@ class Category extends BaseEntity implements INode {
   @Column('varchar', { unique: true })
   name: string;
 
-  @OneToMany(() => AnimeCategory, animeCategory => animeCategory.category)
-  animesCategories: AnimeCategory[];
+  @OneToMany(() => MediaCategory, mediaCategory => mediaCategory.category)
+  mediasCategories: MediaCategory[];
 
   @Field(() => String)
   @CreateDateColumn()

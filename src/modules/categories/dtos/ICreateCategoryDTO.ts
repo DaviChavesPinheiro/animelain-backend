@@ -1,3 +1,3 @@
-export default interface ICreateAnimeDTO {
+export default interface ICreateCategoryDTO {
   name: string;
 }

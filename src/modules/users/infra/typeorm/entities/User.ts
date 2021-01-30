@@ -11,8 +11,8 @@ import {
   BaseEntity,
 } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
-import RecentUserAnime from './RecentUserAnime';
-import FavoriteUserAnime from './FavoriteUserAnime';
+import RecentUserMedia from './RecentUserMedia';
+import FavoriteUserMedia from './FavoriteUserMedia';
 import Favorites from '../../http/schemas/Favorites.schema';
 import Recents from '../../http/schemas/Recents.schema';
 
@@ -40,14 +40,14 @@ class User extends BaseEntity implements INode {
   @Column('varchar', { nullable: true })
   avatar?: string;
 
-  @OneToMany(() => RecentUserAnime, recentUserAnime => recentUserAnime.user)
-  recentUsersAnimes: RecentUserAnime[];
+  @OneToMany(() => RecentUserMedia, recentUserMedia => recentUserMedia.user)
+  recentUsersMedias: RecentUserMedia[];
 
   @OneToMany(
-    () => FavoriteUserAnime,
-    favoriteUserAnime => favoriteUserAnime.user,
+    () => FavoriteUserMedia,
+    favoriteUserMedia => favoriteUserMedia.user,
   )
-  favoriteUsersAnimes: FavoriteUserAnime[];
+  favoriteUsersMedias: FavoriteUserMedia[];
 
   @Column('boolean', { default: false })
   isAdmin = false;

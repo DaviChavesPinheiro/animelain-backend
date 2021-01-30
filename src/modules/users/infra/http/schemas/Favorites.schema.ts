@@ -1,8 +1,8 @@
 import { ObjectType, Field } from 'type-graphql';
-import FavoriteAnimeConnection from './FavoriteAnimeConnections.schema';
+import FavoriteMediaConnection from './FavoriteMediaConnections.schema';
 
 @ObjectType()
 export default class Favorites {
-  @Field(() => FavoriteAnimeConnection)
-  animes: FavoriteAnimeConnection;
+  @Field(() => FavoriteMediaConnection)
+  medias: FavoriteMediaConnection;
 }

@@ -13,14 +13,14 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
-import ToggleFavoriteUserAnimeService from '@modules/users/services/ToggleFavoriteUserAnimeService';
-import ToggleRecentUserAnimeService from '@modules/users/services/ToggleRecentUserAnimeService';
+import ToggleFavoriteUserMediaService from '@modules/users/services/ToggleFavoriteUserMediaService';
+import ToggleRecentUserMediaService from '@modules/users/services/ToggleRecentUserMediaService';
 import User from '../../typeorm/entities/User';
 import {
   CreateUserInput,
   ResetPasswordInput,
-  ToggleFavoriteAnimeInput,
-  ToggleRecentAnimeInput,
+  ToggleFavoriteMediaInput,
+  ToggleRecentMediaInput,
   UpdateUserInput,
 } from '../schemas/Users.schema';
 
@@ -99,17 +99,17 @@ class UsersResolver {
   }
 
   @Mutation(() => Boolean)
-  async toggleFavoriteAnime(
-    @Arg('data') data: ToggleFavoriteAnimeInput,
+  async toggleFavoriteMedia(
+    @Arg('data') data: ToggleFavoriteMediaInput,
   ): Promise<boolean> {
-    const { animeId, userId } = data;
+    const { mediaId, userId } = data;
 
-    const toggleFavoriteUserAnimeService = container.resolve(
-      ToggleFavoriteUserAnimeService,
+    const toggleFavoriteUserMediaService = container.resolve(
+      ToggleFavoriteUserMediaService,
     );
 
-    const isFavorited = await toggleFavoriteUserAnimeService.execute({
-      animeId,
+    const isFavorited = await toggleFavoriteUserMediaService.execute({
+      mediaId,
       userId,
     });
 
@@ -117,17 +117,17 @@ class UsersResolver {
   }
 
   @Mutation(() => Boolean)
-  async toggleRecentAnime(
-    @Arg('data') data: ToggleRecentAnimeInput,
+  async toggleRecentMedia(
+    @Arg('data') data: ToggleRecentMediaInput,
   ): Promise<boolean> {
-    const { animeId, userId } = data;
+    const { mediaId, userId } = data;
 
-    const toggleRecentUserAnimeService = container.resolve(
-      ToggleRecentUserAnimeService,
+    const toggleRecentUserMediaService = container.resolve(
+      ToggleRecentUserMediaService,
     );
 
-    const isRecented = await toggleRecentUserAnimeService.execute({
-      animeId,
+    const isRecented = await toggleRecentUserMediaService.execute({
+      mediaId,
       userId,
     });
 
