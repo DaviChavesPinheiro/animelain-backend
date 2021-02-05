@@ -5,6 +5,22 @@ import { MediaType } from '../../typeorm/entities/Media';
 import { CharacterRole } from '../../typeorm/entities/MediaCharacter';
 
 @InputType()
+export class FindMediaInput {
+  @Field(() => MediaType, { nullable: true })
+  type?: MediaType;
+
+  @Field(() => String, { nullable: true })
+  search?: string;
+
+  @Field(() => String, { nullable: true })
+  title?: string;
+
+  @Field(() => Int, { nullable: true })
+  @IsPositive()
+  episodesAmount?: number;
+}
+
+@InputType()
 export class CreateMediaInput {
   @Field(() => MediaType)
   type: MediaType;

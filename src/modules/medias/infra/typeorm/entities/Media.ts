@@ -69,11 +69,11 @@ class Media extends BaseEntity implements INode {
 
   @Field(() => String, { nullable: true })
   @Column('varchar', { nullable: true })
-  profile?: string;
+  coverImage?: string;
 
   @Field(() => String, { nullable: true })
   @Column('varchar', { nullable: true })
-  banner?: string;
+  bannerImage?: string;
 
   @OneToMany(() => RecentUserMedia, recentUserMedia => recentUserMedia.media)
   recentUsersMedias: RecentUserMedia[];
@@ -104,35 +104,35 @@ class Media extends BaseEntity implements INode {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => String, { nullable: true, name: 'profileUrl' })
-  @Expose({ name: 'profileUrl' })
-  getProfileUrl(): string | null {
-    if (!this.profile) {
+  @Field(() => String, { nullable: true, name: 'coverImageUrl' })
+  @Expose({ name: 'coverImageUrl' })
+  getcoverImageUrl(): string | null {
+    if (!this.coverImage) {
       return null;
     }
 
     switch (uploadConfig.driver) {
       case 'disk':
-        return `${process.env.APP_WEB_API}/files/uploads/${this.profile}`;
+        return `${process.env.APP_WEB_API}/files/uploads/${this.coverImage}`;
       case 's3':
-        return `https://s3.amazonaws.com/${uploadConfig.config.aws.bucket}/${this.profile}`;
+        return `https://s3.amazonaws.com/${uploadConfig.config.aws.bucket}/${this.coverImage}`;
       default:
         return null;
     }
   }
 
-  @Field(() => String, { nullable: true, name: 'bannerUrl' })
-  @Expose({ name: 'bannerUrl' })
-  getBannerUrl(): string | null {
-    if (!this.banner) {
+  @Field(() => String, { nullable: true, name: 'bannerImageUrl' })
+  @Expose({ name: 'bannerImageUrl' })
+  getbannerImageUrl(): string | null {
+    if (!this.bannerImage) {
       return null;
     }
 
     switch (uploadConfig.driver) {
       case 'disk':
-        return `${process.env.APP_WEB_API}/files/uploads/${this.banner}`;
+        return `${process.env.APP_WEB_API}/files/uploads/${this.bannerImage}`;
       case 's3':
-        return `https://s3.amazonaws.com/${uploadConfig.config.aws.bucket}/${this.banner}`;
+        return `https://s3.amazonaws.com/${uploadConfig.config.aws.bucket}/${this.bannerImage}`;
       default:
         return null;
     }

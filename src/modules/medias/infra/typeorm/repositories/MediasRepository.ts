@@ -3,7 +3,6 @@ import ICreateMediaDTO from '@modules/medias/dtos/ICreateMediaDTO';
 import IMediaRepository from '@modules/medias/repositories/IMediasRepository';
 import IFindMediaDTO from '@modules/medias/dtos/IFindMediaDTO';
 import getCurrentSeason from '@shared/utils/getCurrentSeason';
-import IFindMediaOptionsDTO from '@modules/medias/dtos/IFindMediaOptionsDTO';
 import Media from '../entities/Media';
 
 export default class MediasRepository implements IMediaRepository {
@@ -13,15 +12,35 @@ export default class MediasRepository implements IMediaRepository {
     this.ormRepository = getRepository(Media);
   }
 
-  public async find(
-    { search, categories }: IFindMediaDTO,
-    { page }: IFindMediaOptionsDTO = {},
-  ): Promise<Media[]> {
+  public async find({
+    type,
+    search,
+    title,
+    episodesAmount,
+  }: IFindMediaDTO): Promise<Media[]> {
     let query = this.ormRepository.createQueryBuilder('media');
+
+    if (type) {
+      query = query.where('media.type = :type', {
+        type,
+      });
+    }
 
     if (search) {
       query = query.where('media.title ILIKE :search', {
         search: `%${search}%`,
+      });
+    }
+
+    if (title) {
+      query = query.where('media.title = :title', {
+        title,
+      });
+    }
+
+    if (episodesAmount) {
+      query = query.where('media.episodesAmount = :episodesAmount', {
+        episodesAmount,
       });
     }
 

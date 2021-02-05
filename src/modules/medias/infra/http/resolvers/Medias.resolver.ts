@@ -29,6 +29,7 @@ import {
   RemoveMediaCharacterInput,
   RemoveMediaCategoryInput,
   UpdateMediaInput,
+  FindMediaInput,
 } from '../schemas/Medias.schema';
 import MediaCharacter from '../../typeorm/entities/MediaCharacter';
 import MediaCategory from '../../typeorm/entities/MediaCategory';
@@ -36,10 +37,17 @@ import MediaCategory from '../../typeorm/entities/MediaCategory';
 @Resolver(Media)
 class MediasResolver {
   @Query(() => [Media])
-  async medias(): Promise<Media[]> {
+  async medias(@Arg('data') data: FindMediaInput): Promise<Media[]> {
+    const { type, search, title, episodesAmount } = data;
+
     const listMediasService = container.resolve(ListMediasService);
 
-    const medias = await listMediasService.execute({});
+    const medias = await listMediasService.execute({
+      type,
+      search,
+      title,
+      episodesAmount,
+    });
     return classToClass(medias);
   }
 

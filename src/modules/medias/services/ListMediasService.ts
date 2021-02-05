@@ -1,12 +1,12 @@
-import { classToClass } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
-import Media from '../infra/typeorm/entities/Media';
+import Media, { MediaType } from '../infra/typeorm/entities/Media';
 import IMediaRepository from '../repositories/IMediasRepository';
 
 interface IRequest {
+  type?: MediaType;
   search?: string;
-  categories?: string[];
-  page?: number;
+  title?: string;
+  episodesAmount?: number;
 }
 
 @injectable()
@@ -17,14 +17,17 @@ export default class ListMediasService {
   ) {}
 
   public async execute({
+    type,
     search,
-    categories,
-    page = 1,
+    title,
+    episodesAmount,
   }: IRequest): Promise<Media[]> {
-    const medias = await this.mediasRepository.find(
-      { search, categories },
-      { page },
-    );
+    const medias = await this.mediasRepository.find({
+      type,
+      search,
+      title,
+      episodesAmount,
+    });
 
     return medias;
   }
