@@ -4,6 +4,7 @@ export default interface IFindMediaDTO {
   type?: MediaType;
   search?: string;
   title?: string;
-  season: MediaSeason;
+  season?: MediaSeason;
+  categoryIn?: string[];
   episodesAmount?: number;
 }

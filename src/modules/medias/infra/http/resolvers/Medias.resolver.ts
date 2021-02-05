@@ -38,7 +38,7 @@ import MediaCategory from '../../typeorm/entities/MediaCategory';
 class MediasResolver {
   @Query(() => [Media])
   async medias(@Arg('data') data: FindMediaInput): Promise<Media[]> {
-    const { type, search, title, season, episodesAmount } = data;
+    const { type, search, title, season, categoryIn, episodesAmount } = data;
 
     const listMediasService = container.resolve(ListMediasService);
 
@@ -47,6 +47,7 @@ class MediasResolver {
       search,
       title,
       season,
+      categoryIn,
       episodesAmount,
     });
     return classToClass(medias);

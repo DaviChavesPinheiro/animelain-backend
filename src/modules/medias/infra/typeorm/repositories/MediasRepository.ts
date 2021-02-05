@@ -17,32 +17,42 @@ export default class MediasRepository implements IMediaRepository {
     search,
     title,
     season,
+    categoryIn,
     episodesAmount,
   }: IFindMediaDTO): Promise<Media[]> {
     let query = this.ormRepository.createQueryBuilder('media');
 
     if (type) {
-      query = query.where('media.type = :type', {
+      query = query.andWhere('media.type = :type', {
         type,
       });
     }
 
     if (search) {
-      query = query.where('media.title ILIKE :search', {
+      query = query.andWhere('media.title ILIKE :search', {
         search: `%${search}%`,
       });
     }
 
     if (title) {
-      query = query.where('media.title = :title', {
+      query = query.andWhere('media.title = :title', {
         title,
       });
     }
 
     if (season) {
-      query = query.where('media.season = :season', {
+      query = query.andWhere('media.season = :season', {
         season,
       });
+    }
+
+    if (categoryIn) {
+      query = query
+        .leftJoin('media.mediasCategories', 'mediaCategory')
+        .leftJoin('mediaCategory.category', 'category')
+        .andWhere('category.id IN (:...categoryIn)', {
+          categoryIn,
+        });
     }
 
     if (episodesAmount) {

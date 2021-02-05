@@ -18,6 +18,9 @@ export class FindMediaInput {
   @Field(() => MediaSeason, { nullable: true })
   season?: MediaSeason;
 
+  @Field(() => [String], { nullable: true })
+  categoryIn?: string[];
+
   @Field(() => Int, { nullable: true })
   @IsPositive()
   episodesAmount?: number;

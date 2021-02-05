@@ -7,6 +7,7 @@ interface IRequest {
   search?: string;
   title?: string;
   season?: MediaSeason;
+  categoryIn?: string[];
   episodesAmount?: number;
 }
 
@@ -22,6 +23,7 @@ export default class ListMediasService {
     search,
     title,
     season,
+    categoryIn,
     episodesAmount,
   }: IRequest): Promise<Media[]> {
     const medias = await this.mediasRepository.find({
@@ -29,6 +31,7 @@ export default class ListMediasService {
       search,
       title,
       season,
+      categoryIn,
       episodesAmount,
     });
 
