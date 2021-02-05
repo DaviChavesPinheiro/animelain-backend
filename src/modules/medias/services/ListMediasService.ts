@@ -1,11 +1,12 @@
 import { inject, injectable } from 'tsyringe';
-import Media, { MediaType } from '../infra/typeorm/entities/Media';
+import Media, { MediaSeason, MediaType } from '../infra/typeorm/entities/Media';
 import IMediaRepository from '../repositories/IMediasRepository';
 
 interface IRequest {
   type?: MediaType;
   search?: string;
   title?: string;
+  season?: MediaSeason;
   episodesAmount?: number;
 }
 
@@ -20,12 +21,14 @@ export default class ListMediasService {
     type,
     search,
     title,
+    season,
     episodesAmount,
   }: IRequest): Promise<Media[]> {
     const medias = await this.mediasRepository.find({
       type,
       search,
       title,
+      season,
       episodesAmount,
     });
 

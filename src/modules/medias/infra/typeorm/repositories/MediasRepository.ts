@@ -16,6 +16,7 @@ export default class MediasRepository implements IMediaRepository {
     type,
     search,
     title,
+    season,
     episodesAmount,
   }: IFindMediaDTO): Promise<Media[]> {
     let query = this.ormRepository.createQueryBuilder('media');
@@ -38,6 +39,12 @@ export default class MediasRepository implements IMediaRepository {
       });
     }
 
+    if (season) {
+      query = query.where('media.season = :season', {
+        season,
+      });
+    }
+
     if (episodesAmount) {
       query = query.where('media.episodesAmount = :episodesAmount', {
         episodesAmount,
@@ -56,6 +63,7 @@ export default class MediasRepository implements IMediaRepository {
   public async create({
     type,
     title,
+    season,
     description,
     episodesAmount,
     createdById,
@@ -63,6 +71,7 @@ export default class MediasRepository implements IMediaRepository {
     const media = this.ormRepository.create({
       type,
       title,
+      season,
       description,
       episodesAmount,
       createdById,

@@ -1,11 +1,12 @@
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import Media, { MediaType } from '../infra/typeorm/entities/Media';
+import Media, { MediaSeason, MediaType } from '../infra/typeorm/entities/Media';
 import IMediaRepository from '../repositories/IMediasRepository';
 
 interface IRequest {
   type: MediaType;
   title: string;
+  season?: MediaSeason;
   description?: string;
   episodesAmount?: number;
   createdById: string;
@@ -21,6 +22,7 @@ export default class CreateMediaService {
   public async execute({
     type,
     title,
+    season,
     description,
     episodesAmount,
     createdById,
@@ -40,6 +42,7 @@ export default class CreateMediaService {
     const media = await this.mediasRepository.create({
       type,
       title,
+      season,
       description,
       episodesAmount,
       createdById,

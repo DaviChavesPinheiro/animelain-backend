@@ -31,6 +31,17 @@ registerEnumType(MediaType, {
   name: 'MediaType',
 });
 
+export enum MediaSeason {
+  WINTER = 'WINTER',
+  SPRING = 'SPRING',
+  SUMMER = 'SUMMER',
+  FALL = 'FALL',
+}
+
+registerEnumType(MediaSeason, {
+  name: 'MediaSeason',
+});
+
 @ObjectType({ implements: [INode] })
 @Entity('medias')
 class Media extends BaseEntity implements INode {
@@ -45,6 +56,10 @@ class Media extends BaseEntity implements INode {
   @Field(() => String)
   @Column('varchar', { length: 255, unique: true })
   title: string;
+
+  @Field(() => MediaSeason, { nullable: true })
+  @Column('varchar', { nullable: true })
+  season?: MediaSeason;
 
   @Field(() => String, { nullable: true })
   @Column('text', { nullable: true })

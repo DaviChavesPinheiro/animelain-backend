@@ -1,8 +1,9 @@
-import { MediaType } from '../infra/typeorm/entities/Media';
+import { MediaSeason, MediaType } from '../infra/typeorm/entities/Media';
 
 export default interface IFindMediaDTO {
   type?: MediaType;
   search?: string;
   title?: string;
+  season: MediaSeason;
   episodesAmount?: number;
 }

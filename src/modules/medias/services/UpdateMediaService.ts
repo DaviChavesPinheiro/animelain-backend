@@ -3,12 +3,13 @@ import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import IMediaRepository from '../repositories/IMediasRepository';
-import Media, { MediaType } from '../infra/typeorm/entities/Media';
+import Media, { MediaSeason, MediaType } from '../infra/typeorm/entities/Media';
 
 interface IRequest {
   id: string;
   type?: MediaType;
   title?: string;
+  season?: MediaSeason;
   description?: string;
   episodesAmount?: number;
 }
@@ -27,6 +28,7 @@ class UpdateMediaService {
     id,
     type,
     title,
+    season,
     description,
     episodesAmount,
   }: IRequest): Promise<Media> {
@@ -54,6 +56,14 @@ class UpdateMediaService {
       }
 
       media.title = title;
+    }
+
+    if (season) {
+      if (!Object.values(MediaSeason).includes(season)) {
+        throw new AppError('This season does not exist');
+      }
+
+      media.season = season;
     }
 
     if (episodesAmount) {

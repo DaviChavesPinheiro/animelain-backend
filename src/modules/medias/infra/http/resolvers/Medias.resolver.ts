@@ -38,7 +38,7 @@ import MediaCategory from '../../typeorm/entities/MediaCategory';
 class MediasResolver {
   @Query(() => [Media])
   async medias(@Arg('data') data: FindMediaInput): Promise<Media[]> {
-    const { type, search, title, episodesAmount } = data;
+    const { type, search, title, season, episodesAmount } = data;
 
     const listMediasService = container.resolve(ListMediasService);
 
@@ -46,6 +46,7 @@ class MediasResolver {
       type,
       search,
       title,
+      season,
       episodesAmount,
     });
     return classToClass(medias);
@@ -64,13 +65,14 @@ class MediasResolver {
     @Arg('data') data: CreateMediaInput,
     @Ctx() context: IContext,
   ): Promise<Media> {
-    const { type, title, description, episodesAmount } = data;
+    const { type, title, season, description, episodesAmount } = data;
 
     const createMediaService = container.resolve(CreateMediaService);
 
     const media = await createMediaService.execute({
       type,
       title,
+      season,
       description,
       episodesAmount,
       createdById: context.user.id,
@@ -81,7 +83,7 @@ class MediasResolver {
 
   @Mutation(() => Media)
   async updateMedia(@Arg('data') data: UpdateMediaInput): Promise<Media> {
-    const { id, type, title, description, episodesAmount } = data;
+    const { id, type, title, season, description, episodesAmount } = data;
 
     const updateMediaService = container.resolve(UpdateMediaService);
 
@@ -89,6 +91,7 @@ class MediasResolver {
       id,
       type,
       title,
+      season,
       description,
       episodesAmount,
     });

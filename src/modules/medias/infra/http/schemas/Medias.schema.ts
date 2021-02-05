@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { IsPositive, IsUUID, Max, MaxLength, Min } from 'class-validator';
 import { Field, ID, InputType, Int } from 'type-graphql';
-import { MediaType } from '../../typeorm/entities/Media';
+import { MediaSeason, MediaType } from '../../typeorm/entities/Media';
 import { CharacterRole } from '../../typeorm/entities/MediaCharacter';
 
 @InputType()
@@ -14,6 +14,9 @@ export class FindMediaInput {
 
   @Field(() => String, { nullable: true })
   title?: string;
+
+  @Field(() => MediaSeason, { nullable: true })
+  season?: MediaSeason;
 
   @Field(() => Int, { nullable: true })
   @IsPositive()
@@ -28,6 +31,9 @@ export class CreateMediaInput {
   @Field(() => String)
   @MaxLength(255)
   title: string;
+
+  @Field(() => MediaSeason, { nullable: true })
+  season?: MediaSeason;
 
   @Field(() => String, { nullable: true })
   @MaxLength(5000)
@@ -50,6 +56,9 @@ export class UpdateMediaInput {
   @Field(() => String, { nullable: true })
   @MaxLength(255)
   title?: string;
+
+  @Field(() => MediaSeason, { nullable: true })
+  season?: MediaSeason;
 
   @Field(() => String, { nullable: true })
   @MaxLength(5000)
