@@ -18,6 +18,7 @@ export default class MediasRepository implements IMediaRepository {
     title,
     season,
     categoryIn,
+    characterIn,
     episodesAmount,
   }: IFindMediaDTO): Promise<Media[]> {
     let query = this.ormRepository.createQueryBuilder('media');
@@ -52,6 +53,15 @@ export default class MediasRepository implements IMediaRepository {
         .leftJoin('mediaCategory.category', 'category')
         .andWhere('category.id IN (:...categoryIn)', {
           categoryIn,
+        });
+    }
+
+    if (characterIn) {
+      query = query
+        .leftJoin('media.mediasCharacters', 'mediaCharacter')
+        .leftJoin('mediaCharacter.character', 'character')
+        .andWhere('character.id IN (:...characterIn)', {
+          characterIn,
         });
     }
 
