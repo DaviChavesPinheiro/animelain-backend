@@ -13,16 +13,12 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
-import ToggleFavoriteUserMediaService from '@modules/users/services/ToggleFavoriteUserMediaService';
-import ToggleRecentUserMediaService from '@modules/users/services/ToggleRecentUserMediaService';
 import CreateUserMediaService from '@modules/users/services/CreateUserMediaService';
 import DeleteUserMediaService from '@modules/users/services/DeleteUserMediaService';
 import User from '../../typeorm/entities/User';
 import {
   CreateUserInput,
   ResetPasswordInput,
-  ToggleFavoriteMediaInput,
-  ToggleRecentMediaInput,
   UpdateUserInput,
 } from '../schemas/Users.schema';
 import {
@@ -137,52 +133,6 @@ class UsersResolver {
     });
 
     return userMedia;
-  }
-
-  @Mutation(() => Boolean)
-  async toggleFavoriteMedia(
-    @Arg('data') data: ToggleFavoriteMediaInput,
-  ): Promise<boolean> {
-    const { mediaId, userId } = data;
-
-    const toggleFavoriteUserMediaService = container.resolve(
-      ToggleFavoriteUserMediaService,
-    );
-
-    const isFavorited = await toggleFavoriteUserMediaService.execute({
-      mediaId,
-      userId,
-    });
-
-    return isFavorited;
-  }
-
-  @Mutation(() => Boolean)
-  async toggleRecentMedia(
-    @Arg('data') data: ToggleRecentMediaInput,
-  ): Promise<boolean> {
-    const { mediaId, userId } = data;
-
-    const toggleRecentUserMediaService = container.resolve(
-      ToggleRecentUserMediaService,
-    );
-
-    const isRecented = await toggleRecentUserMediaService.execute({
-      mediaId,
-      userId,
-    });
-
-    return isRecented;
-  }
-
-  @FieldResolver()
-  async favorites(@Root() user: User): Promise<User> {
-    return user;
-  }
-
-  @FieldResolver()
-  async recents(@Root() user: User): Promise<User> {
-    return user;
   }
 
   @FieldResolver()

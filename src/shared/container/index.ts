@@ -21,12 +21,6 @@ import ICharactersRepository from '@modules/characters/repositories/ICharactersR
 import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 
-import RecentUsersMediasRepository from '@modules/users/infra/typeorm/repositories/RecentUsersMediasRepository';
-import IRecentUsersMediasRepository from '@modules/users/repositories/IRecentUsersMediasRepository';
-
-import FavoriteUsersMediasRepository from '@modules/users/infra/typeorm/repositories/FavoriteUsersMediasRepository';
-import IFavoriteUsersMediasRepository from '@modules/users/repositories/IFavoriteUsersMediasRepository';
-
 import UsersMediasRepository from '@modules/users/infra/typeorm/repositories/UsersMediasRepository';
 import IUsersMediasRepository from '@modules/users/repositories/IUsersMediasRepository';
 
@@ -64,16 +58,6 @@ container.registerSingleton<ICharactersRepository>(
 container.registerSingleton<INotificationsRepository>(
   'NotificationsRepository',
   NotificationsRepository,
-);
-
-container.registerSingleton<IRecentUsersMediasRepository>(
-  'RecentUsersMediasRepository',
-  RecentUsersMediasRepository,
-);
-
-container.registerSingleton<IFavoriteUsersMediasRepository>(
-  'FavoriteUsersMediasRepository',
-  FavoriteUsersMediasRepository,
 );
 
 container.registerSingleton<IUsersMediasRepository>(

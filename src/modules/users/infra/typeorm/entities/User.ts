@@ -7,14 +7,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
   BaseEntity,
 } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
-import RecentUserMedia from './RecentUserMedia';
-import FavoriteUserMedia from './FavoriteUserMedia';
-import Favorites from '../../http/schemas/Favorites.schema';
-import Recents from '../../http/schemas/Recents.schema';
 import UserMediaConnection from '../../http/schemas/UserMediaConnections.schema';
 
 @ObjectType({ implements: [INode] })
@@ -41,23 +36,8 @@ class User extends BaseEntity implements INode {
   @Column('varchar', { nullable: true })
   avatar?: string;
 
-  @OneToMany(() => RecentUserMedia, recentUserMedia => recentUserMedia.user)
-  recentUsersMedias: RecentUserMedia[];
-
-  @OneToMany(
-    () => FavoriteUserMedia,
-    favoriteUserMedia => favoriteUserMedia.user,
-  )
-  favoriteUsersMedias: FavoriteUserMedia[];
-
   @Column('boolean', { default: false })
   isAdmin = false;
-
-  @Field(() => Favorites)
-  favorites: Favorites;
-
-  @Field(() => Recents)
-  recents: Recents;
 
   @Field(() => UserMediaConnection)
   userMedias: UserMediaConnection;

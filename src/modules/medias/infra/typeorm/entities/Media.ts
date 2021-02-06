@@ -13,8 +13,6 @@ import {
   OneToMany,
   BaseEntity,
 } from 'typeorm';
-import RecentUserMedia from '@modules/users/infra/typeorm/entities/RecentUserMedia';
-import FavoriteUserMedia from '@modules/users/infra/typeorm/entities/FavoriteUserMedia';
 import { Field, ID, Int, ObjectType, registerEnumType } from 'type-graphql';
 import INode from '@shared/infra/http/schemas/Nodes.schema';
 import MediaCategory from './MediaCategory';
@@ -89,15 +87,6 @@ class Media extends BaseEntity implements INode {
   @Field(() => String, { nullable: true })
   @Column('varchar', { nullable: true })
   bannerImage?: string;
-
-  @OneToMany(() => RecentUserMedia, recentUserMedia => recentUserMedia.media)
-  recentUsersMedias: RecentUserMedia[];
-
-  @OneToMany(
-    () => FavoriteUserMedia,
-    favoriteUserMedia => favoriteUserMedia.media,
-  )
-  favoriteUsersMedias: FavoriteUserMedia[];
 
   @OneToMany(() => MediaCategory, mediaCategory => mediaCategory.media)
   mediasCategories: MediaCategory[];
