@@ -8,4 +8,6 @@ export default interface IFindMediaDTO {
   categoryIn?: string[];
   characterIn?: string[];
   episodesAmount?: number;
+  page: number;
+  perPage: number;
 }

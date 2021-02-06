@@ -1,4 +1,4 @@
-import { getRepository, ILike, In, Repository } from 'typeorm';
+import { getRepository, In, Repository } from 'typeorm';
 import ICreateCategoryDTO from '@modules/categories/dtos/ICreateCategoryDTO';
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
 import IFindCategoryDTO from '@modules/categories/dtos/IFindCategoryDTO';
@@ -11,12 +11,20 @@ export default class CategoriesRepository implements ICategoriesRepository {
     this.ormRepository = getRepository(Category);
   }
 
-  public async find({ search }: IFindCategoryDTO): Promise<Category[]> {
-    return this.ormRepository.find({
-      where: {
-        ...(search && { name: ILike(`%${search}%`) }),
-      },
-    });
+  public async find({
+    search,
+    page,
+    perPage,
+  }: IFindCategoryDTO): Promise<Category[]> {
+    let query = this.ormRepository.createQueryBuilder('category');
+
+    if (search) {
+      query = query.andWhere('category.name ILIKE :search', {
+        search: `%${search}%`,
+      });
+    }
+
+    return query.skip(page).take(perPage).getMany();
   }
 
   public async findByName(name: string): Promise<Category | undefined> {

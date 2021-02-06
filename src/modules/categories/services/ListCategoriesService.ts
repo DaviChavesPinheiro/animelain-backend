@@ -4,6 +4,8 @@ import ICategoriesRepository from '../repositories/ICategoriesRepository';
 
 interface IRequest {
   search?: string;
+  page: number;
+  perPage: number;
 }
 
 @injectable()
@@ -13,9 +15,15 @@ export default class ListCategoriesService {
     private categoriesRepository: ICategoriesRepository,
   ) {}
 
-  public async execute({ search }: IRequest): Promise<Category[]> {
+  public async execute({
+    search,
+    page,
+    perPage,
+  }: IRequest): Promise<Category[]> {
     const categories = this.categoriesRepository.find({
       search,
+      page,
+      perPage,
     });
 
     return categories;

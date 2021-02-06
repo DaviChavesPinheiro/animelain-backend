@@ -1,4 +1,4 @@
-import { getRepository, ILike, In, Repository } from 'typeorm';
+import { getRepository, In, Repository } from 'typeorm';
 import ICreateCharacterDTO from '@modules/characters/dtos/ICreateCharacterDTO';
 import ICharactersRepository from '@modules/characters/repositories/ICharactersRepository';
 import IFindCharacterDTO from '@modules/characters/dtos/IFindCharacterDTO';
@@ -11,12 +11,20 @@ export default class CharactersRepository implements ICharactersRepository {
     this.ormRepository = getRepository(Character);
   }
 
-  public async find({ search }: IFindCharacterDTO): Promise<Character[]> {
-    return this.ormRepository.find({
-      where: {
-        ...(search && { name: ILike(`%${search}%`) }),
-      },
-    });
+  public async find({
+    search,
+    page,
+    perPage,
+  }: IFindCharacterDTO): Promise<Character[]> {
+    let query = this.ormRepository.createQueryBuilder('character');
+
+    if (search) {
+      query = query.andWhere('character.name ILIKE :search', {
+        search: `%${search}%`,
+      });
+    }
+
+    return query.skip(page).take(perPage).getMany();
   }
 
   public async findByName(name: string): Promise<Character | undefined> {

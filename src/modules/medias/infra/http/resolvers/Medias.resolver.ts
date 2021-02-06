@@ -37,7 +37,7 @@ import MediaCategory from '../../typeorm/entities/MediaCategory';
 @Resolver(Media)
 class MediasResolver {
   @Query(() => [Media])
-  async medias(@Arg('data') data: FindMediaInput): Promise<Media[]> {
+  async medias(@Arg('input') input: FindMediaInput): Promise<Media[]> {
     const {
       type,
       search,
@@ -46,7 +46,9 @@ class MediasResolver {
       categoryIn,
       characterIn,
       episodesAmount,
-    } = data;
+      page,
+      perPage,
+    } = input;
 
     const listMediasService = container.resolve(ListMediasService);
 
@@ -58,6 +60,8 @@ class MediasResolver {
       categoryIn,
       characterIn,
       episodesAmount,
+      page,
+      perPage,
     });
     return classToClass(medias);
   }
@@ -72,10 +76,10 @@ class MediasResolver {
 
   @Mutation(() => Media)
   async createMedia(
-    @Arg('data') data: CreateMediaInput,
+    @Arg('input') input: CreateMediaInput,
     @Ctx() context: IContext,
   ): Promise<Media> {
-    const { type, title, season, description, episodesAmount } = data;
+    const { type, title, season, description, episodesAmount } = input;
 
     const createMediaService = container.resolve(CreateMediaService);
 
@@ -92,8 +96,8 @@ class MediasResolver {
   }
 
   @Mutation(() => Media)
-  async updateMedia(@Arg('data') data: UpdateMediaInput): Promise<Media> {
-    const { id, type, title, season, description, episodesAmount } = data;
+  async updateMedia(@Arg('input') input: UpdateMediaInput): Promise<Media> {
+    const { id, type, title, season, description, episodesAmount } = input;
 
     const updateMediaService = container.resolve(UpdateMediaService);
 
@@ -120,9 +124,9 @@ class MediasResolver {
 
   @Mutation(() => MediaCharacter)
   async addMediaCharacter(
-    @Arg('data') data: AddMediaCharacterInput,
+    @Arg('input') input: AddMediaCharacterInput,
   ): Promise<MediaCharacter> {
-    const { role, mediaId, characterId } = data;
+    const { role, mediaId, characterId } = input;
 
     const addMediaCharacterService = container.resolve(
       AddMediaCharacterService,
@@ -139,9 +143,9 @@ class MediasResolver {
 
   @Mutation(() => MediaCharacter)
   async removeMediaCharacter(
-    @Arg('data') data: RemoveMediaCharacterInput,
+    @Arg('input') input: RemoveMediaCharacterInput,
   ): Promise<MediaCharacter> {
-    const { mediaId, characterId } = data;
+    const { mediaId, characterId } = input;
 
     const removeMediaCharacterService = container.resolve(
       RemoveMediaCharacterService,
@@ -157,9 +161,9 @@ class MediasResolver {
 
   @Mutation(() => MediaCategory)
   async addMediaCategory(
-    @Arg('data') data: AddMediaCategoryInput,
+    @Arg('input') input: AddMediaCategoryInput,
   ): Promise<MediaCategory> {
-    const { score, mediaId, categoryId } = data;
+    const { score, mediaId, categoryId } = input;
 
     const addMediaCategoryService = container.resolve(AddMediaCategoryService);
 
@@ -174,9 +178,9 @@ class MediasResolver {
 
   @Mutation(() => MediaCategory)
   async removeMediaCategory(
-    @Arg('data') data: RemoveMediaCategoryInput,
+    @Arg('input') input: RemoveMediaCategoryInput,
   ): Promise<MediaCategory> {
-    const { mediaId, categoryId } = data;
+    const { mediaId, categoryId } = input;
 
     const removeMediaCategoryService = container.resolve(
       RemoveMediaCategoryService,

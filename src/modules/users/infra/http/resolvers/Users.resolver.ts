@@ -15,9 +15,11 @@ import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPa
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 import CreateUserMediaService from '@modules/users/services/CreateUserMediaService';
 import DeleteUserMediaService from '@modules/users/services/DeleteUserMediaService';
+import ListUsersService from '@modules/users/services/ListUsersService';
 import User from '../../typeorm/entities/User';
 import {
   CreateUserInput,
+  FindUserInput,
   ResetPasswordInput,
   UpdateUserInput,
 } from '../schemas/Users.schema';
@@ -31,8 +33,16 @@ import UserMedia from '../../typeorm/entities/UserMedia';
 @Resolver(User)
 class UsersResolver {
   @Query(() => [User])
-  async users(): Promise<User[]> {
-    const users = await User.find();
+  async users(@Arg('input') input: FindUserInput): Promise<User[]> {
+    const { search, page, perPage } = input;
+
+    const listUsersService = container.resolve(ListUsersService);
+
+    const users = await listUsersService.execute({
+      search,
+      page,
+      perPage,
+    });
 
     return classToClass(users);
   }
@@ -46,8 +56,8 @@ class UsersResolver {
   }
 
   @Mutation(() => User)
-  async createUser(@Arg('data') data: CreateUserInput): Promise<User> {
-    const { name, email, password } = data;
+  async createUser(@Arg('input') input: CreateUserInput): Promise<User> {
+    const { name, email, password } = input;
 
     const createUserService = container.resolve(CreateUserService);
 
@@ -61,8 +71,8 @@ class UsersResolver {
   }
 
   @Mutation(() => User)
-  async updateUser(@Arg('data') data: UpdateUserInput): Promise<User> {
-    const { id, name, email } = data;
+  async updateUser(@Arg('input') input: UpdateUserInput): Promise<User> {
+    const { id, name, email } = input;
 
     const updateUserService = container.resolve(UpdateUserService);
 
@@ -89,8 +99,10 @@ class UsersResolver {
   }
 
   @Mutation(() => Boolean)
-  async resetPassword(@Arg('data') data: ResetPasswordInput): Promise<boolean> {
-    const { password, token } = data;
+  async resetPassword(
+    @Arg('input') input: ResetPasswordInput,
+  ): Promise<boolean> {
+    const { password, token } = input;
 
     const resetPasswordService = container.resolve(ResetPasswordService);
 
@@ -104,9 +116,9 @@ class UsersResolver {
 
   @Mutation(() => UserMedia)
   async createUserMedia(
-    @Arg('data') data: CreateUserMediaInput,
+    @Arg('input') input: CreateUserMediaInput,
   ): Promise<UserMedia> {
-    const { mediaId, userId, userMediaStatus } = data;
+    const { mediaId, userId, userMediaStatus } = input;
 
     const createUserMediaService = container.resolve(CreateUserMediaService);
 
@@ -121,9 +133,9 @@ class UsersResolver {
 
   @Mutation(() => UserMedia)
   async deleteUserMedia(
-    @Arg('data') data: DeleteUserMediaInput,
+    @Arg('input') input: DeleteUserMediaInput,
   ): Promise<UserMedia> {
-    const { mediaId, userId, userMediaStatus } = data;
+    const { mediaId, userId, userMediaStatus } = input;
 
     const deleteUserMediaService = container.resolve(DeleteUserMediaService);
 
@@ -139,9 +151,9 @@ class UsersResolver {
   @FieldResolver()
   async userMedias(
     @Root() user: User,
-    @Arg('params') params: FindUsersMediasInput,
+    @Arg('input') input: FindUsersMediasInput,
   ): Promise<any> {
-    return { user, params };
+    return { user, input };
   }
 }
 

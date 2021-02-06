@@ -1,4 +1,5 @@
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import IFindUserDTO from '@modules/users/dtos/IFindUserDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import { Repository, getRepository } from 'typeorm';
 import User from '../entities/User';
@@ -8,6 +9,18 @@ class UsersRepository implements IUsersRepository {
 
   constructor() {
     this.ormRepository = getRepository(User);
+  }
+
+  public async find({ search, page, perPage }: IFindUserDTO): Promise<User[]> {
+    let query = this.ormRepository.createQueryBuilder('user');
+
+    if (search) {
+      query = query.andWhere('user.name ILIKE :search', {
+        search: `%${search}%`,
+      });
+    }
+
+    return query.skip(page).take(perPage).getMany();
   }
 
   public async findById(id: string): Promise<User | undefined> {

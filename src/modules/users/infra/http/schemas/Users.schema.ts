@@ -1,6 +1,21 @@
 /* eslint-disable import/prefer-default-export */
-import { IsEmail, IsUUID, MaxLength } from 'class-validator';
-import { Field, ID, InputType } from 'type-graphql';
+import { IsEmail, IsPositive, IsUUID, Max, MaxLength } from 'class-validator';
+import { Field, ID, InputType, Int } from 'type-graphql';
+
+@InputType()
+export class FindUserInput {
+  @Field(() => String, { nullable: true })
+  search?: string;
+
+  @Field(() => Int, { defaultValue: 1 })
+  @IsPositive()
+  page: number;
+
+  @Field(() => Int, { defaultValue: 50 })
+  @IsPositive()
+  @Max(50)
+  perPage: number;
+}
 
 @InputType()
 export class CreateUserInput {

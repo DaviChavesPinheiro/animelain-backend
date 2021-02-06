@@ -8,8 +8,10 @@ import Session, { CreateSessionInput } from '../schemas/Sessions.schema';
 @Resolver(Session)
 class SessionsResolver {
   @Mutation(() => Session)
-  async createSession(@Arg('data') data: CreateSessionInput): Promise<Session> {
-    const { email, password } = data;
+  async createSession(
+    @Arg('input') input: CreateSessionInput,
+  ): Promise<Session> {
+    const { email, password } = input;
 
     const createSessionService = container.resolve(CreateSessionService);
 

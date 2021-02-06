@@ -27,6 +27,15 @@ export class FindMediaInput {
   @Field(() => Int, { nullable: true })
   @IsPositive()
   episodesAmount?: number;
+
+  @Field(() => Int, { defaultValue: 1 })
+  @IsPositive()
+  page: number;
+
+  @Field(() => Int, { defaultValue: 50 })
+  @IsPositive()
+  @Max(50)
+  perPage: number;
 }
 
 @InputType()

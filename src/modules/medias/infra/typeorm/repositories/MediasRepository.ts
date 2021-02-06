@@ -20,6 +20,8 @@ export default class MediasRepository implements IMediaRepository {
     categoryIn,
     characterIn,
     episodesAmount,
+    page,
+    perPage,
   }: IFindMediaDTO): Promise<Media[]> {
     let query = this.ormRepository.createQueryBuilder('media');
 
@@ -71,7 +73,7 @@ export default class MediasRepository implements IMediaRepository {
       });
     }
 
-    return query.getMany();
+    return query.skip(page).take(perPage).getMany();
   }
 
   public async findByTitle(title: string): Promise<Media | undefined> {

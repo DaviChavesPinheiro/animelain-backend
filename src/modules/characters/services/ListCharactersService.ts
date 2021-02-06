@@ -4,6 +4,8 @@ import ICharactersRepository from '../repositories/ICharactersRepository';
 
 interface IRequest {
   search?: string;
+  page: number;
+  perPage: number;
 }
 
 @injectable()
@@ -13,9 +15,15 @@ export default class ListCharactersService {
     private charactersRepository: ICharactersRepository,
   ) {}
 
-  public async execute({ search }: IRequest): Promise<Character[]> {
+  public async execute({
+    search,
+    page,
+    perPage,
+  }: IRequest): Promise<Character[]> {
     const characters = this.charactersRepository.find({
       search,
+      page,
+      perPage,
     });
 
     return characters;

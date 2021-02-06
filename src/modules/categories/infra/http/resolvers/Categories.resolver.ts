@@ -9,16 +9,25 @@ import DeleteCategoryService from '@modules/categories/services/DeleteCategorySe
 import Category from '../../typeorm/entities/Category';
 import {
   CreateCategoryInput,
+  FindCategoryInput,
   UpdateCategoryInput,
 } from '../schemas/Categories.schema';
 
 @Resolver(Category)
 class CategoriesResolver {
   @Query(() => [Category])
-  async categories(): Promise<Category[]> {
+  async categories(
+    @Arg('input') input: FindCategoryInput,
+  ): Promise<Category[]> {
+    const { search, page, perPage } = input;
+
     const listCategoriesService = container.resolve(ListCategoriesService);
 
-    const categories = await listCategoriesService.execute({});
+    const categories = await listCategoriesService.execute({
+      search,
+      page,
+      perPage,
+    });
     return classToClass(categories);
   }
 
@@ -32,9 +41,9 @@ class CategoriesResolver {
 
   @Mutation(() => Category)
   async createCategory(
-    @Arg('data') data: CreateCategoryInput,
+    @Arg('input') input: CreateCategoryInput,
   ): Promise<Category> {
-    const { name } = data;
+    const { name } = input;
 
     const createCategoryService = container.resolve(CreateCategoryService);
 
@@ -47,9 +56,9 @@ class CategoriesResolver {
 
   @Mutation(() => Category)
   async updateCategory(
-    @Arg('data') data: UpdateCategoryInput,
+    @Arg('input') input: UpdateCategoryInput,
   ): Promise<Category> {
-    const { id, name } = data;
+    const { id, name } = input;
 
     const updateCategoryService = container.resolve(UpdateCategoryService);
 

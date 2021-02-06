@@ -9,18 +9,18 @@ import { FindUsersMediasInput } from '../schemas/UsersMedias.schema';
 
 interface IRoot {
   user: User;
-  params: FindUsersMediasInput;
+  input: FindUsersMediasInput;
 }
 
 @Resolver(UserMediaConnections)
 class UserMediaConnectionsResolver {
   @FieldResolver()
-  async edges(@Root() { user, params }: IRoot): Promise<UserMedia[]> {
+  async edges(@Root() { user, input }: IRoot): Promise<UserMedia[]> {
     const listUserMedias = container.resolve(ListUserMediasService);
 
     const usersMedias = await listUserMedias.execute({
       userId: user.id,
-      userMediaStatus: params.userMediaStatus,
+      userMediaStatus: input.userMediaStatus,
     });
 
     return classToClass(usersMedias);

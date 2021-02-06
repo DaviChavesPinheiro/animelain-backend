@@ -9,16 +9,25 @@ import DeleteCharacterService from '@modules/characters/services/DeleteCharacter
 import Character from '../../typeorm/entities/Character';
 import {
   CreateCharacterInput,
+  FindCharacterInput,
   UpdateCharacterInput,
 } from '../schemas/Characters.schema';
 
 @Resolver(Character)
 class CharactersResolver {
   @Query(() => [Character])
-  async characters(): Promise<Character[]> {
+  async characters(
+    @Arg('input') input: FindCharacterInput,
+  ): Promise<Character[]> {
+    const { search, page, perPage } = input;
+
     const listCharactersService = container.resolve(ListCharactersService);
 
-    const characters = await listCharactersService.execute({});
+    const characters = await listCharactersService.execute({
+      search,
+      page,
+      perPage,
+    });
     return classToClass(characters);
   }
 
@@ -32,9 +41,9 @@ class CharactersResolver {
 
   @Mutation(() => Character)
   async createCharacter(
-    @Arg('data') data: CreateCharacterInput,
+    @Arg('input') input: CreateCharacterInput,
   ): Promise<Character> {
-    const { name, description, age } = data;
+    const { name, description, age } = input;
 
     const createCharacterService = container.resolve(CreateCharacterService);
 
@@ -49,9 +58,9 @@ class CharactersResolver {
 
   @Mutation(() => Character)
   async updateCharacter(
-    @Arg('data') data: UpdateCharacterInput,
+    @Arg('input') input: UpdateCharacterInput,
   ): Promise<Character> {
-    const { id, name, description, age } = data;
+    const { id, name, description, age } = input;
 
     const updateCharacterService = container.resolve(UpdateCharacterService);
 
