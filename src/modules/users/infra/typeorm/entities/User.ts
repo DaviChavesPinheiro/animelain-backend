@@ -15,6 +15,7 @@ import RecentUserMedia from './RecentUserMedia';
 import FavoriteUserMedia from './FavoriteUserMedia';
 import Favorites from '../../http/schemas/Favorites.schema';
 import Recents from '../../http/schemas/Recents.schema';
+import UserMediaConnection from '../../http/schemas/UserMediaConnections.schema';
 
 @ObjectType({ implements: [INode] })
 @Entity('users')
@@ -57,6 +58,9 @@ class User extends BaseEntity implements INode {
 
   @Field(() => Recents)
   recents: Recents;
+
+  @Field(() => UserMediaConnection)
+  userMedias: UserMediaConnection;
 
   @Field(() => String)
   @CreateDateColumn()

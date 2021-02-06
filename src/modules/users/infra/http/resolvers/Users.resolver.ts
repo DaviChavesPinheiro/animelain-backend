@@ -15,6 +15,8 @@ import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPa
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 import ToggleFavoriteUserMediaService from '@modules/users/services/ToggleFavoriteUserMediaService';
 import ToggleRecentUserMediaService from '@modules/users/services/ToggleRecentUserMediaService';
+import CreateUserMediaService from '@modules/users/services/CreateUserMediaService';
+import DeleteUserMediaService from '@modules/users/services/DeleteUserMediaService';
 import User from '../../typeorm/entities/User';
 import {
   CreateUserInput,
@@ -23,6 +25,11 @@ import {
   ToggleRecentMediaInput,
   UpdateUserInput,
 } from '../schemas/Users.schema';
+import {
+  CreateUserMediaInput,
+  DeleteUserMediaInput,
+} from '../schemas/UsersMedias.schema';
+import UserMedia from '../../typeorm/entities/UserMedia';
 
 @Resolver(User)
 class UsersResolver {
@@ -98,6 +105,40 @@ class UsersResolver {
     return true;
   }
 
+  @Mutation(() => UserMedia)
+  async createUserMedia(
+    @Arg('data') data: CreateUserMediaInput,
+  ): Promise<UserMedia> {
+    const { mediaId, userId, userMediaStatus } = data;
+
+    const createUserMediaService = container.resolve(CreateUserMediaService);
+
+    const userMedia = await createUserMediaService.execute({
+      mediaId,
+      userId,
+      userMediaStatus,
+    });
+
+    return userMedia;
+  }
+
+  @Mutation(() => UserMedia)
+  async deleteUserMedia(
+    @Arg('data') data: DeleteUserMediaInput,
+  ): Promise<UserMedia> {
+    const { mediaId, userId, userMediaStatus } = data;
+
+    const deleteUserMediaService = container.resolve(DeleteUserMediaService);
+
+    const userMedia = await deleteUserMediaService.execute({
+      mediaId,
+      userId,
+      userMediaStatus,
+    });
+
+    return userMedia;
+  }
+
   @Mutation(() => Boolean)
   async toggleFavoriteMedia(
     @Arg('data') data: ToggleFavoriteMediaInput,
@@ -141,6 +182,11 @@ class UsersResolver {
 
   @FieldResolver()
   async recents(@Root() user: User): Promise<User> {
+    return user;
+  }
+
+  @FieldResolver()
+  async userMedias(@Root() user: User): Promise<User> {
     return user;
   }
 }

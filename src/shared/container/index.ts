@@ -27,6 +27,9 @@ import IRecentUsersMediasRepository from '@modules/users/repositories/IRecentUse
 import FavoriteUsersMediasRepository from '@modules/users/infra/typeorm/repositories/FavoriteUsersMediasRepository';
 import IFavoriteUsersMediasRepository from '@modules/users/repositories/IFavoriteUsersMediasRepository';
 
+import UsersMediasRepository from '@modules/users/infra/typeorm/repositories/UsersMediasRepository';
+import IUsersMediasRepository from '@modules/users/repositories/IUsersMediasRepository';
+
 import MediasCharactersRepository from '@modules/medias/infra/typeorm/repositories/MediasCharactersRepository';
 import IMediasCharactersRepository from '@modules/medias/repositories/IMediasCharactersRepository';
 
@@ -71,6 +74,11 @@ container.registerSingleton<IRecentUsersMediasRepository>(
 container.registerSingleton<IFavoriteUsersMediasRepository>(
   'FavoriteUsersMediasRepository',
   FavoriteUsersMediasRepository,
+);
+
+container.registerSingleton<IUsersMediasRepository>(
+  'UsersMediasRepository',
+  UsersMediasRepository,
 );
 
 container.registerSingleton<IMediasCharactersRepository>(
