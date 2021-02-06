@@ -24,6 +24,7 @@ import {
 import {
   CreateUserMediaInput,
   DeleteUserMediaInput,
+  FindUsersMediasInput,
 } from '../schemas/UsersMedias.schema';
 import UserMedia from '../../typeorm/entities/UserMedia';
 
@@ -136,8 +137,11 @@ class UsersResolver {
   }
 
   @FieldResolver()
-  async userMedias(@Root() user: User): Promise<User> {
-    return user;
+  async userMedias(
+    @Root() user: User,
+    @Arg('params') params: FindUsersMediasInput,
+  ): Promise<any> {
+    return { user, params };
   }
 }
 

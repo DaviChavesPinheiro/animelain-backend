@@ -4,6 +4,12 @@ import { Field, InputType } from 'type-graphql';
 import { UserMediaStatus } from '../../typeorm/entities/UserMedia';
 
 @InputType()
+export class FindUsersMediasInput {
+  @Field(() => UserMediaStatus, { nullable: true })
+  userMediaStatus?: UserMediaStatus;
+}
+
+@InputType()
 export class CreateUserMediaInput {
   @Field(() => String)
   @IsUUID()
