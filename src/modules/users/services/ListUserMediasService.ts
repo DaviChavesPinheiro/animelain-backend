@@ -9,6 +9,8 @@ import IUsersRepository from '../repositories/IUsersRepository';
 interface IRequest {
   userId: string;
   userMediaStatus?: UserMediaStatus;
+  page: number;
+  perPage: number;
 }
 
 @injectable()
@@ -24,6 +26,8 @@ export default class ListUserMediasService {
   public async execute({
     userId,
     userMediaStatus,
+    page,
+    perPage,
   }: IRequest): Promise<UserMedia[]> {
     const user = await this.usersRepository.findById(userId);
 
@@ -34,6 +38,8 @@ export default class ListUserMediasService {
     return this.usersMediasRepository.find({
       userId,
       userMediaStatus,
+      page,
+      perPage,
     });
   }
 }

@@ -9,33 +9,31 @@ import ListMediaCategoriesServicePageInfo from '@modules/medias/services/ListMed
 import Media from '../../typeorm/entities/Media';
 import MediaCategory from '../../typeorm/entities/MediaCategory';
 import CategoryConnection from '../schemas/CategoryConnections.schema';
-import { IResolverArgs } from '../../../../../@types/IResolvers';
+
+interface IRoot {
+  media: Media;
+  input: PaginateMediaInput;
+}
 
 @Resolver(CategoryConnection)
 class CategoryConnectionsResolver {
   @FieldResolver()
-  async edges(
-    @Root() root: IResolverArgs<Media, PaginateMediaInput>,
-  ): Promise<MediaCategory[]> {
-    const { root: media } = root;
-
+  async edges(@Root() { media, input }: IRoot): Promise<MediaCategory[]> {
     const listMediaCategoriesService = container.resolve(
       ListMediaCategoriesService,
     );
 
     const mediaCategories = await listMediaCategoriesService.execute({
       mediaId: media.id,
+      page: input.page,
+      perPage: input.perPage,
     });
 
     return classToClass(mediaCategories);
   }
 
   @FieldResolver(() => PageInfo)
-  async pageInfo(
-    @Root() root: IResolverArgs<Media, PaginateMediaInput>,
-  ): Promise<PageInfo> {
-    const { root: media, input } = root;
-
+  async pageInfo(@Root() { media, input }: IRoot): Promise<PageInfo> {
     const listMediaCategoriesServicePageInfo = container.resolve(
       ListMediaCategoriesServicePageInfo,
     );

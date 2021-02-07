@@ -1,5 +1,6 @@
 import ICreateMediaCharacterDTO from '@modules/medias/dtos/ICreateMediaCharacterDTO';
 import IFindByIdMediaCharacterDTO from '@modules/medias/dtos/IFindByIdMediaCharacterDTO';
+import IFindMediaCharacterDTO from '@modules/medias/dtos/IFindMediaCharacterDTO';
 import IMediasCharactersRepository from '@modules/medias/repositories/IMediasCharactersRepository';
 import { Repository, getRepository } from 'typeorm';
 import MediaCharacter, { CharacterRole } from '../entities/MediaCharacter';
@@ -11,22 +12,27 @@ class MediasCharactersRepository implements IMediasCharactersRepository {
     this.ormRepository = getRepository(MediaCharacter);
   }
 
-  public async findByMediaId(mediaId: string): Promise<MediaCharacter[]> {
-    const mediaCharacters = await this.ormRepository.find({
-      mediaId,
-    });
+  public async find({
+    mediaId,
+    page,
+    perPage,
+  }: IFindMediaCharacterDTO): Promise<MediaCharacter[]> {
+    const query = this.ormRepository
+      .createQueryBuilder('mediaCharacter')
+      .where('mediaCharacter.mediaId = :mediaId', { mediaId });
 
-    return mediaCharacters;
+    return query
+      .take(perPage)
+      .skip((page - 1) * perPage)
+      .getMany();
   }
 
-  public async countByMediaId(mediaId: string): Promise<number> {
-    const mediaCharactersAmount = await this.ormRepository.count({
-      where: {
-        mediaId,
-      },
-    });
+  public async count({ mediaId }: IFindMediaCharacterDTO): Promise<number> {
+    const query = this.ormRepository
+      .createQueryBuilder('mediaCharacter')
+      .where('mediaCharacter.mediaId = :mediaId', { mediaId });
 
-    return mediaCharactersAmount;
+    return query.getCount();
   }
 
   public async findByMediaIdAndCharacterId({

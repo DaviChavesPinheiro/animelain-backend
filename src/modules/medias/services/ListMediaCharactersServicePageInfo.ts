@@ -31,9 +31,11 @@ export default class ListMediaCharactersServicePageInfo {
       throw new AppError('Media does not exist');
     }
 
-    const mediaCharactersAmount = await this.mediasCharactersRepository.countByMediaId(
+    const mediaCharactersAmount = await this.mediasCharactersRepository.count({
       mediaId,
-    );
+      page,
+      perPage,
+    });
 
     return {
       total: mediaCharactersAmount,

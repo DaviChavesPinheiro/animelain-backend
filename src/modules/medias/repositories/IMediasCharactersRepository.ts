@@ -1,10 +1,11 @@
 import ICreateMediaCharacterDTO from '../dtos/ICreateMediaCharacterDTO';
 import IFindByIdMediaCharacterDTO from '../dtos/IFindByIdMediaCharacterDTO';
+import IFindMediaCharacterDTO from '../dtos/IFindMediaCharacterDTO';
 import MediaCharacter from '../infra/typeorm/entities/MediaCharacter';
 
 export default interface IMediasCharactersRepository {
-  findByMediaId(id: string): Promise<MediaCharacter[]>;
-  countByMediaId(id: string): Promise<number>;
+  find(data: IFindMediaCharacterDTO): Promise<MediaCharacter[]>;
+  count(data: IFindMediaCharacterDTO): Promise<number>;
   findByMediaIdAndCharacterId(
     data: IFindByIdMediaCharacterDTO,
   ): Promise<MediaCharacter | undefined>;

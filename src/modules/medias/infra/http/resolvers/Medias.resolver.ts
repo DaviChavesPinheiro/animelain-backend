@@ -21,7 +21,6 @@ import RemoveMediaCharacterService from '@modules/medias/services/RemoveMediaCha
 import AddMediaCategoryService from '@modules/medias/services/AddMediaCategoryService';
 import RemoveMediaCategoryService from '@modules/medias/services/RemoveMediaCategoryService';
 import { PaginateMediaInput } from '@shared/infra/http/schemas/PageInfo.schema';
-import { IResolverArgs } from '../../../../../@types/IResolvers';
 import IContext from '../../../../../@types/IContext';
 import Media from '../../typeorm/entities/Media';
 import {
@@ -212,18 +211,18 @@ class MediasResolver {
 
   @FieldResolver()
   async characters(
-    @Root() root: Media,
+    @Root() media: Media,
     @Arg('input') input: PaginateMediaInput,
-  ): Promise<IResolverArgs> {
-    return { root, input };
+  ): Promise<any> {
+    return { media, input };
   }
 
   @FieldResolver()
   async categories(
-    @Root() root: Media,
+    @Root() media: Media,
     @Arg('input') input: PaginateMediaInput,
-  ): Promise<IResolverArgs> {
-    return { root, input };
+  ): Promise<any> {
+    return { media, input };
   }
 }
 

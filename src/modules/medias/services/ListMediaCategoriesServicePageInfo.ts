@@ -31,9 +31,11 @@ export default class ListMediaCategoriesServicePageInfo {
       throw new AppError('Media does not exist');
     }
 
-    const mediaCategoriesAmount = await this.mediasCategoriesRepository.countByMediaId(
+    const mediaCategoriesAmount = await this.mediasCategoriesRepository.count({
       mediaId,
-    );
+      page,
+      perPage,
+    });
 
     return {
       total: mediaCategoriesAmount,

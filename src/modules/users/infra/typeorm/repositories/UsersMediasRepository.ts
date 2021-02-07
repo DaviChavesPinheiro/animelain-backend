@@ -43,6 +43,8 @@ class UsersMediasRepository implements IUsersMediasRepository {
   public async find({
     userId,
     userMediaStatus,
+    page,
+    perPage,
   }: IFindUserMediaDTO): Promise<UserMedia[]> {
     let query = this.ormRepository
       .createQueryBuilder('media')
@@ -54,7 +56,10 @@ class UsersMediasRepository implements IUsersMediasRepository {
       });
     }
 
-    return query.getMany();
+    return query
+      .take(perPage)
+      .skip((page - 1) * perPage)
+      .getMany();
   }
 
   public async count({

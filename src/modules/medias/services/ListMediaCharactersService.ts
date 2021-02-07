@@ -6,6 +6,8 @@ import IMediaRepository from '../repositories/IMediasRepository';
 
 interface IRequest {
   mediaId: string;
+  page: number;
+  perPage: number;
 }
 
 @injectable()
@@ -18,13 +20,21 @@ export default class ListMediaCharactersService {
     private mediasCharactersRepository: IMediasCharactersRepository,
   ) {}
 
-  public async execute({ mediaId }: IRequest): Promise<MediaCharacter[]> {
+  public async execute({
+    mediaId,
+    page,
+    perPage,
+  }: IRequest): Promise<MediaCharacter[]> {
     const media = await this.mediaRepository.findById(mediaId);
 
     if (!media) {
       throw new AppError('Media does not exist');
     }
 
-    return this.mediasCharactersRepository.findByMediaId(mediaId);
+    return this.mediasCharactersRepository.find({
+      mediaId,
+      page,
+      perPage,
+    });
   }
 }

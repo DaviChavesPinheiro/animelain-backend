@@ -1,38 +1,45 @@
 import ICreateCategoryDTO from '@modules/medias/dtos/ICreateMediaCategoryDTO';
 import IFindByIdCategoryDTO from '@modules/medias/dtos/IFindByIdMediaCategoryDTO';
-import ICategoriesRepository from '@modules/medias/repositories/IMediasCategoriesRepository';
+import IFindMediaCategoryDTO from '@modules/medias/dtos/IFindMediaCategoryDTO';
+import IMediasCategoriesRepository from '@modules/medias/repositories/IMediasCategoriesRepository';
 import { Repository, getRepository } from 'typeorm';
-import Category from '../entities/MediaCategory';
+import MediaCategory from '../entities/MediaCategory';
 
-class CategoriesRepository implements ICategoriesRepository {
-  private ormRepository: Repository<Category>;
+export default class MediasCategoriesRepository
+  implements IMediasCategoriesRepository {
+  private ormRepository: Repository<MediaCategory>;
 
   constructor() {
-    this.ormRepository = getRepository(Category);
+    this.ormRepository = getRepository(MediaCategory);
   }
 
-  public async findByMediaId(mediaId: string): Promise<Category[]> {
-    const categories = await this.ormRepository.find({
-      mediaId,
-    });
+  public async find({
+    mediaId,
+    page,
+    perPage,
+  }: IFindMediaCategoryDTO): Promise<MediaCategory[]> {
+    const query = this.ormRepository
+      .createQueryBuilder('mediaCategory')
+      .where('mediaCategory.mediaId = :mediaId', { mediaId });
 
-    return categories;
+    return query
+      .take(perPage)
+      .skip((page - 1) * perPage)
+      .getMany();
   }
 
-  public async countByMediaId(mediaId: string): Promise<number> {
-    const mediaCategoriesAmount = await this.ormRepository.count({
-      where: {
-        mediaId,
-      },
-    });
+  public async count({ mediaId }: IFindMediaCategoryDTO): Promise<number> {
+    const query = this.ormRepository
+      .createQueryBuilder('mediaCategory')
+      .where('mediaCategory.mediaId = :mediaId', { mediaId });
 
-    return mediaCategoriesAmount;
+    return query.getCount();
   }
 
   public async findByMediaIdAndCategoryId({
     mediaId,
     categoryId,
-  }: IFindByIdCategoryDTO): Promise<Category | undefined> {
+  }: IFindByIdCategoryDTO): Promise<MediaCategory | undefined> {
     const genre = await this.ormRepository.findOne({
       mediaId,
       categoryId,
@@ -41,7 +48,7 @@ class CategoriesRepository implements ICategoriesRepository {
     return genre;
   }
 
-  public async findById(id: string): Promise<Category | undefined> {
+  public async findById(id: string): Promise<MediaCategory | undefined> {
     const genre = await this.ormRepository.findOne(id);
 
     return genre;
@@ -51,7 +58,7 @@ class CategoriesRepository implements ICategoriesRepository {
     mediaId,
     categoryId,
     score,
-  }: ICreateCategoryDTO): Promise<Category> {
+  }: ICreateCategoryDTO): Promise<MediaCategory> {
     const genre = this.ormRepository.create({
       mediaId,
       categoryId,
@@ -67,5 +74,3 @@ class CategoriesRepository implements ICategoriesRepository {
     await this.ormRepository.delete(id);
   }
 }
-
-export default CategoriesRepository;
