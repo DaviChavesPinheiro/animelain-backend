@@ -4,6 +4,7 @@ import MediaCharacter from '../infra/typeorm/entities/MediaCharacter';
 
 export default interface IMediasCharactersRepository {
   findByMediaId(id: string): Promise<MediaCharacter[]>;
+  countByMediaId(id: string): Promise<number>;
   findByMediaIdAndCharacterId(
     data: IFindByIdMediaCharacterDTO,
   ): Promise<MediaCharacter | undefined>;

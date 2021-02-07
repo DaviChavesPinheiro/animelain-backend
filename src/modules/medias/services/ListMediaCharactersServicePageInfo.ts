@@ -1,0 +1,46 @@
+import AppError from '@shared/errors/AppError';
+import PageInfo from '@shared/infra/http/schemas/PageInfo.schema';
+import { inject, injectable } from 'tsyringe';
+import IMediasCharactersRepository from '../repositories/IMediasCharactersRepository';
+import IMediaRepository from '../repositories/IMediasRepository';
+
+interface IRequest {
+  mediaId: string;
+  page: number;
+  perPage: number;
+}
+
+@injectable()
+export default class ListMediaCharactersServicePageInfo {
+  constructor(
+    @inject('MediasRepository')
+    private mediaRepository: IMediaRepository,
+
+    @inject('MediasCharactersRepository')
+    private mediasCharactersRepository: IMediasCharactersRepository,
+  ) {}
+
+  public async execute({
+    mediaId,
+    page,
+    perPage,
+  }: IRequest): Promise<PageInfo> {
+    const media = await this.mediaRepository.findById(mediaId);
+
+    if (!media) {
+      throw new AppError('Media does not exist');
+    }
+
+    const mediaCharactersAmount = await this.mediasCharactersRepository.countByMediaId(
+      mediaId,
+    );
+
+    return {
+      total: mediaCharactersAmount,
+      currentPage: page,
+      perPage,
+      lastPage: Math.ceil(mediaCharactersAmount / perPage),
+      hasNextPage: page < Math.ceil(mediaCharactersAmount / perPage),
+    };
+  }
+}

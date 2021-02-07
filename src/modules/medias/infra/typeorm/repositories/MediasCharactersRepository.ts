@@ -19,6 +19,16 @@ class MediasCharactersRepository implements IMediasCharactersRepository {
     return mediaCharacters;
   }
 
+  public async countByMediaId(mediaId: string): Promise<number> {
+    const mediaCharactersAmount = await this.ormRepository.count({
+      where: {
+        mediaId,
+      },
+    });
+
+    return mediaCharactersAmount;
+  }
+
   public async findByMediaIdAndCharacterId({
     mediaId,
     characterId,

@@ -4,9 +4,9 @@ import { container } from 'tsyringe';
 import { FieldResolver, Resolver, Root } from 'type-graphql';
 import Media from '../../typeorm/entities/Media';
 import MediaCategory from '../../typeorm/entities/MediaCategory';
-import CategoryConnections from '../schemas/CategoryConnections.schema';
+import CategoryConnection from '../schemas/CategoryConnections.schema';
 
-@Resolver(CategoryConnections)
+@Resolver(CategoryConnection)
 class CategoryConnectionsResolver {
   @FieldResolver()
   async edges(@Root() media: Media): Promise<MediaCategory[]> {

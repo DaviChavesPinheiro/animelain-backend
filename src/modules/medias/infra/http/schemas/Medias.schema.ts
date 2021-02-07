@@ -135,3 +135,15 @@ export class RemoveMediaCategoryInput {
   @IsUUID()
   mediaId: string;
 }
+
+@InputType()
+export class PaginateMediaCharactersInput {
+  @Field(() => Int, { defaultValue: 1 })
+  @IsPositive()
+  page: number;
+
+  @Field(() => Int, { defaultValue: 50 })
+  @IsPositive()
+  @Max(50)
+  perPage: number;
+}
