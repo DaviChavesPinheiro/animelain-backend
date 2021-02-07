@@ -1,4 +1,5 @@
-import { Field, Int, ObjectType } from 'type-graphql';
+import { IsPositive, Max } from 'class-validator';
+import { Field, InputType, Int, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export default class PageInfo {
@@ -16,4 +17,16 @@ export default class PageInfo {
 
   @Field(() => Boolean)
   hasNextPage: boolean;
+}
+
+@InputType()
+export class PaginateMediaInput {
+  @Field(() => Int, { defaultValue: 1 })
+  @IsPositive()
+  page: number;
+
+  @Field(() => Int, { defaultValue: 50 })
+  @IsPositive()
+  @Max(50)
+  perPage: number;
 }

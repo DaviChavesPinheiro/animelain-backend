@@ -4,6 +4,7 @@ import MediaCategory from '../infra/typeorm/entities/MediaCategory';
 
 export default interface IMediasCategoriesRepository {
   findByMediaId(id: string): Promise<MediaCategory[]>;
+  countByMediaId(id: string): Promise<number>;
   findByMediaIdAndCategoryId(
     data: IFindByIdMediaCategoryDTO,
   ): Promise<MediaCategory | undefined>;

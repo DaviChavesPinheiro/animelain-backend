@@ -19,6 +19,16 @@ class CategoriesRepository implements ICategoriesRepository {
     return categories;
   }
 
+  public async countByMediaId(mediaId: string): Promise<number> {
+    const mediaCategoriesAmount = await this.ormRepository.count({
+      where: {
+        mediaId,
+      },
+    });
+
+    return mediaCategoriesAmount;
+  }
+
   public async findByMediaIdAndCategoryId({
     mediaId,
     categoryId,

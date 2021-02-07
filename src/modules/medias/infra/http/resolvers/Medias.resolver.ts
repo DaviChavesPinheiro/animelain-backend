@@ -20,6 +20,7 @@ import AddMediaCharacterService from '@modules/medias/services/AddMediaCharacter
 import RemoveMediaCharacterService from '@modules/medias/services/RemoveMediaCharacterService';
 import AddMediaCategoryService from '@modules/medias/services/AddMediaCategoryService';
 import RemoveMediaCategoryService from '@modules/medias/services/RemoveMediaCategoryService';
+import { PaginateMediaInput } from '@shared/infra/http/schemas/PageInfo.schema';
 import { IResolverArgs } from '../../../../../@types/IResolvers';
 import IContext from '../../../../../@types/IContext';
 import Media from '../../typeorm/entities/Media';
@@ -31,7 +32,6 @@ import {
   RemoveMediaCategoryInput,
   UpdateMediaInput,
   FindMediaInput,
-  PaginateMediaCharactersInput,
 } from '../schemas/Medias.schema';
 import MediaCharacter from '../../typeorm/entities/MediaCharacter';
 import MediaCategory from '../../typeorm/entities/MediaCategory';
@@ -212,15 +212,18 @@ class MediasResolver {
 
   @FieldResolver()
   async characters(
-    @Arg('input') input: PaginateMediaCharactersInput,
+    @Arg('input') input: PaginateMediaInput,
     @Root() root: Media,
   ): Promise<IResolverArgs> {
     return { root, input };
   }
 
   @FieldResolver()
-  async categories(@Root() media: Media): Promise<Media> {
-    return media;
+  async categories(
+    @Arg('input') input: PaginateMediaInput,
+    @Root() root: Media,
+  ): Promise<IResolverArgs> {
+    return { root, input };
   }
 }
 
