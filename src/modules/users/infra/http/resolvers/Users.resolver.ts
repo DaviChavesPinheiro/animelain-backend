@@ -15,11 +15,9 @@ import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPa
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 import CreateUserMediaService from '@modules/users/services/CreateUserMediaService';
 import DeleteUserMediaService from '@modules/users/services/DeleteUserMediaService';
-import ListUsersService from '@modules/users/services/ListUsersService';
 import User from '../../typeorm/entities/User';
 import {
   CreateUserInput,
-  FindUserInput,
   ResetPasswordInput,
   UpdateUserInput,
 } from '../schemas/User.schema';
@@ -32,21 +30,6 @@ import UserMedia from '../../typeorm/entities/UserMedia';
 
 @Resolver(User)
 class UsersResolver {
-  @Query(() => [User])
-  async users(@Arg('input') input: FindUserInput): Promise<User[]> {
-    const { search, page, perPage } = input;
-
-    const listUsersService = container.resolve(ListUsersService);
-
-    const users = await listUsersService.execute({
-      search,
-      page,
-      perPage,
-    });
-
-    return classToClass(users);
-  }
-
   @Query(() => User, { nullable: true })
   async user(@Arg('id') id: string): Promise<User | undefined> {
     const listUserService = container.resolve(ListUserService);

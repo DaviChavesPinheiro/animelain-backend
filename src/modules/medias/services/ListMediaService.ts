@@ -8,7 +8,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class ListMediasService {
+export default class ListMediaService {
   constructor(
     @inject('MediasRepository')
     private mediasRepository: IMediaRepository,

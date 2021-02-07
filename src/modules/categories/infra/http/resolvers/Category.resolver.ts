@@ -1,4 +1,3 @@
-import ListCategoriesService from '@modules/categories/services/ListCategoriesService';
 import ListCategoryService from '@modules/categories/services/ListCategoryService';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
@@ -9,28 +8,11 @@ import DeleteCategoryService from '@modules/categories/services/DeleteCategorySe
 import Category from '../../typeorm/entities/Category';
 import {
   CreateCategoryInput,
-  FindCategoryInput,
   UpdateCategoryInput,
 } from '../schemas/Category.schema';
 
 @Resolver(Category)
 class CategoriesResolver {
-  @Query(() => [Category])
-  async categories(
-    @Arg('input') input: FindCategoryInput,
-  ): Promise<Category[]> {
-    const { search, page, perPage } = input;
-
-    const listCategoriesService = container.resolve(ListCategoriesService);
-
-    const categories = await listCategoriesService.execute({
-      search,
-      page,
-      perPage,
-    });
-    return classToClass(categories);
-  }
-
   @Query(() => Category, { nullable: true })
   async category(@Arg('id') id: string): Promise<Category | undefined> {
     const listCategoryService = container.resolve(ListCategoryService);

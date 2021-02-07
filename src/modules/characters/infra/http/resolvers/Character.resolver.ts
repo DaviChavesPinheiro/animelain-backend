@@ -1,4 +1,3 @@
-import ListCharactersService from '@modules/characters/services/ListCharactersService';
 import ListCharacterService from '@modules/characters/services/ListCharacterService';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
@@ -9,28 +8,11 @@ import DeleteCharacterService from '@modules/characters/services/DeleteCharacter
 import Character from '../../typeorm/entities/Character';
 import {
   CreateCharacterInput,
-  FindCharacterInput,
   UpdateCharacterInput,
 } from '../schemas/Character.schema';
 
 @Resolver(Character)
 class CharactersResolver {
-  @Query(() => [Character])
-  async characters(
-    @Arg('input') input: FindCharacterInput,
-  ): Promise<Character[]> {
-    const { search, page, perPage } = input;
-
-    const listCharactersService = container.resolve(ListCharactersService);
-
-    const characters = await listCharactersService.execute({
-      search,
-      page,
-      perPage,
-    });
-    return classToClass(characters);
-  }
-
   @Query(() => Character, { nullable: true })
   async character(@Arg('id') id: string): Promise<Character | undefined> {
     const listCharacterService = container.resolve(ListCharacterService);

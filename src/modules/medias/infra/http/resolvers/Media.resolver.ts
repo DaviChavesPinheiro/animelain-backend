@@ -1,4 +1,3 @@
-import ListMediasService from '@modules/medias/services/ListMediasService';
 import ListMediaService from '@modules/medias/services/ListMediaService';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
@@ -30,43 +29,12 @@ import {
   RemoveMediaCharacterInput,
   RemoveMediaCategoryInput,
   UpdateMediaInput,
-  FindMediaInput,
 } from '../schemas/Media.schema';
 import MediaCharacter from '../../typeorm/entities/MediaCharacter';
 import MediaCategory from '../../typeorm/entities/MediaCategory';
 
 @Resolver(Media)
 class MediasResolver {
-  @Query(() => [Media])
-  async medias(@Arg('input') input: FindMediaInput): Promise<Media[]> {
-    const {
-      type,
-      search,
-      title,
-      season,
-      categoryIn,
-      characterIn,
-      episodesAmount,
-      page,
-      perPage,
-    } = input;
-
-    const listMediasService = container.resolve(ListMediasService);
-
-    const medias = await listMediasService.execute({
-      type,
-      search,
-      title,
-      season,
-      categoryIn,
-      characterIn,
-      episodesAmount,
-      page,
-      perPage,
-    });
-    return classToClass(medias);
-  }
-
   @Query(() => Media, { nullable: true })
   async media(@Arg('id') id: string): Promise<Media | undefined> {
     const listMediaService = container.resolve(ListMediaService);
