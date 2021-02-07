@@ -57,6 +57,23 @@ class UsersMediasRepository implements IUsersMediasRepository {
     return query.getMany();
   }
 
+  public async count({
+    userId,
+    userMediaStatus,
+  }: IFindUserMediaDTO): Promise<number> {
+    let query = this.ormRepository
+      .createQueryBuilder('media')
+      .where('media.userId = :userId', { userId });
+
+    if (userMediaStatus) {
+      query = query.andWhere('media.userMediaStatus = :userMediaStatus', {
+        userMediaStatus,
+      });
+    }
+
+    return query.getCount();
+  }
+
   public async create({
     userId,
     mediaId,

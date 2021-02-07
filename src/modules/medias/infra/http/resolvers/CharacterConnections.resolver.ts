@@ -40,13 +40,15 @@ class CharacterConnectionsResolver {
       ListMediaCharactersServicePageInfo,
     );
 
-    const mediaCharacters = await listMediaCharactersServicePageInfo.execute({
-      mediaId: media.id,
-      page: input.page,
-      perPage: input.perPage,
-    });
+    const mediaCharactersPageInfo = await listMediaCharactersServicePageInfo.execute(
+      {
+        mediaId: media.id,
+        page: input.page,
+        perPage: input.perPage,
+      },
+    );
 
-    return classToClass(mediaCharacters);
+    return classToClass(mediaCharactersPageInfo);
   }
 }
 

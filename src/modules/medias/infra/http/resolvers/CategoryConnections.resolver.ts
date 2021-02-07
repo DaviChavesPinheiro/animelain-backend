@@ -40,13 +40,15 @@ class CategoryConnectionsResolver {
       ListMediaCategoriesServicePageInfo,
     );
 
-    const mediaCategories = await listMediaCategoriesServicePageInfo.execute({
-      mediaId: media.id,
-      page: input.page,
-      perPage: input.perPage,
-    });
+    const mediaCategoriesPageInfo = await listMediaCategoriesServicePageInfo.execute(
+      {
+        mediaId: media.id,
+        page: input.page,
+        perPage: input.perPage,
+      },
+    );
 
-    return classToClass(mediaCategories);
+    return classToClass(mediaCategoriesPageInfo);
   }
 }
 

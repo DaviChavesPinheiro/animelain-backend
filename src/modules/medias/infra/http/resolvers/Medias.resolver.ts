@@ -212,16 +212,16 @@ class MediasResolver {
 
   @FieldResolver()
   async characters(
-    @Arg('input') input: PaginateMediaInput,
     @Root() root: Media,
+    @Arg('input') input: PaginateMediaInput,
   ): Promise<IResolverArgs> {
     return { root, input };
   }
 
   @FieldResolver()
   async categories(
-    @Arg('input') input: PaginateMediaInput,
     @Root() root: Media,
+    @Arg('input') input: PaginateMediaInput,
   ): Promise<IResolverArgs> {
     return { root, input };
   }

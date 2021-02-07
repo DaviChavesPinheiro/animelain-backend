@@ -7,6 +7,7 @@ export default interface IUsersMediasRepository {
   findById(id: string): Promise<UserMedia | undefined>;
   findOne(data: IFindOneUserMediaDTO): Promise<UserMedia | undefined>;
   find(data: IFindUserMediaDTO): Promise<UserMedia[]>;
+  count(data: IFindUserMediaDTO): Promise<number>;
   create(data: ICreateUserMediaDTO): Promise<UserMedia>;
   deleteById(id: string): Promise<UserMedia>;
 }
