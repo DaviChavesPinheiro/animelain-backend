@@ -1,5 +1,5 @@
 import { Field, ID, InterfaceType } from 'type-graphql';
-import INode from './Nodes.schema';
+import INode from './Node.schema';
 
 @InterfaceType()
 export default abstract class IEdge {

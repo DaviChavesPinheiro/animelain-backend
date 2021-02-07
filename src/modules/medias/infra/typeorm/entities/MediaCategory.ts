@@ -1,5 +1,5 @@
 import Category from '@modules/categories/infra/typeorm/entities/Category';
-import IEdge from '@shared/infra/http/schemas/Edges.schema';
+import IEdge from '@shared/infra/http/schemas/Edge.schema';
 import { Field, ID, Int, ObjectType } from 'type-graphql';
 import {
   Entity,

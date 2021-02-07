@@ -11,7 +11,7 @@ import {
   CreateCategoryInput,
   FindCategoryInput,
   UpdateCategoryInput,
-} from '../schemas/Categories.schema';
+} from '../schemas/Category.schema';
 
 @Resolver(Category)
 class CategoriesResolver {

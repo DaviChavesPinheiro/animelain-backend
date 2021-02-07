@@ -11,7 +11,7 @@ import {
   CreateCharacterInput,
   FindCharacterInput,
   UpdateCharacterInput,
-} from '../schemas/Characters.schema';
+} from '../schemas/Character.schema';
 
 @Resolver(Character)
 class CharactersResolver {

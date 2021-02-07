@@ -10,7 +10,7 @@ import {
   BaseEntity,
 } from 'typeorm';
 import MediaCharacter from '@modules/medias/infra/typeorm/entities/MediaCharacter';
-import INode from '@shared/infra/http/schemas/Nodes.schema';
+import INode from '@shared/infra/http/schemas/Node.schema';
 import { Field, ID, Int, ObjectType } from 'type-graphql';
 
 @ObjectType({ implements: [INode] })

@@ -1,5 +1,5 @@
 import MediaCategory from '@modules/medias/infra/typeorm/entities/MediaCategory';
-import INode from '@shared/infra/http/schemas/Nodes.schema';
+import INode from '@shared/infra/http/schemas/Node.schema';
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   Entity,

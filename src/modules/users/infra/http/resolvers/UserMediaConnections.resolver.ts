@@ -6,8 +6,8 @@ import PageInfo from '@shared/infra/http/schemas/PageInfo.schema';
 import ListUserMediasServicePageInfo from '@modules/users/services/ListUserMediasServicePageInfo';
 import UserMedia from '../../typeorm/entities/UserMedia';
 import User from '../../typeorm/entities/User';
-import UserMediaConnections from '../schemas/UserMediaConnections.schema';
-import { FindUsersMediasInput } from '../schemas/UsersMedias.schema';
+import UserMediaConnections from '../schemas/UserMediaConnection.schema';
+import { FindUsersMediasInput } from '../schemas/UserMedia.schema';
 
 interface IRoot {
   user: User;

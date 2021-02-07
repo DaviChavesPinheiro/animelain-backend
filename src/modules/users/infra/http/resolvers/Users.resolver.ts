@@ -22,12 +22,12 @@ import {
   FindUserInput,
   ResetPasswordInput,
   UpdateUserInput,
-} from '../schemas/Users.schema';
+} from '../schemas/User.schema';
 import {
   CreateUserMediaInput,
   DeleteUserMediaInput,
   FindUsersMediasInput,
-} from '../schemas/UsersMedias.schema';
+} from '../schemas/UserMedia.schema';
 import UserMedia from '../../typeorm/entities/UserMedia';
 
 @Resolver(User)

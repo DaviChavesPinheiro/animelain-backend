@@ -1,6 +1,6 @@
 import uploadConfig from '@config/upload';
 import { Exclude, Expose } from 'class-transformer';
-import INode from '@shared/infra/http/schemas/Nodes.schema';
+import INode from '@shared/infra/http/schemas/Node.schema';
 import {
   Entity,
   Column,
@@ -10,7 +10,7 @@ import {
   BaseEntity,
 } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
-import UserMediaConnection from '../../http/schemas/UserMediaConnections.schema';
+import UserMediaConnection from '../../http/schemas/UserMediaConnection.schema';
 
 @ObjectType({ implements: [INode] })
 @Entity('users')

@@ -14,11 +14,11 @@ import {
   BaseEntity,
 } from 'typeorm';
 import { Field, ID, Int, ObjectType, registerEnumType } from 'type-graphql';
-import INode from '@shared/infra/http/schemas/Nodes.schema';
+import INode from '@shared/infra/http/schemas/Node.schema';
 import MediaCategory from './MediaCategory';
 import MediaCharacter from './MediaCharacter';
-import CharacterConnection from '../../http/schemas/CharacterConnections.schema';
-import CategoryConnection from '../../http/schemas/CategoryConnections.schema';
+import CharacterConnection from '../../http/schemas/CharacterConnection.schema';
+import CategoryConnection from '../../http/schemas/CategoryConnection.schema';
 
 export enum MediaType {
   ANIME = 'ANIME',

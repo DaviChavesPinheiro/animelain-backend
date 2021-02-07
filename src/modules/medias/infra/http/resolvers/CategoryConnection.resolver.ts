@@ -8,7 +8,7 @@ import PageInfo, {
 import ListMediaCategoriesServicePageInfo from '@modules/medias/services/ListMediaCategoriesServicePageInfo';
 import Media from '../../typeorm/entities/Media';
 import MediaCategory from '../../typeorm/entities/MediaCategory';
-import CategoryConnection from '../schemas/CategoryConnections.schema';
+import CategoryConnection from '../schemas/CategoryConnection.schema';
 
 interface IRoot {
   media: Media;

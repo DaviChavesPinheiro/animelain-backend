@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 import Media from '@modules/medias/infra/typeorm/entities/Media';
-import IEdge from '@shared/infra/http/schemas/Edges.schema';
+import IEdge from '@shared/infra/http/schemas/Edge.schema';
 import { Field, ID, ObjectType, registerEnumType } from 'type-graphql';
 import {
   Entity,

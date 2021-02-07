@@ -1,4 +1,4 @@
-import IConnection from '@shared/infra/http/schemas/Connections.schema';
+import IConnection from '@shared/infra/http/schemas/Connection.schema';
 import { ObjectType, Field } from 'type-graphql';
 import UserMedia from '../../typeorm/entities/UserMedia';
 

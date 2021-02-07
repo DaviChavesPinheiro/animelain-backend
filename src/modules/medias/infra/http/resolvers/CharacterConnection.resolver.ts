@@ -8,7 +8,7 @@ import { container } from 'tsyringe';
 import { FieldResolver, Resolver, Root } from 'type-graphql';
 import Media from '../../typeorm/entities/Media';
 import MediaCharacter from '../../typeorm/entities/MediaCharacter';
-import CharacterConnection from '../schemas/CharacterConnections.schema';
+import CharacterConnection from '../schemas/CharacterConnection.schema';
 
 interface IRoot {
   media: Media;

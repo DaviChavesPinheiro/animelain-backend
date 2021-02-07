@@ -1,5 +1,5 @@
 import { Field, InterfaceType } from 'type-graphql';
-import IEdge from './Edges.schema';
+import IEdge from './Edge.schema';
 
 @InterfaceType()
 export default abstract class IConnection {

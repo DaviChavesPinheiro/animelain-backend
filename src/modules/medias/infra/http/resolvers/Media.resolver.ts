@@ -31,7 +31,7 @@ import {
   RemoveMediaCategoryInput,
   UpdateMediaInput,
   FindMediaInput,
-} from '../schemas/Medias.schema';
+} from '../schemas/Media.schema';
 import MediaCharacter from '../../typeorm/entities/MediaCharacter';
 import MediaCategory from '../../typeorm/entities/MediaCategory';
 
