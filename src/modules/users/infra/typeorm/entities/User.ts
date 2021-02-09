@@ -8,8 +8,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Field, ID, ObjectType } from 'type-graphql';
+import Image from '@modules/images/infra/typeorm/entities/Image';
 import UserMediaConnection from '../../http/schemas/UserMediaConnection.schema';
 
 @ObjectType({ implements: [INode] })
@@ -33,8 +36,13 @@ class User extends BaseEntity implements INode {
   password: string;
 
   @Field(() => String, { nullable: true })
-  @Column('varchar', { nullable: true })
-  avatar?: string;
+  @Column('uuid', { nullable: true })
+  avatarId?: string;
+
+  @Field(() => Image, { nullable: true })
+  @ManyToOne(() => Image, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'avatarId' })
+  avatar?: Image;
 
   @Column('boolean', { default: false })
   isAdmin = false;

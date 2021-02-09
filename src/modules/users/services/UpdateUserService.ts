@@ -1,6 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
+import IImagesRepository from '@modules/images/repositories/IImagesRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
@@ -12,6 +13,7 @@ interface IRequest {
   email?: string;
   old_password?: string;
   password?: string;
+  avatarId?: string;
 }
 
 @injectable()
@@ -22,6 +24,9 @@ class UpdateUserService {
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
+
+    @inject('ImagesRepository')
+    private imagesRepository: IImagesRepository,
   ) {}
 
   public async execute({
@@ -30,6 +35,7 @@ class UpdateUserService {
     email,
     old_password,
     password,
+    avatarId,
   }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(id);
 
@@ -70,6 +76,16 @@ class UpdateUserService {
       }
 
       user.password = await this.hashProvider.generateHash(password);
+    }
+
+    if (avatarId) {
+      const image = await this.imagesRepository.findById(avatarId);
+
+      if (!image) {
+        throw new AppError('Avatar Image not found.');
+      }
+
+      user.avatarId = avatarId;
     }
 
     return this.usersRepository.save(user);

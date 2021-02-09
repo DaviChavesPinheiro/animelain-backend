@@ -22,6 +22,10 @@ export class CreateUserInput {
   @Field(() => String)
   @MaxLength(255)
   password: string;
+
+  @Field(() => String, { nullable: true })
+  @IsUUID()
+  avatarId?: string;
 }
 
 @InputType()
@@ -38,6 +42,10 @@ export class UpdateUserInput {
   @MaxLength(255)
   @IsEmail()
   email?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsUUID()
+  avatarId?: string;
 }
 
 @InputType()

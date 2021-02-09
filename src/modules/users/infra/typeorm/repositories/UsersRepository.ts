@@ -20,7 +20,10 @@ class UsersRepository implements IUsersRepository {
       });
     }
 
-    return query.skip((page - 1) * perPage).take(perPage).getMany();
+    return query
+      .skip((page - 1) * perPage)
+      .take(perPage)
+      .getMany();
   }
 
   public async findById(id: string): Promise<User | undefined> {
@@ -42,8 +45,9 @@ class UsersRepository implements IUsersRepository {
     name,
     email,
     password,
+    avatarId,
   }: ICreateUserDTO): Promise<User> {
-    const user = this.ormRepository.create({ name, email, password });
+    const user = this.ormRepository.create({ name, email, password, avatarId });
 
     return this.ormRepository.save(user);
   }

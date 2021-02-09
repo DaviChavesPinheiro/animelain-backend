@@ -15,6 +15,8 @@ import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPa
 import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 import CreateUserMediaService from '@modules/users/services/CreateUserMediaService';
 import DeleteUserMediaService from '@modules/users/services/DeleteUserMediaService';
+import ListImageService from '@modules/images/services/ListImageService';
+import Image from '@modules/images/infra/typeorm/entities/Image';
 import User from '../../typeorm/entities/User';
 import {
   CreateUserInput,
@@ -40,7 +42,7 @@ class UsersResolver {
 
   @Mutation(() => User)
   async createUser(@Arg('input') input: CreateUserInput): Promise<User> {
-    const { name, email, password } = input;
+    const { name, email, password, avatarId } = input;
 
     const createUserService = container.resolve(CreateUserService);
 
@@ -48,6 +50,7 @@ class UsersResolver {
       name,
       email,
       password,
+      avatarId,
     });
 
     return classToClass(user);
@@ -55,7 +58,7 @@ class UsersResolver {
 
   @Mutation(() => User)
   async updateUser(@Arg('input') input: UpdateUserInput): Promise<User> {
-    const { id, name, email } = input;
+    const { id, name, email, avatarId } = input;
 
     const updateUserService = container.resolve(UpdateUserService);
 
@@ -63,6 +66,7 @@ class UsersResolver {
       id,
       name,
       email,
+      avatarId,
     });
 
     return classToClass(user);
@@ -137,6 +141,20 @@ class UsersResolver {
     @Arg('input') input: FindUsersMediasInput,
   ): Promise<any> {
     return { user, input };
+  }
+
+  @FieldResolver({ nullable: true })
+  async avatar(@Root() user: User): Promise<Image | undefined> {
+    const listImageService = container.resolve(ListImageService);
+
+    if (user.avatarId) {
+      const image = await listImageService.execute({
+        id: user.avatarId,
+      });
+
+      return classToClass(image);
+    }
+    return undefined;
   }
 }
 

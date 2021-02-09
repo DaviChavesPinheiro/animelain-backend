@@ -1,3 +1,4 @@
+import IImagesRepository from '@modules/images/repositories/IImagesRepository';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import User from '../infra/typeorm/entities/User';
@@ -8,6 +9,7 @@ interface IRequest {
   name: string;
   email: string;
   password: string;
+  avatarId?: string;
 }
 
 @injectable()
@@ -18,9 +20,17 @@ export default class CreateUserService {
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
+
+    @inject('ImagesRepository')
+    private imagesRepository: IImagesRepository,
   ) {}
 
-  public async execute({ name, email, password }: IRequest): Promise<User> {
+  public async execute({
+    name,
+    email,
+    password,
+    avatarId,
+  }: IRequest): Promise<User> {
     const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {
@@ -29,10 +39,19 @@ export default class CreateUserService {
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
+    if (avatarId) {
+      const image = await this.imagesRepository.findById(avatarId);
+
+      if (!image) {
+        throw new AppError('Avatar Image not found.');
+      }
+    }
+
     const user = await this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
+      avatarId,
     });
 
     return user;
