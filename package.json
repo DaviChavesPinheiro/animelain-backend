@@ -29,6 +29,7 @@
     "graphql-tools": "^7.0.2",
     "graphql-upload": "^11.0.0",
     "handlebars": "^4.7.6",
+    "image-size": "^0.9.3",
     "ioredis": "^4.19.4",
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",

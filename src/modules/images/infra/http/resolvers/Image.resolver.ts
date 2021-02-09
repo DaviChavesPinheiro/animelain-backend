@@ -18,6 +18,7 @@ class ImagesResolver {
     const listImageService = container.resolve(ListImageService);
 
     const image = await listImageService.execute({ id });
+
     return classToClass(image);
   }
 
@@ -31,16 +32,26 @@ class ImagesResolver {
 
     const graphQLUploadFileProvider = new GraphQLUploadFileProvider();
 
-    const { fileName } = await graphQLUploadFileProvider.uploadFile(file);
+    const {
+      fileName,
+      mimeType,
+      encoding,
+      size,
+      height,
+      width,
+    } = await graphQLUploadFileProvider.uploadFile(file);
 
     const createImageService = container.resolve(CreateImageService);
 
     const image = await createImageService.execute({
       fileName,
       title,
-      mimeType: file.mimetype,
-      encoding: file.encoding,
       type,
+      mimeType,
+      encoding,
+      size,
+      height,
+      width,
     });
 
     return classToClass(image);
