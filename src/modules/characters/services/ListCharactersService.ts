@@ -20,7 +20,7 @@ export default class ListCharactersService {
     page,
     perPage,
   }: IRequest): Promise<Character[]> {
-    const characters = this.charactersRepository.find({
+    const characters = await this.charactersRepository.find({
       search,
       page,
       perPage,

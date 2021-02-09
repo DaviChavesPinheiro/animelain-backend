@@ -9,6 +9,9 @@ import IMediaRepository from '@modules/medias/repositories/IMediasRepository';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
+import ImagesRepository from '@modules/images/infra/typeorm/repositories/ImagesRepository';
+import IImagesRepository from '@modules/images/repositories/IImagesRepository';
+
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 
@@ -73,4 +76,9 @@ container.registerSingleton<IMediasCharactersRepository>(
 container.registerSingleton<IMediasCategoriesRepository>(
   'MediasCategoriesRepository',
   MediasCategoriesRepository,
+);
+
+container.registerSingleton<IImagesRepository>(
+  'ImagesRepository',
+  ImagesRepository,
 );

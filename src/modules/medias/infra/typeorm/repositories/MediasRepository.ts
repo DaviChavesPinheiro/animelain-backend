@@ -73,7 +73,10 @@ export default class MediasRepository implements IMediaRepository {
       });
     }
 
-    return query.skip(page).take(perPage).getMany();
+    return query
+      .skip((page - 1) * perPage)
+      .take(perPage)
+      .getMany();
   }
 
   public async findByTitle(title: string): Promise<Media | undefined> {

@@ -24,7 +24,7 @@ export default class CharactersRepository implements ICharactersRepository {
       });
     }
 
-    return query.skip(page).take(perPage).getMany();
+    return query.skip((page - 1) * perPage).take(perPage).getMany();
   }
 
   public async findByName(name: string): Promise<Character | undefined> {

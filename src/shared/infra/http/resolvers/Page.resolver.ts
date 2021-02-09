@@ -4,6 +4,9 @@ import ListCategoriesService from '@modules/categories/services/ListCategoriesSe
 import { FindCharacterInput } from '@modules/characters/infra/http/schemas/Character.schema';
 import Character from '@modules/characters/infra/typeorm/entities/Character';
 import ListCharactersService from '@modules/characters/services/ListCharactersService';
+import { FindImageInput } from '@modules/images/infra/http/schemas/Image.schema';
+import Image from '@modules/images/infra/typeorm/entities/Image';
+import ListImagesService from '@modules/images/services/ListImagesService';
 import { FindMediaInput } from '@modules/medias/infra/http/schemas/Media.schema';
 import Media from '@modules/medias/infra/typeorm/entities/Media';
 import ListMediasService from '@modules/medias/services/ListMediasService';
@@ -116,6 +119,26 @@ class PageResolver {
       perPage,
     });
     return classToClass(categories);
+  }
+
+  @FieldResolver(() => [Image])
+  async images(
+    @Root() { input: rootInput }: IRoot,
+    @Arg('input') input: FindImageInput,
+  ): Promise<Image[]> {
+    const { search } = input;
+
+    const { page, perPage } = rootInput;
+
+    const listImagesService = container.resolve(ListImagesService);
+
+    const images = await listImagesService.execute({
+      search,
+      page,
+      perPage,
+    });
+
+    return classToClass(images);
   }
 }
 

@@ -1,5 +1,6 @@
 import Category from '@modules/categories/infra/typeorm/entities/Category';
 import Character from '@modules/characters/infra/typeorm/entities/Character';
+import Image from '@modules/images/infra/typeorm/entities/Image';
 import Media from '@modules/medias/infra/typeorm/entities/Media';
 import User from '@modules/users/infra/typeorm/entities/User';
 import { IsPositive, Max } from 'class-validator';
@@ -18,6 +19,9 @@ export default class Page {
 
   @Field(() => [Category])
   categories: Category[];
+
+  @Field(() => [Image])
+  images: Image[];
 }
 
 @InputType()
