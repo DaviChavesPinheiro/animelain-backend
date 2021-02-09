@@ -6,21 +6,22 @@ import Character from '../infra/typeorm/entities/Character';
 
 interface IRequest {
   characterId: string;
-  avatarFilename: string;
+  bannerImageName: string;
 }
 
 @injectable()
-class UpdateCharacterProfileService {
+class UpdateCharacterBannerImageService {
   constructor(
     @inject('CharactersRepository')
     private charactersRepository: ICharactersRepository,
+
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
   ) {}
 
   public async execute({
     characterId,
-    avatarFilename,
+    bannerImageName,
   }: IRequest): Promise<Character> {
     const character = await this.charactersRepository.findById(characterId);
 
@@ -28,13 +29,13 @@ class UpdateCharacterProfileService {
       throw new AppError('This character does not exist', 401);
     }
 
-    if (character.profile) {
-      await this.storageProvider.deleteFile(character.profile);
+    if (character.bannerImage) {
+      await this.storageProvider.deleteFile(character.bannerImage);
     }
 
-    const filename = await this.storageProvider.saveFile(avatarFilename);
+    const filename = await this.storageProvider.saveFile(bannerImageName);
 
-    character.profile = filename;
+    character.bannerImage = filename;
 
     await this.charactersRepository.save(character);
 
@@ -42,4 +43,4 @@ class UpdateCharacterProfileService {
   }
 }
 
-export default UpdateCharacterProfileService;
+export default UpdateCharacterBannerImageService;
