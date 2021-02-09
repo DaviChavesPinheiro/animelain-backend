@@ -6,11 +6,11 @@ import Media from '../infra/typeorm/entities/Media';
 
 interface IRequest {
   mediaId: string;
-  avatarFilename: string;
+  coverImageName: string;
 }
 
 @injectable()
-class UpdateMediaBannerService {
+class UpdateMediaCoverImageService {
   constructor(
     @inject('MediasRepository')
     private mediasRepository: IMediaRepository,
@@ -19,20 +19,20 @@ class UpdateMediaBannerService {
     private storageProvider: IStorageProvider,
   ) {}
 
-  public async execute({ mediaId, avatarFilename }: IRequest): Promise<Media> {
+  public async execute({ mediaId, coverImageName }: IRequest): Promise<Media> {
     const media = await this.mediasRepository.findById(mediaId);
 
     if (!media) {
       throw new AppError('This media does not exist', 401);
     }
 
-    if (media.banner) {
-      await this.storageProvider.deleteFile(media.banner);
+    if (media.coverImage) {
+      await this.storageProvider.deleteFile(media.coverImage);
     }
 
-    const filename = await this.storageProvider.saveFile(avatarFilename);
+    const filename = await this.storageProvider.saveFile(coverImageName);
 
-    media.banner = filename;
+    media.coverImage = filename;
 
     await this.mediasRepository.save(media);
 
@@ -40,4 +40,4 @@ class UpdateMediaBannerService {
   }
 }
 
-export default UpdateMediaBannerService;
+export default UpdateMediaCoverImageService;

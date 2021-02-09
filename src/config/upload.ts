@@ -32,7 +32,7 @@ interface IUploadConfig {
   };
 }
 
-export default {
+const uploadConfig = {
   driver: process.env.STORAGE_DRIVER,
 
   tmpFolder,
@@ -70,3 +70,5 @@ export default {
     },
   },
 } as IUploadConfig;
+
+export default uploadConfig;

@@ -20,6 +20,11 @@ import RemoveMediaCharacterService from '@modules/medias/services/RemoveMediaCha
 import AddMediaCategoryService from '@modules/medias/services/AddMediaCategoryService';
 import RemoveMediaCategoryService from '@modules/medias/services/RemoveMediaCategoryService';
 import { PaginateMediaInput } from '@shared/infra/http/schemas/PageInfo.schema';
+import { FileUpload } from 'graphql-upload';
+import { GraphQLUpload } from 'graphql-tools';
+import UpdateMediaCoverImageService from '@modules/medias/services/UpdateMediaCoverImageService';
+import GraphQLUploadFileProvider from '@shared/container/providers/UploadFileProvider/implementations/GraphQLFileUploadProvider';
+import UpdateMediaBannerImageService from '@modules/medias/services/UpdateMediaBannerImageService';
 import IContext from '../../../../../@types/IContext';
 import Media from '../../typeorm/entities/Media';
 import {
@@ -161,6 +166,50 @@ class MediasResolver {
     });
 
     return classToClass(mediaCategory);
+  }
+
+  @Mutation(() => Media)
+  async updateMediaCoverImage(
+    @Arg('mediaId') mediaId: string,
+    @Arg('file', () => GraphQLUpload)
+    file: FileUpload,
+  ): Promise<Media> {
+    const graphQLUploadFileProvider = new GraphQLUploadFileProvider();
+
+    const { fileName } = await graphQLUploadFileProvider.uploadFile(file);
+
+    const updateMediaCoverImageService = container.resolve(
+      UpdateMediaCoverImageService,
+    );
+
+    const mediaUpdated = await updateMediaCoverImageService.execute({
+      mediaId,
+      coverImageName: fileName,
+    });
+
+    return mediaUpdated;
+  }
+
+  @Mutation(() => Media)
+  async updateMediaBannerImage(
+    @Arg('mediaId') mediaId: string,
+    @Arg('file', () => GraphQLUpload)
+    file: FileUpload,
+  ): Promise<Media> {
+    const graphQLUploadFileProvider = new GraphQLUploadFileProvider();
+
+    const { fileName } = await graphQLUploadFileProvider.uploadFile(file);
+
+    const updateMediaBannerImageService = container.resolve(
+      UpdateMediaBannerImageService,
+    );
+
+    const mediaUpdated = await updateMediaBannerImageService.execute({
+      mediaId,
+      bannerImageName: fileName,
+    });
+
+    return mediaUpdated;
   }
 
   @FieldResolver({ nullable: true })

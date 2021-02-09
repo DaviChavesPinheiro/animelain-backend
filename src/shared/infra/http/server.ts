@@ -24,6 +24,10 @@ interface ITokenPayload {
 
 const server = new ApolloServer({
   schema,
+  uploads: {
+    maxFileSize: 1024 * 1024 * 5,
+    maxFiles: 1,
+  },
   formatError: error => {
     console.log(error);
     return {
