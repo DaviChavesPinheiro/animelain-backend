@@ -11,7 +11,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Authorized, Field, ID, ObjectType } from 'type-graphql';
 import Image from '@modules/images/infra/typeorm/entities/Image';
 import UserMediaConnection from '../../http/schemas/UserMediaConnection.schema';
 
@@ -26,6 +26,7 @@ class User extends BaseEntity implements INode {
   @Column('varchar', { unique: true })
   name: string;
 
+  @Authorized(['OWNER', 'ADMIN'])
   @Field(() => String)
   @Column('varchar', { unique: true })
   email: string;
@@ -44,8 +45,8 @@ class User extends BaseEntity implements INode {
   @JoinColumn({ name: 'avatarId' })
   avatar?: Image;
 
-  @Column('boolean', { default: false })
-  isAdmin = false;
+  @Column('simple-array', { default: '' })
+  roles: string[];
 
   @Field(() => UserMediaConnection)
   userMedias: UserMediaConnection;

@@ -16,7 +16,7 @@ import schema from './schemas';
 import rateLimiter from './middlewares/rateLimiter';
 
 interface ITokenPayload {
-  isAdmin: boolean;
+  roles: string[];
   iat: number;
   exp: number;
   sub: string;
@@ -47,16 +47,14 @@ const server = new ApolloServer({
 
     try {
       const decoded = verify(token, authConfig.jwt.secret);
-      const { isAdmin, sub } = decoded as ITokenPayload;
-      const roles = ['user'];
-      if (isAdmin) roles.push('admin');
+      const { roles, sub } = decoded as ITokenPayload;
 
       const user: IUserContext = { id: sub, roles };
 
       const context: IContext = { user };
-
       return context;
     } catch (error) {
+      console.log(error);
       throw new AuthenticationError('Invalid JWT token');
     }
   },

@@ -3,6 +3,7 @@ import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
 import {
   Arg,
+  Authorized,
   FieldResolver,
   Mutation,
   Query,
@@ -32,6 +33,7 @@ import UserMedia from '../../typeorm/entities/UserMedia';
 
 @Resolver(User)
 class UsersResolver {
+  @Authorized(['OWNER', 'ADMIN'])
   @Query(() => User, { nullable: true })
   async user(@Arg('id') id: string): Promise<User | undefined> {
     const listUserService = container.resolve(ListUserService);

@@ -68,7 +68,7 @@ class Media extends BaseEntity implements INode {
   episodesAmount?: number;
 
   @Field(() => [String], { nullable: true })
-  @Column('simple-array', { array: true, nullable: true })
+  @Column('varchar', { array: true, nullable: true })
   authors?: string[];
 
   @Field(() => String, { nullable: true })
@@ -76,7 +76,7 @@ class Media extends BaseEntity implements INode {
   createdById?: string;
 
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'createdById' })
   createdBy?: User;
 
