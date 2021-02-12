@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import {
   Arg,
   Authorized,
+  Ctx,
   FieldResolver,
   Mutation,
   Query,
@@ -19,6 +20,7 @@ import DeleteUserMediaService from '@modules/users/services/DeleteUserMediaServi
 import ListImageService from '@modules/images/services/ListImageService';
 import Image from '@modules/images/infra/typeorm/entities/Image';
 import { IAuthCheckerData } from '@shared/infra/http/schemas';
+import IContext from '../../../../../@types/IContext';
 import User, { UserRole } from '../../typeorm/entities/User';
 import {
   CreateUserInput,
@@ -34,8 +36,20 @@ import UserMedia from '../../typeorm/entities/UserMedia';
 
 @Resolver(User)
 class UsersResolver {
-  @Query(() => User, { nullable: true })
-  async user(@Arg('id') id: string): Promise<User | undefined> {
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.OWNER],
+    isOwner: ({ context }) => !!(context.user && context.user.id),
+  })
+  @Query(() => User)
+  async listAuthenticatedUser(@Ctx() ctx: IContext): Promise<User> {
+    const listUserService = container.resolve(ListUserService);
+
+    const user = await listUserService.execute({ userId: ctx.user.id });
+    return classToClass(user);
+  }
+
+  @Query(() => User)
+  async user(@Arg('id') id: string): Promise<User> {
     const listUserService = container.resolve(ListUserService);
 
     const user = await listUserService.execute({ userId: id });
