@@ -66,6 +66,11 @@ class User extends BaseEntity implements INode {
   @JoinColumn({ name: 'avatarId' })
   avatar?: Image;
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.OWNER, UserRole.ADMIN, UserRole.SUPER_ADMIN],
+    isOwner: ({ context, root }) => root.id === context.user.id,
+  })
+  @Field(() => [UserRole], { nullable: true })
   @Column('simple-array', { nullable: true })
   roles?: UserRole[];
 
