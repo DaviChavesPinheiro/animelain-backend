@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import uploadConfig from '@config/upload';
 import { Exclude, Expose } from 'class-transformer';
 import INode from '@shared/infra/http/schemas/Node.schema';
@@ -11,9 +12,26 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Authorized, Field, ID, ObjectType } from 'type-graphql';
+import {
+  Authorized,
+  Field,
+  ID,
+  ObjectType,
+  registerEnumType,
+} from 'type-graphql';
 import Image from '@modules/images/infra/typeorm/entities/Image';
+import { IAuthCheckerData } from '@shared/infra/http/schemas';
 import UserMediaConnection from '../../http/schemas/UserMediaConnection.schema';
+
+export enum UserRole {
+  OWNER = 'OWNER',
+  ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+}
+
+registerEnumType(UserRole, {
+  name: 'UserRole',
+});
 
 @ObjectType({ implements: [INode] })
 @Entity('users')
@@ -26,7 +44,10 @@ class User extends BaseEntity implements INode {
   @Column('varchar', { unique: true })
   name: string;
 
-  @Authorized(['OWNER', 'ADMIN'])
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.OWNER, UserRole.ADMIN, UserRole.SUPER_ADMIN],
+    isOwner: ({ context, root }) => root.id === context.user.id,
+  })
   @Field(() => String)
   @Column('varchar', { unique: true })
   email: string;
@@ -45,8 +66,8 @@ class User extends BaseEntity implements INode {
   @JoinColumn({ name: 'avatarId' })
   avatar?: Image;
 
-  @Column('simple-array', { default: '' })
-  roles: string[];
+  @Column('simple-array', { nullable: true })
+  roles?: UserRole[];
 
   @Field(() => UserMediaConnection)
   userMedias: UserMediaConnection;

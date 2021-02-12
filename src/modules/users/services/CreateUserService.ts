@@ -1,7 +1,7 @@
 import IImagesRepository from '@modules/images/repositories/IImagesRepository';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import User from '../infra/typeorm/entities/User';
+import User, { UserRole } from '../infra/typeorm/entities/User';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 

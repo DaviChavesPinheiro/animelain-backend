@@ -1,13 +1,15 @@
 import ListImageService from '@modules/images/services/ListImageService';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import CreateImageService from '@modules/images/services/CreateImageService';
 import UpdateImageService from '@modules/images/services/UpdateImageService';
 import DeleteImageService from '@modules/images/services/DeleteImageService';
 import { GraphQLUpload } from 'graphql-tools';
 import { FileUpload } from 'graphql-upload';
 import GraphQLUploadFileProvider from '@shared/container/providers/UploadFileProvider/implementations/GraphQLFileUploadProvider';
+import { UserRole } from '@modules/users/infra/typeorm/entities/User';
+import { IAuthCheckerData } from '@shared/infra/http/schemas';
 import Image from '../../typeorm/entities/Image';
 import { CreateImageInput, UpdateImageInput } from '../schemas/Image.schema';
 
@@ -22,6 +24,9 @@ class ImagesResolver {
     return classToClass(image);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Image)
   async createImage(
     @Arg('input') input: CreateImageInput,
@@ -57,6 +62,9 @@ class ImagesResolver {
     return classToClass(image);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Image)
   async updateImage(@Arg('input') input: UpdateImageInput): Promise<Image> {
     const { id, title, width, height, mimeType, encoding, size, type } = input;
@@ -77,6 +85,9 @@ class ImagesResolver {
     return classToClass(image);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Image)
   async deleteImage(@Arg('id') id: string): Promise<Image> {
     const deleteImageService = container.resolve(DeleteImageService);

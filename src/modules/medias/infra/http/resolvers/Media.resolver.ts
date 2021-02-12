@@ -3,6 +3,7 @@ import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
 import {
   Arg,
+  Authorized,
   Ctx,
   FieldResolver,
   Mutation,
@@ -14,7 +15,7 @@ import CreateMediaService from '@modules/medias/services/CreateMediaService';
 import UpdateMediaService from '@modules/medias/services/UpdateMediaService';
 import DeleteMediaService from '@modules/medias/services/DeleteMediaService';
 import ListUserService from '@modules/users/services/ListUserService';
-import User from '@modules/users/infra/typeorm/entities/User';
+import User, { UserRole } from '@modules/users/infra/typeorm/entities/User';
 import AddMediaCharacterService from '@modules/medias/services/AddMediaCharacterService';
 import RemoveMediaCharacterService from '@modules/medias/services/RemoveMediaCharacterService';
 import AddMediaCategoryService from '@modules/medias/services/AddMediaCategoryService';
@@ -25,6 +26,7 @@ import { GraphQLUpload } from 'graphql-tools';
 import UpdateMediaCoverImageService from '@modules/medias/services/UpdateMediaCoverImageService';
 import GraphQLUploadFileProvider from '@shared/container/providers/UploadFileProvider/implementations/GraphQLFileUploadProvider';
 import UpdateMediaBannerImageService from '@modules/medias/services/UpdateMediaBannerImageService';
+import { IAuthCheckerData } from '@shared/infra/http/schemas';
 import IContext from '../../../../../@types/IContext';
 import Media from '../../typeorm/entities/Media';
 import {
@@ -48,6 +50,9 @@ class MediasResolver {
     return classToClass(media);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Media)
   async createMedia(
     @Arg('input') input: CreateMediaInput,
@@ -69,6 +74,9 @@ class MediasResolver {
     return classToClass(media);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Media)
   async updateMedia(@Arg('input') input: UpdateMediaInput): Promise<Media> {
     const { id, type, title, season, description, episodesAmount } = input;
@@ -87,6 +95,9 @@ class MediasResolver {
     return classToClass(media);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Media)
   async deleteMedia(@Arg('id') id: string): Promise<Media> {
     const deleteMediaService = container.resolve(DeleteMediaService);
@@ -96,6 +107,9 @@ class MediasResolver {
     return classToClass(media);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => MediaCharacter)
   async addMediaCharacter(
     @Arg('input') input: AddMediaCharacterInput,
@@ -115,6 +129,9 @@ class MediasResolver {
     return classToClass(mediaCharacter);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => MediaCharacter)
   async removeMediaCharacter(
     @Arg('input') input: RemoveMediaCharacterInput,
@@ -133,6 +150,9 @@ class MediasResolver {
     return classToClass(mediaCharacter);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => MediaCategory)
   async addMediaCategory(
     @Arg('input') input: AddMediaCategoryInput,
@@ -150,6 +170,9 @@ class MediasResolver {
     return classToClass(mediaCategory);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => MediaCategory)
   async removeMediaCategory(
     @Arg('input') input: RemoveMediaCategoryInput,
@@ -168,6 +191,9 @@ class MediasResolver {
     return classToClass(mediaCategory);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Media)
   async updateMediaCoverImage(
     @Arg('mediaId') mediaId: string,
@@ -190,6 +216,9 @@ class MediasResolver {
     return mediaUpdated;
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Media)
   async updateMediaBannerImage(
     @Arg('mediaId') mediaId: string,

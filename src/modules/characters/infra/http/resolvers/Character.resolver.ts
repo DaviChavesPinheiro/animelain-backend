@@ -1,7 +1,7 @@
 import ListCharacterService from '@modules/characters/services/ListCharacterService';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import CreateCharacterService from '@modules/characters/services/CreateCharacterService';
 import UpdateCharacterService from '@modules/characters/services/UpdateCharacterService';
 import DeleteCharacterService from '@modules/characters/services/DeleteCharacterService';
@@ -10,6 +10,8 @@ import { GraphQLUpload } from 'graphql-tools';
 import GraphQLUploadFileProvider from '@shared/container/providers/UploadFileProvider/implementations/GraphQLFileUploadProvider';
 import UpdateCharacterCoverImageService from '@modules/characters/services/UpdateCharacterCoverImageService';
 import UpdateCharacterBannerImageService from '@modules/characters/services/UpdateCharacterBannerImageService';
+import { UserRole } from '@modules/users/infra/typeorm/entities/User';
+import { IAuthCheckerData } from '@shared/infra/http/schemas';
 import {
   CreateCharacterInput,
   UpdateCharacterInput,
@@ -26,6 +28,9 @@ class CharactersResolver {
     return classToClass(character);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Character)
   async createCharacter(
     @Arg('input') input: CreateCharacterInput,
@@ -43,6 +48,9 @@ class CharactersResolver {
     return classToClass(character);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Character)
   async updateCharacter(
     @Arg('input') input: UpdateCharacterInput,
@@ -61,6 +69,9 @@ class CharactersResolver {
     return classToClass(character);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Character)
   async deleteCharacter(@Arg('id') id: string): Promise<Character> {
     const deleteCharacterService = container.resolve(DeleteCharacterService);
@@ -70,6 +81,9 @@ class CharactersResolver {
     return classToClass(character);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Character)
   async updateCharacterCoverImage(
     @Arg('characterId') characterId: string,
@@ -92,6 +106,9 @@ class CharactersResolver {
     return characterUpdated;
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Character)
   async updateCharacterBannerImage(
     @Arg('characterId') characterId: string,

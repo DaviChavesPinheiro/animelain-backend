@@ -1,6 +1,8 @@
+import { UserRole } from '@modules/users/infra/typeorm/entities/User';
+
 export interface IUserContext {
   id: string;
-  roles: string[];
+  roles?: UserRole[];
 }
 
 export default interface IContext {

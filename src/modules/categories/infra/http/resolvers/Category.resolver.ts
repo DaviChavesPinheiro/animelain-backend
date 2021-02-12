@@ -1,10 +1,12 @@
 import ListCategoryService from '@modules/categories/services/ListCategoryService';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import CreateCategoryService from '@modules/categories/services/CreateCategoryService';
 import UpdateCategoryService from '@modules/categories/services/UpdateCategoryService';
 import DeleteCategoryService from '@modules/categories/services/DeleteCategoryService';
+import { UserRole } from '@modules/users/infra/typeorm/entities/User';
+import { IAuthCheckerData } from '@shared/infra/http/schemas';
 import Category from '../../typeorm/entities/Category';
 import {
   CreateCategoryInput,
@@ -21,6 +23,9 @@ class CategoriesResolver {
     return classToClass(category);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Category)
   async createCategory(
     @Arg('input') input: CreateCategoryInput,
@@ -36,6 +41,9 @@ class CategoriesResolver {
     return classToClass(category);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Category)
   async updateCategory(
     @Arg('input') input: UpdateCategoryInput,
@@ -52,6 +60,9 @@ class CategoriesResolver {
     return classToClass(category);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+  })
   @Mutation(() => Category)
   async deleteCategory(@Arg('id') id: string): Promise<Category> {
     const deleteCategoryService = container.resolve(DeleteCategoryService);

@@ -18,7 +18,8 @@ import CreateUserMediaService from '@modules/users/services/CreateUserMediaServi
 import DeleteUserMediaService from '@modules/users/services/DeleteUserMediaService';
 import ListImageService from '@modules/images/services/ListImageService';
 import Image from '@modules/images/infra/typeorm/entities/Image';
-import User from '../../typeorm/entities/User';
+import { IAuthCheckerData } from '@shared/infra/http/schemas';
+import User, { UserRole } from '../../typeorm/entities/User';
 import {
   CreateUserInput,
   ResetPasswordInput,
@@ -33,7 +34,6 @@ import UserMedia from '../../typeorm/entities/UserMedia';
 
 @Resolver(User)
 class UsersResolver {
-  @Authorized(['OWNER', 'ADMIN'])
   @Query(() => User, { nullable: true })
   async user(@Arg('id') id: string): Promise<User | undefined> {
     const listUserService = container.resolve(ListUserService);
@@ -58,6 +58,10 @@ class UsersResolver {
     return classToClass(user);
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.OWNER, UserRole.SUPER_ADMIN],
+    isOwner: ({ context, args }) => args.input.id === context.user.id,
+  })
   @Mutation(() => User)
   async updateUser(@Arg('input') input: UpdateUserInput): Promise<User> {
     const { id, name, email, avatarId } = input;
@@ -103,6 +107,10 @@ class UsersResolver {
     return true;
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.OWNER, UserRole.ADMIN, UserRole.SUPER_ADMIN],
+    isOwner: ({ context, args }) => args.input.userId === context.user.id,
+  })
   @Mutation(() => UserMedia)
   async createUserMedia(
     @Arg('input') input: CreateUserMediaInput,
@@ -120,6 +128,10 @@ class UsersResolver {
     return userMedia;
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.OWNER, UserRole.ADMIN, UserRole.SUPER_ADMIN],
+    isOwner: ({ context, args }) => args.input.userId === context.user.id,
+  })
   @Mutation(() => UserMedia)
   async deleteUserMedia(
     @Arg('input') input: DeleteUserMediaInput,

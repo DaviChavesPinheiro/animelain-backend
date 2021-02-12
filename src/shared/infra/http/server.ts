@@ -11,12 +11,13 @@ import '../typeorm';
 import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import { verify } from 'jsonwebtoken';
 import authConfig from '@config/auth';
+import { UserRole } from '@modules/users/infra/typeorm/entities/User';
 import IContext, { IUserContext } from '../../../@types/IContext';
 import schema from './schemas';
 import rateLimiter from './middlewares/rateLimiter';
 
 interface ITokenPayload {
-  roles: string[];
+  roles?: UserRole[];
   iat: number;
   exp: number;
   sub: string;
@@ -50,7 +51,7 @@ const server = new ApolloServer({
       const { roles, sub } = decoded as ITokenPayload;
 
       const user: IUserContext = { id: sub, roles };
-
+      console.log({ contextUser: { id: sub, roles } });
       const context: IContext = { user };
       return context;
     } catch (error) {
