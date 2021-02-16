@@ -27,6 +27,8 @@ import UpdateMediaCoverImageService from '@modules/medias/services/UpdateMediaCo
 import GraphQLUploadFileProvider from '@shared/container/providers/UploadFileProvider/implementations/GraphQLFileUploadProvider';
 import UpdateMediaBannerImageService from '@modules/medias/services/UpdateMediaBannerImageService';
 import { IAuthCheckerData } from '@shared/infra/http/schemas';
+import ListUserMediaService from '@modules/users/services/ListUserMediaService';
+import { UserMediaStatus } from '@modules/users/infra/typeorm/entities/UserMedia';
 import IContext from '../../../../../@types/IContext';
 import Media from '../../typeorm/entities/Media';
 import {
@@ -269,6 +271,22 @@ class MediasResolver {
     @Arg('input') input: PaginateMediaInput,
   ): Promise<any> {
     return { media, input };
+  }
+
+  @FieldResolver()
+  async isFavorited(
+    @Root() media: Media,
+    @Ctx() context: IContext,
+  ): Promise<boolean | undefined> {
+    const listUserMediaService = container.resolve(ListUserMediaService);
+
+    const favoritedMedia = await listUserMediaService.execute({
+      userId: context.user.id,
+      mediaId: media.id,
+      userMediaStatus: UserMediaStatus.FAVORITE,
+    });
+
+    return !!favoritedMedia;
   }
 }
 

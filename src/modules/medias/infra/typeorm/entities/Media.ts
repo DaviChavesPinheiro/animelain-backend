@@ -100,6 +100,9 @@ class Media extends BaseEntity implements INode {
   @Field(() => CharacterConnection)
   characters: CharacterConnection;
 
+  @Field(() => Boolean, { nullable: true })
+  isFavorited?: boolean;
+
   @Field(() => String)
   @CreateDateColumn()
   createdAt: Date;
