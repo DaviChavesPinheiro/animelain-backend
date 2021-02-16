@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { MediaType } from '@modules/medias/infra/typeorm/entities/Media';
 import { IsPositive, IsUUID, Max } from 'class-validator';
 import { Field, InputType, Int } from 'type-graphql';
 import { UserMediaStatus } from '../../typeorm/entities/UserMedia';
@@ -7,6 +8,9 @@ import { UserMediaStatus } from '../../typeorm/entities/UserMedia';
 export class FindUsersMediasInput {
   @Field(() => UserMediaStatus, { nullable: true })
   userMediaStatus?: UserMediaStatus;
+
+  @Field(() => MediaType, { nullable: true })
+  mediaType?: MediaType;
 
   @Field(() => Int, { defaultValue: 1 })
   @IsPositive()

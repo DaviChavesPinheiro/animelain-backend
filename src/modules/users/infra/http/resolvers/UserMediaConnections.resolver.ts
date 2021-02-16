@@ -23,6 +23,7 @@ class UserMediaConnectionsResolver {
     const usersMedias = await listUserMedias.execute({
       userId: user.id,
       userMediaStatus: input.userMediaStatus,
+      mediaType: input.mediaType,
       page: input.page,
       perPage: input.perPage,
     });

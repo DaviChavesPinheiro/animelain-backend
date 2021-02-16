@@ -43,17 +43,26 @@ class UsersMediasRepository implements IUsersMediasRepository {
   public async find({
     userId,
     userMediaStatus,
+    mediaType,
     page,
     perPage,
   }: IFindUserMediaDTO): Promise<UserMedia[]> {
     let query = this.ormRepository
-      .createQueryBuilder('media')
-      .where('media.userId = :userId', { userId });
+      .createQueryBuilder('userMedia')
+      .where('userMedia.userId = :userId', { userId });
 
     if (userMediaStatus) {
-      query = query.andWhere('media.userMediaStatus = :userMediaStatus', {
+      query = query.andWhere('userMedia.userMediaStatus = :userMediaStatus', {
         userMediaStatus,
       });
+    }
+
+    if (mediaType) {
+      query = query
+        .leftJoinAndSelect('userMedia.media', 'media')
+        .andWhere('media.type = :mediaType', {
+          mediaType,
+        });
     }
 
     return query
@@ -67,11 +76,11 @@ class UsersMediasRepository implements IUsersMediasRepository {
     userMediaStatus,
   }: IFindUserMediaDTO): Promise<number> {
     let query = this.ormRepository
-      .createQueryBuilder('media')
-      .where('media.userId = :userId', { userId });
+      .createQueryBuilder('userMedia')
+      .where('userMedia.userId = :userId', { userId });
 
     if (userMediaStatus) {
-      query = query.andWhere('media.userMediaStatus = :userMediaStatus', {
+      query = query.andWhere('userMedia.userMediaStatus = :userMediaStatus', {
         userMediaStatus,
       });
     }

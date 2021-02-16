@@ -1,3 +1,4 @@
+import { MediaType } from '@modules/medias/infra/typeorm/entities/Media';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import UserMedia, {
@@ -9,6 +10,7 @@ import IUsersRepository from '../repositories/IUsersRepository';
 interface IRequest {
   userId: string;
   userMediaStatus?: UserMediaStatus;
+  mediaType?: MediaType;
   page: number;
   perPage: number;
 }
@@ -26,6 +28,7 @@ export default class ListUserMediasService {
   public async execute({
     userId,
     userMediaStatus,
+    mediaType,
     page,
     perPage,
   }: IRequest): Promise<UserMedia[]> {
@@ -38,6 +41,7 @@ export default class ListUserMediasService {
     return this.usersMediasRepository.find({
       userId,
       userMediaStatus,
+      mediaType,
       page,
       perPage,
     });
