@@ -13,7 +13,7 @@ interface IRequest {
 }
 
 @injectable()
-export default class ListUserMediasServicePageInfo {
+export default class ListUserMediasPageInfoService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,

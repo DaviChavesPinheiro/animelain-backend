@@ -24,7 +24,22 @@ export default class CharactersRepository implements ICharactersRepository {
       });
     }
 
-    return query.skip((page - 1) * perPage).take(perPage).getMany();
+    return query
+      .skip((page - 1) * perPage)
+      .take(perPage)
+      .getMany();
+  }
+
+  public async count({ search }: IFindCharacterDTO): Promise<number> {
+    let query = this.ormRepository.createQueryBuilder('character');
+
+    if (search) {
+      query = query.andWhere('character.name ILIKE :search', {
+        search: `%${search}%`,
+      });
+    }
+
+    return query.getCount();
   }
 
   public async findByName(name: string): Promise<Character | undefined> {

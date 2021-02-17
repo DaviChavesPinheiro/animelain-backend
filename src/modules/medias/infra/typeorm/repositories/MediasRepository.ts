@@ -79,6 +79,68 @@ export default class MediasRepository implements IMediaRepository {
       .getMany();
   }
 
+  public async count({
+    type,
+    search,
+    title,
+    season,
+    categoryIn,
+    characterIn,
+    episodesAmount,
+  }: IFindMediaDTO): Promise<number> {
+    let query = this.ormRepository.createQueryBuilder('media');
+
+    if (type) {
+      query = query.andWhere('media.type = :type', {
+        type,
+      });
+    }
+
+    if (search) {
+      query = query.andWhere('media.title ILIKE :search', {
+        search: `%${search}%`,
+      });
+    }
+
+    if (title) {
+      query = query.andWhere('media.title = :title', {
+        title,
+      });
+    }
+
+    if (season) {
+      query = query.andWhere('media.season = :season', {
+        season,
+      });
+    }
+
+    if (categoryIn) {
+      query = query
+        .leftJoin('media.mediasCategories', 'mediaCategory')
+        .leftJoin('mediaCategory.category', 'category')
+        .andWhere('category.id IN (:...categoryIn)', {
+          categoryIn,
+        });
+    }
+
+    if (characterIn) {
+      query = query
+        .leftJoin('media.mediasCharacters', 'mediaCharacter')
+        .leftJoin('mediaCharacter.character', 'character')
+        .andWhere('character.id IN (:...characterIn)', {
+          characterIn,
+        });
+    }
+
+    if (episodesAmount) {
+      query = query.where('media.episodesAmount = :episodesAmount', {
+        episodesAmount,
+      });
+    }
+
+    return query.getCount();
+  }
+
   public async findByTitle(title: string): Promise<Media | undefined> {
     const findedMedia = await this.ormRepository.findOne({ where: { title } });
 

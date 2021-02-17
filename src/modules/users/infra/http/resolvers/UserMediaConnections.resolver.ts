@@ -3,7 +3,7 @@ import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
 import { FieldResolver, Resolver, Root } from 'type-graphql';
 import PageInfo from '@shared/infra/http/schemas/PageInfo.schema';
-import ListUserMediasServicePageInfo from '@modules/users/services/ListUserMediasServicePageInfo';
+import ListUserMediasServicePageInfo from '@modules/users/services/ListUserMediasPageInfoService';
 import UserMedia from '../../typeorm/entities/UserMedia';
 import User from '../../typeorm/entities/User';
 import UserMediaConnections from '../schemas/UserMediaConnection.schema';

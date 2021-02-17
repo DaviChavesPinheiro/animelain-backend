@@ -30,6 +30,18 @@ export default class ImagesRepository implements IImagesRepository {
       .getMany();
   }
 
+  public async count({ search }: IFindImageDTO): Promise<number> {
+    let query = this.ormRepository.createQueryBuilder('image');
+
+    if (search) {
+      query = query.andWhere('image.title ILIKE :search', {
+        search: `%${search}%`,
+      });
+    }
+
+    return query.getCount();
+  }
+
   public async findByFileName(fileName: string): Promise<Image | undefined> {
     const image = await this.ormRepository.findOne({
       where: { fileName },

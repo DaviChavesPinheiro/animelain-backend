@@ -5,6 +5,7 @@ import Character from '../infra/typeorm/entities/Character';
 export default interface ICharactersRepository {
   findByName(name: string): Promise<Character | undefined>;
   find(data: IFindCharacterDTO): Promise<Character[]>;
+  count(data: IFindCharacterDTO): Promise<number>;
   findById(id: string): Promise<Character | undefined>;
   create(data: ICreateCharacterDTO): Promise<Character>;
   save(data: Character): Promise<Character>;

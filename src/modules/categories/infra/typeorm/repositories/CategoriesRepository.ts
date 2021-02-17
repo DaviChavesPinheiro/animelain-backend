@@ -24,7 +24,22 @@ export default class CategoriesRepository implements ICategoriesRepository {
       });
     }
 
-    return query.skip((page - 1) * perPage).take(perPage).getMany();
+    return query
+      .skip((page - 1) * perPage)
+      .take(perPage)
+      .getMany();
+  }
+
+  public async count({ search }: IFindCategoryDTO): Promise<number> {
+    let query = this.ormRepository.createQueryBuilder('category');
+
+    if (search) {
+      query = query.andWhere('category.name ILIKE :search', {
+        search: `%${search}%`,
+      });
+    }
+
+    return query.getCount();
   }
 
   public async findByName(name: string): Promise<Category | undefined> {

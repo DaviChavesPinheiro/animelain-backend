@@ -5,6 +5,7 @@ import Image from '../infra/typeorm/entities/Image';
 export default interface IImagesRepository {
   findByFileName(fileName: string): Promise<Image | undefined>;
   find(data: IFindImageDTO): Promise<Image[]>;
+  count(data: IFindImageDTO): Promise<number>;
   findById(id: string): Promise<Image | undefined>;
   create(data: ICreateImageDTO): Promise<Image>;
   save(data: Image): Promise<Image>;

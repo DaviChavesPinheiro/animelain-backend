@@ -5,6 +5,7 @@ import Media from '@modules/medias/infra/typeorm/entities/Media';
 import User from '@modules/users/infra/typeorm/entities/User';
 import { IsPositive, Max } from 'class-validator';
 import { Field, InputType, Int, ObjectType } from 'type-graphql';
+import PageInfo from './PageInfo.schema';
 
 @ObjectType()
 export default class Page {
@@ -22,6 +23,9 @@ export default class Page {
 
   @Field(() => [Image])
   images: Image[];
+
+  @Field(() => PageInfo)
+  pageInfo: PageInfo;
 }
 
 @InputType()

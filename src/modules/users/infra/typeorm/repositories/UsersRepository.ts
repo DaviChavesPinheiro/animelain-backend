@@ -26,6 +26,18 @@ class UsersRepository implements IUsersRepository {
       .getMany();
   }
 
+  public async count({ search }: IFindUserDTO): Promise<number> {
+    let query = this.ormRepository.createQueryBuilder('user');
+
+    if (search) {
+      query = query.andWhere('user.name ILIKE :search', {
+        search: `%${search}%`,
+      });
+    }
+
+    return query.getCount();
+  }
+
   public async findById(id: string): Promise<User | undefined> {
     const query = this.ormRepository
       .createQueryBuilder('user')

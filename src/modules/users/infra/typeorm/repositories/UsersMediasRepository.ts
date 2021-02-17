@@ -74,6 +74,7 @@ class UsersMediasRepository implements IUsersMediasRepository {
   public async count({
     userId,
     userMediaStatus,
+    mediaType,
   }: IFindUserMediaDTO): Promise<number> {
     let query = this.ormRepository
       .createQueryBuilder('userMedia')
@@ -83,6 +84,14 @@ class UsersMediasRepository implements IUsersMediasRepository {
       query = query.andWhere('userMedia.userMediaStatus = :userMediaStatus', {
         userMediaStatus,
       });
+    }
+
+    if (mediaType) {
+      query = query
+        .leftJoinAndSelect('userMedia.media', 'media')
+        .andWhere('media.type = :mediaType', {
+          mediaType,
+        });
     }
 
     return query.getCount();

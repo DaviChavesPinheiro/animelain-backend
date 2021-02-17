@@ -20,7 +20,7 @@ export default class ListCategoriesService {
     page,
     perPage,
   }: IRequest): Promise<Category[]> {
-    const categories = this.categoriesRepository.find({
+    const categories = await this.categoriesRepository.find({
       search,
       page,
       perPage,

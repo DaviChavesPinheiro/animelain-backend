@@ -6,6 +6,7 @@ export default interface IMediaRepository {
   findByTitle(title: string): Promise<Media | undefined>;
   findById(id: string): Promise<Media | undefined>;
   find(data: IFindMediaDTO): Promise<Media[]>;
+  count(data: IFindMediaDTO): Promise<number>;
   findNews(): Promise<Media[]>;
   findInSeason(): Promise<Media[]>;
   create(data: ICreateMediaDTO): Promise<Media>;
