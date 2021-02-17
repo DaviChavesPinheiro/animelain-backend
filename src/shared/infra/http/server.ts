@@ -51,7 +51,7 @@ const server = new ApolloServer({
       const { roles, sub } = decoded as ITokenPayload;
 
       const user: IUserContext = { id: sub, roles };
-      console.log({ contextUser: { id: sub, roles } });
+      // console.log({ contextUser: { id: sub, roles } });
       const context: IContext = { user };
       return context;
     } catch (error) {

@@ -7,4 +7,5 @@ export interface IUserContext {
 
 export default interface IContext {
   user: IUserContext;
+  [key: string]: any;
 }

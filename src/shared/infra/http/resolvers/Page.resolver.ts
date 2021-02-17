@@ -21,7 +21,17 @@ import ListUsersService from '@modules/users/services/ListUsersService';
 import AppError from '@shared/errors/AppError';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
-import { Arg, FieldResolver, Info, Query, Resolver, Root } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  FieldResolver,
+  Info,
+  Query,
+  Resolver,
+  Root,
+} from 'type-graphql';
+import { EventEmitter } from 'events';
+import IContext from '../../../../@types/IContext';
 import Page, { PageInput } from '../schemas/Page.schema';
 import PageInfo from '../schemas/PageInfo.schema';
 
@@ -37,6 +47,8 @@ interface IRoot {
   info: any;
 }
 
+const eventEmitter = new EventEmitter();
+
 @Resolver(Page)
 class PageResolver {
   @Query(() => Page)
@@ -49,7 +61,10 @@ class PageResolver {
   async medias(
     @Root() { input: rootInput }: IRoot,
     @Arg('input') input: FindMediaInput,
+    @Ctx() ctx: IContext,
   ): Promise<Media[]> {
+    ctx.input = input;
+
     const {
       type,
       search,
@@ -75,6 +90,8 @@ class PageResolver {
       page,
       perPage,
     });
+
+    eventEmitter.emit('loadPageInfo', ctx.resolve);
     return classToClass(medias);
   }
 
@@ -82,7 +99,10 @@ class PageResolver {
   async users(
     @Root() { input: rootInput }: IRoot,
     @Arg('input') input: FindUserInput,
+    @Ctx() ctx: IContext,
   ): Promise<User[]> {
+    ctx.input = input;
+
     const { search } = input;
 
     const { page, perPage } = rootInput;
@@ -95,6 +115,7 @@ class PageResolver {
       perPage,
     });
 
+    eventEmitter.emit('loadPageInfo', ctx.resolve);
     return classToClass(users);
   }
 
@@ -102,7 +123,10 @@ class PageResolver {
   async characters(
     @Root() { input: rootInput }: IRoot,
     @Arg('input') input: FindCharacterInput,
+    @Ctx() ctx: IContext,
   ): Promise<Character[]> {
+    ctx.input = input;
+
     const { search } = input;
 
     const { page, perPage } = rootInput;
@@ -115,6 +139,7 @@ class PageResolver {
       perPage,
     });
 
+    eventEmitter.emit('loadPageInfo', ctx.resolve);
     return classToClass(characters);
   }
 
@@ -122,7 +147,10 @@ class PageResolver {
   async categories(
     @Root() { input: rootInput }: IRoot,
     @Arg('input') input: FindCategoryInput,
+    @Ctx() ctx: IContext,
   ): Promise<Category[]> {
+    ctx.input = input;
+
     const { search } = input;
 
     const { page, perPage } = rootInput;
@@ -134,6 +162,8 @@ class PageResolver {
       page,
       perPage,
     });
+
+    eventEmitter.emit('loadPageInfo', ctx.resolve);
     return classToClass(categories);
   }
 
@@ -141,7 +171,10 @@ class PageResolver {
   async images(
     @Root() { input: rootInput }: IRoot,
     @Arg('input') input: FindImageInput,
+    @Ctx() ctx: IContext,
   ): Promise<Image[]> {
+    ctx.input = input;
+
     const { search } = input;
 
     const { page, perPage } = rootInput;
@@ -154,11 +187,15 @@ class PageResolver {
       perPage,
     });
 
+    eventEmitter.emit('loadPageInfo', ctx.resolve);
     return classToClass(images);
   }
 
   @FieldResolver(() => PageInfo)
-  async pageInfo(@Root() { input: rootInput, info }: IRoot): Promise<PageInfo> {
+  async pageInfo(
+    @Root() { input: rootInput, info }: IRoot,
+    @Ctx() ctx: IContext,
+  ): Promise<PageInfo> {
     const { page, perPage } = rootInput;
 
     // eslint-disable-next-line prefer-destructuring
@@ -171,6 +208,17 @@ class PageResolver {
       throw new AppError('Maximum one selection');
     }
 
+    if (!filteredSelections.length) {
+      throw new AppError('Empty selection');
+    }
+
+    if (!ctx.input) {
+      await new Promise(resolve => {
+        ctx.resolve = resolve;
+        eventEmitter.once('loadPageInfo', resolveFn => resolveFn(null));
+      });
+    }
+
     switch (filteredSelections[0].name.value) {
       case 'users': {
         const listUsersPageInfoService = container.resolve(
@@ -178,6 +226,7 @@ class PageResolver {
         );
 
         const usersPageInfo = await listUsersPageInfoService.execute({
+          ...ctx.input,
           page,
           perPage,
         });
@@ -190,6 +239,7 @@ class PageResolver {
         );
 
         const mediasPageInfo = await listMediasPageInfoService.execute({
+          ...ctx.input,
           page,
           perPage,
         });
@@ -203,6 +253,7 @@ class PageResolver {
 
         const characatersPageInfo = await listCharactersPageInfoService.execute(
           {
+            ...ctx.input,
             page,
             perPage,
           },
@@ -216,6 +267,7 @@ class PageResolver {
         );
 
         const categoriesPageInfo = await listCategoriesPageInfoService.execute({
+          ...ctx.input,
           page,
           perPage,
         });
@@ -228,6 +280,7 @@ class PageResolver {
         );
 
         const imagesPageInfo = await listImagesPageInfoService.execute({
+          ...ctx.input,
           page,
           perPage,
         });
