@@ -45,12 +45,6 @@ export default class ListMediasPageInfoService {
       perPage,
     });
 
-    return {
-      total: mediasAmount,
-      currentPage: page,
-      perPage,
-      lastPage: Math.ceil(mediasAmount / perPage),
-      hasNextPage: page < Math.ceil(mediasAmount / perPage),
-    };
+    return PageInfo.from(mediasAmount, page, perPage);
   }
 }

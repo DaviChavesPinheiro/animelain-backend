@@ -41,12 +41,6 @@ export default class ListUserCharactersPageInfoService {
       perPage,
     });
 
-    return {
-      total: userCharactersAmount,
-      currentPage: page,
-      perPage,
-      lastPage: Math.ceil(userCharactersAmount / perPage),
-      hasNextPage: page < Math.ceil(userCharactersAmount / perPage),
-    };
+    return PageInfo.from(userCharactersAmount, page, perPage);
   }
 }

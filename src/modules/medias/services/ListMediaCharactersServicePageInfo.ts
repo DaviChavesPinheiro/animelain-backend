@@ -37,12 +37,6 @@ export default class ListMediaCharactersServicePageInfo {
       perPage,
     });
 
-    return {
-      total: mediaCharactersAmount,
-      currentPage: page,
-      perPage,
-      lastPage: Math.ceil(mediaCharactersAmount / perPage),
-      hasNextPage: page < Math.ceil(mediaCharactersAmount / perPage),
-    };
+    return PageInfo.from(mediaCharactersAmount, page, perPage);
   }
 }

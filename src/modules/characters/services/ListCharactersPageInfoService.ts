@@ -22,12 +22,6 @@ export default class ListCharactersPageInfoService {
       perPage,
     });
 
-    return {
-      total: charactersAmount,
-      currentPage: page,
-      perPage,
-      lastPage: Math.ceil(charactersAmount / perPage),
-      hasNextPage: page < Math.ceil(charactersAmount / perPage),
-    };
+    return PageInfo.from(charactersAmount, page, perPage);
   }
 }

@@ -23,12 +23,6 @@ export default class ListCategoriesPageInfoService {
       perPage,
     });
 
-    return {
-      total: categoriesAmount,
-      currentPage: page,
-      perPage,
-      lastPage: Math.ceil(categoriesAmount / perPage),
-      hasNextPage: page < Math.ceil(categoriesAmount / perPage),
-    };
+    return PageInfo.from(categoriesAmount, page, perPage);
   }
 }

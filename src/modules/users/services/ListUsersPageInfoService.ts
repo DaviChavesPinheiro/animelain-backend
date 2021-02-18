@@ -22,12 +22,6 @@ export default class ListUsersPageInfoService {
       perPage,
     });
 
-    return {
-      total: usersAmount,
-      currentPage: page,
-      perPage,
-      lastPage: Math.ceil(usersAmount / perPage),
-      hasNextPage: page < Math.ceil(usersAmount / perPage),
-    };
+    return PageInfo.from(usersAmount, page, perPage);
   }
 }

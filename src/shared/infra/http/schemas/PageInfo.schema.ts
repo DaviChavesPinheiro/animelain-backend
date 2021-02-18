@@ -17,6 +17,17 @@ export default class PageInfo {
 
   @Field(() => Boolean)
   hasNextPage: boolean;
+
+  static from(total: number, page: number, perPage: number): PageInfo {
+    const pageInfo = new PageInfo();
+    pageInfo.total = total;
+    pageInfo.currentPage = page;
+    pageInfo.perPage = perPage;
+    pageInfo.lastPage = Math.min(1, Math.ceil(total / perPage));
+    pageInfo.hasNextPage = page < pageInfo.lastPage;
+
+    return pageInfo;
+  }
 }
 
 @InputType()

@@ -22,12 +22,6 @@ export default class ListImagesPageInfoService {
       perPage,
     });
 
-    return {
-      total: imagesAmount,
-      currentPage: page,
-      perPage,
-      lastPage: Math.ceil(imagesAmount / perPage),
-      hasNextPage: page < Math.ceil(imagesAmount / perPage),
-    };
+    return PageInfo.from(imagesAmount, page, perPage);
   }
 }

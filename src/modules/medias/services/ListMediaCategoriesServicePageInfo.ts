@@ -37,12 +37,6 @@ export default class ListMediaCategoriesServicePageInfo {
       perPage,
     });
 
-    return {
-      total: mediaCategoriesAmount,
-      currentPage: page,
-      perPage,
-      lastPage: Math.ceil(mediaCategoriesAmount / perPage),
-      hasNextPage: page < Math.ceil(mediaCategoriesAmount / perPage),
-    };
+    return PageInfo.from(mediaCategoriesAmount, page, perPage);
   }
 }
