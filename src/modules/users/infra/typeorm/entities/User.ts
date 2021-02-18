@@ -11,6 +11,7 @@ import {
   BaseEntity,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import {
   Authorized,
@@ -22,6 +23,7 @@ import {
 import Image from '@modules/images/infra/typeorm/entities/Image';
 import { IAuthCheckerData } from '@shared/infra/http/schemas';
 import UserMediaConnection from '../../http/schemas/UserMediaConnection.schema';
+import UserMedia from './UserMedia';
 
 export enum UserRole {
   OWNER = 'OWNER',
@@ -76,6 +78,12 @@ class User extends BaseEntity implements INode {
 
   @Field(() => UserMediaConnection)
   userMedias: UserMediaConnection;
+
+  @OneToMany(() => UserMedia, userMedia => userMedia.user, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  usersMedias: UserMedia[];
 
   @Field(() => String)
   @CreateDateColumn()

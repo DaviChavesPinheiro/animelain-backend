@@ -43,14 +43,14 @@ class UserMedia extends BaseEntity implements IEdge {
   @Column('varchar')
   userMediaStatus: UserMediaStatus;
 
-  @ManyToOne(() => Media, {
+  @ManyToOne(() => Media, media => media.usersMedias, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'mediaId' })
   media: Media;
 
-  @ManyToOne(() => User, user => user.userMedias, {
+  @ManyToOne(() => User, user => user.usersMedias, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

@@ -15,6 +15,7 @@ import {
 } from 'typeorm';
 import { Field, ID, Int, ObjectType, registerEnumType } from 'type-graphql';
 import INode from '@shared/infra/http/schemas/Node.schema';
+import UserMedia from '@modules/users/infra/typeorm/entities/UserMedia';
 import MediaCategory from './MediaCategory';
 import MediaCharacter from './MediaCharacter';
 import CharacterConnection from '../../http/schemas/CharacterConnection.schema';
@@ -99,6 +100,12 @@ class Media extends BaseEntity implements INode {
 
   @Field(() => CharacterConnection)
   characters: CharacterConnection;
+
+  @OneToMany(() => UserMedia, userMedia => userMedia.media, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  usersMedias: UserMedia[];
 
   @Field(() => Boolean, { nullable: true })
   isFavorited?: boolean;
