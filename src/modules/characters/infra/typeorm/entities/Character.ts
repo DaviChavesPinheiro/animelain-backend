@@ -47,6 +47,9 @@ class Character extends BaseEntity implements INode {
   @OneToMany(() => UserCharacter, userCharacter => userCharacter.character)
   usersCharacters: UserCharacter[];
 
+  @Field(() => Boolean, { nullable: true })
+  isFavorited?: boolean;
+
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt: Date;

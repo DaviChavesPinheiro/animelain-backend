@@ -1,7 +1,16 @@
 import ListCharacterService from '@modules/characters/services/ListCharacterService';
 import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
-import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Authorized,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from 'type-graphql';
 import CreateCharacterService from '@modules/characters/services/CreateCharacterService';
 import UpdateCharacterService from '@modules/characters/services/UpdateCharacterService';
 import DeleteCharacterService from '@modules/characters/services/DeleteCharacterService';
@@ -12,11 +21,14 @@ import UpdateCharacterCoverImageService from '@modules/characters/services/Updat
 import UpdateCharacterBannerImageService from '@modules/characters/services/UpdateCharacterBannerImageService';
 import { UserRole } from '@modules/users/infra/typeorm/entities/User';
 import { IAuthCheckerData } from '@shared/infra/http/schemas';
+import { UserCharacterStatus } from '@modules/users/infra/typeorm/entities/UserCharacter';
+import ListUserCharacterService from '@modules/users/services/ListUserCharacterService';
+import IContext from '../../../../../@types/IContext';
+import Character from '../../typeorm/entities/Character';
 import {
   CreateCharacterInput,
   UpdateCharacterInput,
 } from '../schemas/Character.schema';
-import Character from '../../typeorm/entities/Character';
 
 @Resolver(Character)
 class CharactersResolver {
@@ -129,6 +141,24 @@ class CharactersResolver {
     });
 
     return characterUpdated;
+  }
+
+  @FieldResolver()
+  async isFavorited(
+    @Root() character: Character,
+    @Ctx() context: IContext,
+  ): Promise<boolean | undefined> {
+    const listUserCharacterService = container.resolve(
+      ListUserCharacterService,
+    );
+
+    const favoritedCharacter = await listUserCharacterService.execute({
+      userId: context.user.id,
+      characterId: character.id,
+      userCharacterStatus: UserCharacterStatus.FAVORITE,
+    });
+
+    return !!favoritedCharacter;
   }
 }
 
