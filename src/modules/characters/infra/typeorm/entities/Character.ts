@@ -50,6 +50,9 @@ class Character extends BaseEntity implements INode {
   @Field(() => Boolean, { nullable: true })
   isFavorited?: boolean;
 
+  @Field(() => Boolean, { nullable: true })
+  isFollowed?: boolean;
+
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt: Date;

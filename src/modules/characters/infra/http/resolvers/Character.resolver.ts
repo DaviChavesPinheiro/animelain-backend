@@ -160,6 +160,24 @@ class CharactersResolver {
 
     return !!favoritedCharacter;
   }
+
+  @FieldResolver()
+  async isFollowed(
+    @Root() character: Character,
+    @Ctx() context: IContext,
+  ): Promise<boolean | undefined> {
+    const listUserCharacterService = container.resolve(
+      ListUserCharacterService,
+    );
+
+    const followedCharacter = await listUserCharacterService.execute({
+      userId: context.user.id,
+      characterId: character.id,
+      userCharacterStatus: UserCharacterStatus.FOLLOW,
+    });
+
+    return !!followedCharacter;
+  }
 }
 
 export default CharactersResolver;
