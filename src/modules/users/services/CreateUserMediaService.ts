@@ -43,10 +43,6 @@ export default class CreateUserMediaService {
       throw new AppError('Media does not exist');
     }
 
-    if (!Object.values(UserMediaStatus).includes(userMediaStatus)) {
-      throw new AppError('This User Media Status does not exist');
-    }
-
     const checkIfUserMediaAlreadyExist = await this.usersMediasRepository.findOne(
       { mediaId, userId, userMediaStatus },
     );

@@ -20,6 +20,8 @@ import DeleteUserMediaService from '@modules/users/services/DeleteUserMediaServi
 import ListImageService from '@modules/images/services/ListImageService';
 import Image from '@modules/images/infra/typeorm/entities/Image';
 import { IAuthCheckerData } from '@shared/infra/http/schemas';
+import CreateUserCharacterService from '@modules/users/services/CreateUserCharacterService';
+import DeleteUserCharacterService from '@modules/users/services/DeleteUserCharacterService';
 import IContext from '../../../../../@types/IContext';
 import User, { UserRole } from '../../typeorm/entities/User';
 import {
@@ -33,6 +35,12 @@ import {
   FindUsersMediasInput,
 } from '../schemas/UserMedia.schema';
 import UserMedia from '../../typeorm/entities/UserMedia';
+import {
+  CreateUserCharacterInput,
+  DeleteUserCharacterInput,
+  FindUsersCharactersInput,
+} from '../schemas/UserCharacter.schema';
+import UserCharacter from '../../typeorm/entities/UserCharacter';
 
 @Resolver(User)
 class UsersResolver {
@@ -163,10 +171,64 @@ class UsersResolver {
     return userMedia;
   }
 
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.OWNER, UserRole.ADMIN, UserRole.SUPER_ADMIN],
+    isOwner: ({ context, args }) => args.input.userId === context.user.id,
+  })
+  @Mutation(() => UserCharacter)
+  async createUserCharacter(
+    @Arg('input') input: CreateUserCharacterInput,
+  ): Promise<UserCharacter> {
+    const { characterId, userId, userCharacterStatus } = input;
+
+    const createUserCharacterService = container.resolve(
+      CreateUserCharacterService,
+    );
+
+    const userCharacter = await createUserCharacterService.execute({
+      characterId,
+      userId,
+      userCharacterStatus,
+    });
+
+    return userCharacter;
+  }
+
+  @Authorized<IAuthCheckerData>({
+    roles: [UserRole.OWNER, UserRole.ADMIN, UserRole.SUPER_ADMIN],
+    isOwner: ({ context, args }) => args.input.userId === context.user.id,
+  })
+  @Mutation(() => UserCharacter)
+  async deleteUserCharacter(
+    @Arg('input') input: DeleteUserCharacterInput,
+  ): Promise<UserCharacter> {
+    const { characterId, userId, userCharacterStatus } = input;
+
+    const deleteUserCharacterService = container.resolve(
+      DeleteUserCharacterService,
+    );
+
+    const userCharacter = await deleteUserCharacterService.execute({
+      characterId,
+      userId,
+      userCharacterStatus,
+    });
+
+    return userCharacter;
+  }
+
   @FieldResolver()
   async userMedias(
     @Root() user: User,
     @Arg('input') input: FindUsersMediasInput,
+  ): Promise<any> {
+    return { user, input };
+  }
+
+  @FieldResolver()
+  async userCharacters(
+    @Root() user: User,
+    @Arg('input') input: FindUsersCharactersInput,
   ): Promise<any> {
     return { user, input };
   }

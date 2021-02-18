@@ -101,10 +101,7 @@ class Media extends BaseEntity implements INode {
   @Field(() => CharacterConnection)
   characters: CharacterConnection;
 
-  @OneToMany(() => UserMedia, userMedia => userMedia.media, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
+  @OneToMany(() => UserMedia, userMedia => userMedia.media)
   usersMedias: UserMedia[];
 
   @Field(() => Boolean, { nullable: true })

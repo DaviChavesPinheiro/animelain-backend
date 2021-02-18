@@ -27,6 +27,9 @@ import INotificationsRepository from '@modules/notifications/repositories/INotif
 import UsersMediasRepository from '@modules/users/infra/typeorm/repositories/UsersMediasRepository';
 import IUsersMediasRepository from '@modules/users/repositories/IUsersMediasRepository';
 
+import UsersCharactersRepository from '@modules/users/infra/typeorm/repositories/UsersCharactersRepository';
+import IUsersCharactersRepository from '@modules/users/repositories/IUsersCharactersRepository';
+
 import MediasCharactersRepository from '@modules/medias/infra/typeorm/repositories/MediasCharactersRepository';
 import IMediasCharactersRepository from '@modules/medias/repositories/IMediasCharactersRepository';
 
@@ -66,6 +69,11 @@ container.registerSingleton<INotificationsRepository>(
 container.registerSingleton<IUsersMediasRepository>(
   'UsersMediasRepository',
   UsersMediasRepository,
+);
+
+container.registerSingleton<IUsersCharactersRepository>(
+  'UsersCharactersRepository',
+  UsersCharactersRepository,
 );
 
 container.registerSingleton<IMediasCharactersRepository>(

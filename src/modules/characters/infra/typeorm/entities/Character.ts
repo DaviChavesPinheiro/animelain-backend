@@ -12,6 +12,7 @@ import {
 import MediaCharacter from '@modules/medias/infra/typeorm/entities/MediaCharacter';
 import INode from '@shared/infra/http/schemas/Node.schema';
 import { Field, ID, Int, ObjectType } from 'type-graphql';
+import UserCharacter from '@modules/users/infra/typeorm/entities/UserCharacter';
 
 @ObjectType({ implements: [INode] })
 @Entity('characters')
@@ -42,6 +43,9 @@ class Character extends BaseEntity implements INode {
 
   @OneToMany(() => MediaCharacter, mediaCharacter => mediaCharacter.character)
   mediasCharacters: MediaCharacter[];
+
+  @OneToMany(() => UserCharacter, userCharacter => userCharacter.character)
+  usersCharacters: UserCharacter[];
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
